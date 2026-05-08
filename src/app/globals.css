@@ -11,13 +11,24 @@
   --color-foreground: var(--foreground);
 
   --font-sans: "Pretendard", sans-serif;
+  --font-regular: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
 
-  --color-sdp-black: #0a0a0a;
-  --color-sdp-gray: #1a1a1a;
-  --color-sdp-green: #7CB518;
-  --color-sdp-green-dark: #4a7c10;
-  --color-sdp-muted: #888888;
-  --color-sdp-footer-text: #979797;
+  --color-sdp-green-light: #EFFFC7;
+  --color-sdp-green-dark: #CCFB55;
+
+  --color-sdp-grey-50: #FAFAFA;
+  --color-sdp-grey-100: #F5F5F5;
+  --color-sdp-grey-200: #E5E5E5;
+  --color-sdp-grey-300: #D4D4D4;
+  --color-sdp-grey-400: #A1A1A1;
+  --color-sdp-grey-500: #737373;
+  --color-sdp-grey-600: #525252;
+  --color-sdp-grey-700: #404040;
+  --color-sdp-grey-800: #262626;
+  --color-sdp-grey-900: #141414;
 
   --width-site: 1920px;
   --width-content: 1280px;
@@ -34,6 +45,7 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
+  font-weight: var(--font-regular);
   min-width: 1280px;
   max-width: 1920px;
   margin: 0 auto;
