@@ -46,6 +46,7 @@ export const Button = ({
 
   return (
     <button
+      type={props.type ?? 'button'}
       className={cn(
         baseStyles,
         variants[variant],

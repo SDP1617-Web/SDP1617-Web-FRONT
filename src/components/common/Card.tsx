@@ -96,7 +96,8 @@ export const Card4 = ({
   isActive,
   onClick,
 }: CardProps) => (
-  <div
+  <button
+    type="button"
     onClick={onClick}
     className={cn(
       'flex h-[467px] w-[576px] cursor-pointer flex-col overflow-hidden rounded-[21.333px] bg-white transition-all',
@@ -104,10 +105,13 @@ export const Card4 = ({
       className
     )}
   >
+    {/* 이미지 영역 */}
     <div
       className="h-[293.333px] bg-[#CCFB55] bg-cover bg-center"
       style={{ backgroundImage: imageUrl ? `url(${imageUrl})` : undefined }}
     />
+
+    {/* 텍스트 영역 */}
     <div className="flex h-[174px] flex-col justify-center gap-[13.333px] p-[26.667px_32px]">
       {category && <CategoryChip text={category} />}
       <div className="flex flex-col gap-3">
@@ -117,7 +121,7 @@ export const Card4 = ({
         <p className="body2 text-sdp-grey-600">{description}</p>
       </div>
     </div>
-  </div>
+  </button>
 )
 
 // Card 5: 수치/기수 카드
