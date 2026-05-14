@@ -11,13 +11,24 @@
   --color-foreground: var(--foreground);
 
   --font-sans: "Pretendard", sans-serif;
+  --font-regular: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
 
-  --color-sdp-black: #0a0a0a;
-  --color-sdp-gray: #1a1a1a;
-  --color-sdp-green: #7CB518;
-  --color-sdp-green-dark: #4a7c10;
-  --color-sdp-muted: #888888;
-  --color-sdp-footer-text: #979797;
+  --color-sdp-main-primary: #CCFB55;
+  --color-sdp-main-secondary: #EFFFC7;
+
+  --color-sdp-grey-50: #FAFAFA;
+  --color-sdp-grey-100: #F5F5F5;
+  --color-sdp-grey-200: #E5E5E5;
+  --color-sdp-grey-300: #D4D4D4;
+  --color-sdp-grey-400: #A1A1A1;
+  --color-sdp-grey-500: #737373;
+  --color-sdp-grey-600: #525252;
+  --color-sdp-grey-700: #404040;
+  --color-sdp-grey-800: #262626;
+  --color-sdp-grey-900: #141414;
 
   --width-site: 1920px;
   --width-content: 1280px;
@@ -30,10 +41,22 @@
   }
 }
 
+@layer components {
+  .display { font-size: 72px; line-height: 80px; font-weight: 700; }
+  .h1      { font-size: 48px; line-height: 60px; font-weight: 700; }
+  .h2      { font-size: 32px; line-height: 42px; font-weight: 700; }
+  .h3      { font-size: 26px; line-height: 48px; font-weight: 700; }
+  .h4      { font-size: 22px; line-height: 30px; font-weight: 600; }
+  .body1   { font-size: 20px; line-height: 28px; font-weight: 400; }
+  .body2   { font-size: 18px; line-height: 26px; font-weight: 400; }
+  .caption { font-size: 14px; line-height: 20px; font-weight: 400; }
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
+  font-weight: var(--font-regular);
   min-width: 1280px;
   max-width: 1920px;
   margin: 0 auto;
