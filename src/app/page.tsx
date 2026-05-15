@@ -1,5 +1,3 @@
-// 홈화면
-
 import HeroSection1 from "@/components/home/sections/HeroSection1";
 import IntroSection from "@/components/home/sections/IntroSection";
 import GoalsSection from "@/components/home/sections/GoalsSection";
@@ -11,7 +9,7 @@ import PartnersSection from "@/components/home/sections/PartnersSection";
 
 export default function Home() {
   return (
-    <>
+    <main className="flex-1">
       <HeroSection1 />
       <IntroSection />
       <GoalsSection />
@@ -20,6 +18,6 @@ export default function Home() {
       <ActivitiesSection />
       <FaqSection />
       <PartnersSection />
-    </>
+    </main>
   );
 }

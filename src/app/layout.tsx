@@ -17,7 +17,7 @@ export default function RootLayout({
     <html lang="ko" className="h-full antialiased">
       <body className="min-h-full flex flex-col">
         <Header />
-        <main className="flex-1">{children}</main>
+        {children}
         <Footer />
       </body>
     </html>
