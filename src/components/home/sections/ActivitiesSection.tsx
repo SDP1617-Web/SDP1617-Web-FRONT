@@ -16,7 +16,7 @@ const TABS = [
 
 const imageFrameStyle: CSSProperties = {
   width: "787px",
-  height: "411.86px",
+  height: "412px",
   borderRadius: "8px",
   border: "1px solid #B8B8B8",
   overflow: "hidden",
@@ -29,7 +29,7 @@ export default function ActivitiesSection() {
   const activeImage = TABS.find((t) => t.id === activeTab)?.image ?? TABS[0].image;
 
   return (
-    <section style={{ marginTop: "195.37px" }} className="flex justify-center">
+    <section style={{ marginTop: "195px" }} className="flex justify-center">
       <div style={{ width: "1202px" }} className="flex flex-col">
         {/* 타이틀 */}
         <p className="h2" style={{ color: "var(--color-sdp-grey-900)", marginBottom: "36px" }}>

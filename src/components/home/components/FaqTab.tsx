@@ -24,8 +24,8 @@ export default function FaqTab({ label, isActive, onClick }: FaqTabProps) {
         borderBottom: isActive ? "2px solid var(--color-sdp-grey-900)" : "none",
         color: isActive ? "var(--color-sdp-grey-900)" : "var(--color-sdp-grey-300)",
         fontWeight: isActive ? 700 : 400,
-        fontSize: isActive ? "20.664px" : "20px",
-        lineHeight: isActive ? "30.996px" : "28px",
+        fontSize: isActive ? "21px" : "20px",
+        lineHeight: isActive ? "31px" : "28px",
       }}
       onClick={onClick}
     >

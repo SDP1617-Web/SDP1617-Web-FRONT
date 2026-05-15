@@ -11,7 +11,7 @@ const PARTNERS = [
 export default function PartnersSection() {
   return (
     <section
-      style={{ marginTop: "191.25px", marginBottom: "82px" }}
+      style={{ marginTop: "192px", marginBottom: "82px" }}
       className="flex justify-center"
     >
       <div style={{ width: "1202px" }} className="flex flex-col">

@@ -4,7 +4,7 @@ import ProjectCard from "../components/ProjectCard";
 
 const sectionStyle: CSSProperties = {
   width: "100%",
-  height: "886.115px",
+  height: "886px",
   backgroundColor: "var(--color-sdp-grey-900)",
   position: "relative",
   overflow: "hidden",
@@ -13,7 +13,7 @@ const sectionStyle: CSSProperties = {
 const sphere1Style: CSSProperties = {
   width: "475px",
   height: "476px",
-  borderRadius: "525.016px",
+  borderRadius: "525px",
   opacity: 0.4,
   background: "rgba(0, 0, 0, 0.00)",
   boxShadow: "0 4.487px 33.767px 10.096px rgba(255, 255, 255, 0.52) inset",
@@ -23,8 +23,8 @@ const sphere1Style: CSSProperties = {
 };
 
 const sphere2Style: CSSProperties = {
-  width: "651.829px",
-  height: "563.068px",
+  width: "652px",
+  height: "563px",
   position: "absolute",
   top: "100px",
   right: "-70px",

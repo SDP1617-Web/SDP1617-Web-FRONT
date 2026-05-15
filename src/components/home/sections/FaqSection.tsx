@@ -30,7 +30,7 @@ export default function FaqSection() {
   };
 
   return (
-    <section style={{ marginTop: "219.89px" }} className="flex justify-center">
+    <section style={{ marginTop: "220px" }} className="flex justify-center">
       <div style={{ width: "1202px" }} className="flex flex-col">
         {/* 타이틀 */}
         <p className="h2" style={{ color: "var(--color-sdp-grey-900)", marginBottom: "36px" }}>

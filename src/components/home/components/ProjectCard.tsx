@@ -6,7 +6,7 @@ interface ProjectCardProps {
 }
 
 const cardStyle: CSSProperties = {
-  width: "381.66px",
+  width: "382px",
   height: "498px",
   backgroundColor: "var(--color-sdp-grey-800)",
   borderRadius: "40px",
