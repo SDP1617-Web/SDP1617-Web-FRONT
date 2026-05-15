@@ -1,6 +1,12 @@
 import type { CSSProperties } from "react";
 import Image from "next/image";
 
+const ACTIVE_CLASS = "h4";
+const INACTIVE_CLASS = "h4-m";
+const ARROW_ICON = "/right-arrow.svg";
+const TAB_WIDTH = 301;
+const ARROW_SIZE = 20;
+
 interface ActivityTabProps {
   label: string;
   isActive: boolean;
@@ -31,8 +37,8 @@ const inactiveStyle: CSSProperties = {
 export default function ActivityTab({ label, isActive, onClick }: ActivityTabProps) {
   return (
     <div style={isActive ? activeStyle : inactiveStyle} onClick={onClick}>
-      <span className={isActive ? "h4" : "h4-m"}>{label}</span>
-      <Image src="/right-arrow.svg" alt="arrow" width={20} height={20} />
+      <span className={isActive ? ACTIVE_CLASS : INACTIVE_CLASS}>{label}</span>
+      <Image src={ARROW_ICON} alt="arrow" width={ARROW_SIZE} height={ARROW_SIZE} />
     </div>
   );
 }
