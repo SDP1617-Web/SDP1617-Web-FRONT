@@ -18,8 +18,8 @@ export const Radio = ({
         'flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 transition-all active:scale-95',
 
         isActive
-          ? 'border-[var(--color-sdp-grey-600)]'
-          : 'border-[var(--color-sdp-grey-400)]',
+          ? 'border-[var(--color-sdp-gray-600)]'
+          : 'border-[var(--color-sdp-gray-400)]',
         'bg-transparent',
         className
       )}
@@ -27,7 +27,7 @@ export const Radio = ({
     >
       {isActive && (
         <div
-          className="rounded-full bg-[var(--color-sdp-grey-600)]"
+          className="rounded-full bg-[var(--color-sdp-gray-600)]"
           style={{
             width: '11.771px',
             height: '11.771px',

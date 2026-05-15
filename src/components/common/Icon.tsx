@@ -5,9 +5,9 @@ import CloseIcon from '@/assets/icons/close.svg'
 
 const COLORS = {
   active: 'var(--color-sdp-main-primary)',
-  off: 'var(--color-sdp-grey-800)',
-  close: 'var(--color-sdp-grey-200)',
-  calendar: 'var(--color-sdp-grey-300)',
+  off: 'var(--color-sdp-gray-800)',
+  close: 'var(--color-sdp-gray-200)',
+  calendar: 'var(--color-sdp-gray-300)',
 } as const
 
 const ICON_CONFIG = {
@@ -28,7 +28,7 @@ interface IconProps extends Omit<React.SVGProps<SVGSVGElement>, 'name'> {
 export const Icon = ({ name, level = 0, className, ...props }: IconProps) => {
   const config = ICON_CONFIG[name]
 
-  // 3. 정적 아이콘 (Close, Calendar) 렌더링
+  // 정적 아이콘 (Close, Calendar) 렌더링
   if ('Component' in config) {
     const { Component, size } = config
     const color = name === 'close' ? COLORS.close : COLORS.calendar
@@ -43,7 +43,7 @@ export const Icon = ({ name, level = 0, className, ...props }: IconProps) => {
     )
   }
 
-  // 4. 패턴 아이콘(점) 렌더링 로직
+  // 패턴 아이콘(점) 렌더링 로직
   const renderDots = () => {
     const dots = DOT_DATA[name] || []
     return dots.map((dot, index) => {
