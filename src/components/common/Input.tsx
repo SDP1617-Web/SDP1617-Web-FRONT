@@ -80,7 +80,8 @@ export const BaseInput = ({
     <div
       className={cn(
         'flex h-[66px] w-[588px] items-center justify-between self-stretch rounded-[20px] border-2 bg-transparent px-[23.881px] pt-[27.861px] pb-[29.851px] transition-all',
-        hasValue ? 'border-sdp-grey-400' : 'border-sdp-grey-300'
+        hasValue ? 'border-sdp-grey-400' : 'border-sdp-grey-300',
+        className
       )}
     >
       <input
