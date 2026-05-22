@@ -30,16 +30,8 @@ export const LayoutInput = ({
       <div className="flex items-start gap-[22px] self-stretch">
         <Button variant="v4">{num}</Button>
         <div className="flex flex-1 flex-col gap-1">
-          {title && (
-            <h3 className="text-sdp-grey-800 text-[26px] leading-[38px]">
-              {title}
-            </h3>
-          )}
-          {subTitle && (
-            <h4 className="text-sdp-grey-700 text-[22px] leading-[30px]">
-              {subTitle}
-            </h4>
-          )}
+          {title && <h3 className="h3 text-sdp-grey-800">{title}</h3>}
+          {subTitle && <h4 className="h4 text-sdp-grey-700">{subTitle}</h4>}
         </div>
       </div>
 
