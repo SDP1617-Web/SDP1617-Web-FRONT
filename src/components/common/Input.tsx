@@ -62,6 +62,7 @@ export const LayoutInput = ({
 
 interface BaseInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   onClear?: () => void
+  suffix?: React.ReactNode
 }
 
 export const BaseInput = ({
@@ -70,6 +71,7 @@ export const BaseInput = ({
   onChange,
   onClear,
   placeholder,
+  suffix,
   ...props
 }: BaseInputProps) => {
   const hasValue = typeof value === 'string' && value.length > 0
@@ -130,6 +132,7 @@ export const BaseInput = ({
           </svg>
         </button>
       )}
+      {suffix}
     </div>
   )
 }
