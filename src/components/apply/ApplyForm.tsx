@@ -82,16 +82,20 @@ const ApplyForm = () => {
       </section>
 
       {/* 지원 부서 선택 */}
-      <section className="mt-[150px] flex flex-col gap-x-[16px]">
+      <section className="mt-[150px] flex flex-col gap-y-[16px]">
         <h3 className="h3 flex justify-items-start font-semibold">
           {APPLY_TEAM}
         </h3>
         {/* Button Component - v3 */}
-        <div className="flex flex-row gap-x-[23px]"></div>
+        <div className="flex flex-row gap-x-[23px]">
+          {TEAM_LIST.map((TEAM, index) => {
+            return <Button variant="v3">{TEAM}</Button>
+          })}
+        </div>
       </section>
 
       {/* 포트폴리오 */}
-      <section className="mt-[120px] flex flex-col gap-x-[16px]">
+      <section className="mt-[120px] flex flex-col gap-y-[16px]">
         <h3 className="h3 flex justify-items-start font-semibold">
           {APPLY_PORTFOLIO}
         </h3>
@@ -179,6 +183,8 @@ const PLACE_HOLDER = {
 }
 
 const APPLY_TEAM = '지원 부서 선택'
+
+const TEAM_LIST = ['리서치', '디자인', '테크']
 
 const APPLY_PORTFOLIO = '포트폴리오'
 const APPLY_FILE_TEXT = 'PDF 또는 PPT 파일 첨부'
