@@ -15,22 +15,12 @@
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
-  --font-sans: 'Pretendard', sans-serif;
-  --font-weight-regular: 400;
-  --font-weight-medium: 500;
-  --font-weight-semibold: 600;
-  --font-weight-bold: 700;
 
   --color-sdp-main-primary: #ccfb55;
   --color-sdp-main-secondary: #efffc7;
   --color-sdp-main-primary: #ccfb55;
   --color-sdp-main-secondary: #efffc7;
 
-  --color-sdp-grey-50: #fafafa;
-  --color-sdp-grey-100: #f5f5f5;
-  --color-sdp-grey-200: #e5e5e5;
-  --color-sdp-grey-300: #d4d4d4;
-  --color-sdp-grey-400: #a1a1a1;
   --color-sdp-grey-50: #fafafa;
   --color-sdp-grey-100: #f5f5f5;
   --color-sdp-grey-200: #e5e5e5;
@@ -54,46 +44,6 @@
 }
 
 @layer components {
-  .display {
-    font-size: 72px;
-    line-height: 80px;
-    font-weight: 700;
-  }
-  .h1 {
-    font-size: 48px;
-    line-height: 60px;
-    font-weight: 700;
-  }
-  .h2 {
-    font-size: 32px;
-    line-height: 42px;
-    font-weight: 700;
-  }
-  .h3 {
-    font-size: 26px;
-    line-height: 48px;
-    font-weight: 700;
-  }
-  .h4 {
-    font-size: 22px;
-    line-height: 30px;
-    font-weight: 600;
-  }
-  .body1 {
-    font-size: 20px;
-    line-height: 28px;
-    font-weight: 400;
-  }
-  .body2 {
-    font-size: 18px;
-    line-height: 26px;
-    font-weight: 400;
-  }
-  .caption {
-    font-size: 14px;
-    line-height: 20px;
-    font-weight: 400;
-  }
   .display {
     font-size: 72px;
     line-height: 80px;
