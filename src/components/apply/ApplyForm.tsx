@@ -1,6 +1,6 @@
 const ApplyForm = () => {
   return (
-    <form action="" className="h-[1000px] w-full px-[360px] pt-[90px]">
+    <form action="" className="h-auto w-full px-[360px] pt-[90px]">
       {/* 지원자 정보 */}
       <section className="flex flex-col">
         <div className="flex flex-row items-center gap-[20px]">
@@ -63,6 +63,50 @@ const ApplyForm = () => {
             <div className="justify-center text-center">
               {APPLY_FILE_SELECT}
             </div>
+          </div>
+        </div>
+      </section>
+      {/* 지원동기 */}
+      {/* 해당 값들 6개 */}
+      <section className="mt-[100px] flex flex-col gap-y-[28px]">
+        <div className="flex flex-row items-center gap-[22px]">
+          {/* Button Component - v4 */}
+          <div className="bg-sdp-main-secondary inline-flex size-11 items-center justify-center rounded-full">
+            <h3 className="h3 text-sdp-grey-900 justify-center font-semibold">
+              1
+            </h3>
+          </div>
+          {/* Question Text */}
+          <h3 className="h3 text-sdp-grey-900">{APPLY_INFORMATION}</h3>
+        </div>
+        {/* TextBox Component */}
+        <div className="outline-sdp-grey-300 inline-flex h-[260px] w-full flex-col items-center justify-start gap-[8px] self-stretch rounded-[20px] p-[32px] outline-2 -outline-offset-2" />
+      </section>
+
+      {/* 면접 시간대 */}
+      <section className="mt-[100px] flex flex-col gap-y-[28px]">
+        <div className="flex flex-row items-center gap-[22px]">
+          {/* Button Component - v4 */}
+          <div className="bg-sdp-main-secondary inline-flex size-11 items-center justify-center rounded-full">
+            <h3 className="h3 text-sdp-grey-900 justify-center font-semibold">
+              1
+            </h3>
+          </div>
+          {/* Question Text */}
+          <h3 className="h3 text-sdp-grey-900">{APPLY_INFORMATION}</h3>
+        </div>
+        {/* Ratio Area */}
+        <div className="outline-sdp-grey-300 inline-flex h-[260px] w-full flex-col items-center justify-start gap-[8px] self-stretch rounded-[20px] p-[32px] outline-2 -outline-offset-2" />
+      </section>
+
+      {/* 최종 제출 */}
+      <section>
+        <div className="bg-sdp-main-secondary inline-flex h-[80px] w-full flex-col items-center justify-center rounded-xl p-[16px]">
+          <div className="flex flex-col items-center justify-start self-stretch">
+            <body className="body1 justify-center text-center">
+              작성하신 내용은 수정이 불가능하므로 제출 전 다시 한번 확인
+              부탁드립니다.
+            </body>
           </div>
         </div>
       </section>
