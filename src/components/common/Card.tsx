@@ -288,6 +288,7 @@ export const QuarterCard = ({
   support,
   schedule,
   className,
+  onClick,
 }: CardProps) => (
   <div
     className={cn(
@@ -344,9 +345,13 @@ export const QuarterCard = ({
         )}
       </div>
 
-      <div className="text-sdp-grey-600 text-[18px] leading-[26px] font-normal">
+      <button
+        type="button"
+        onClick={onClick}
+        className="text-sdp-grey-600 text-[18px] leading-[26px] font-normal hover:underline"
+      >
         상세보기
-      </div>
+      </button>
     </div>
   </div>
 )

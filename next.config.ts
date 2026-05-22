@@ -4,8 +4,11 @@ const nextConfig: NextConfig = {
   webpack: (config) => {
     const fileLoaderRule = config.module.rules.find((rule: any) =>
       rule.test?.test?.('.svg')
-    ) as any
+    )
 
+    if (!fileLoaderRule) {
+      throw new Error('SVG file loader rule not found in webpack config')
+    }
     config.module.rules.push(
       {
         ...fileLoaderRule,
@@ -31,9 +34,7 @@ const nextConfig: NextConfig = {
     )
 
     fileLoaderRule.exclude = /\.svg$/i
-
     return config
   },
 }
-
 export default nextConfig

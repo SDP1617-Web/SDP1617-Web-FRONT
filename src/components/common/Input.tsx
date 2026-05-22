@@ -21,7 +21,12 @@ export const LayoutInput = ({
   const currentLength = typeof value === 'string' ? value.length : 0
 
   return (
-    <div className="flex w-[1200px] flex-col items-start gap-[28px] text-left">
+    <div
+      className={cn(
+        'flex w-[1200px] flex-col items-start gap-[28px] text-left',
+        className
+      )}
+    >
       <div className="flex items-start gap-[22px] self-stretch">
         <Button variant="v4">{num}</Button>
         <div className="flex flex-1 flex-col gap-1">
@@ -40,7 +45,7 @@ export const LayoutInput = ({
 
       <div className="border-sdp-grey-300 focus-within:border-sdp-grey-400 flex h-[290px] w-[1200px] flex-col items-end gap-[18px] rounded-[20px] border-2 bg-transparent p-[24px] transition-all">
         <textarea
-          className="text-sdp-grey-900 placeholder:text-sdp-grey-500 leading-[30px]outline-none h-[180px] shrink-0 resize-none self-stretch border-none bg-transparent text-[22px]"
+          className="text-sdp-grey-900 placeholder:text-sdp-grey-500 h-[180px] shrink-0 resize-none self-stretch border-none bg-transparent text-[22px] leading-[30px] outline-none"
           maxLength={maxLength}
           value={value}
           onChange={onChange}
@@ -72,7 +77,7 @@ export const BaseInput = ({
   return (
     <div
       className={cn(
-        'flex h-[66px] w-[588px] items-center justify-between self-stretch rounded-[20px] border-2 bg-transparent px-[23.881px] py-[27.861px_29.851px] transition-all',
+        'flex h-[66px] w-[588px] items-center justify-between self-stretch rounded-[20px] border-2 bg-transparent px-[23.881px] pt-[27.861px] pb-[29.851px] transition-all',
         hasValue ? 'border-sdp-grey-400' : 'border-sdp-grey-300'
       )}
     >
@@ -93,6 +98,7 @@ export const BaseInput = ({
         <button
           type="button"
           onClick={onClear}
+          aria-label="입력값 지우기"
           className="flex h-[20.947px] w-[20.947px] shrink-0 items-center justify-center transition-transform active:scale-90"
         >
           <svg

@@ -31,13 +31,15 @@ export const Icon = ({ name, level = 0, className, ...props }: IconProps) => {
   // 정적 아이콘 (Close, Calendar) 렌더링
   if ('Component' in config) {
     const { Component, size } = config
-    const color = name === 'close' ? COLORS.close : COLORS.calendar
+    const colorClass =
+      name === 'close'
+        ? 'text-[var(--color-sdp-grey-200)]'
+        : 'text-[var(--color-sdp-grey-300)]'
     return (
       <Component
         width={size}
         height={size}
-        style={{ color }}
-        className={cn('shrink-0', className)}
+        className={cn('shrink-0', colorClass, className)}
         {...props}
       />
     )

@@ -45,7 +45,7 @@ export const Button = ({
       : 'w-[384.667px] h-[66px] p-[12.5px_0_13.5px_0] rounded-[20px] bg-sdp-grey-200 text-sdp-grey-900 h4',
 
     v9: isActive
-      ? 'w-[164px] h-[66px] p-[12.5px_0_13.5px_0] rounded-[20px] bg-sdp-main-primary text-sdp-grey-900 h4'
+      ? 'w-[166px] h-[66px] p-[12.5px_0_13.5px_0] rounded-[20px] bg-sdp-main-primary text-sdp-grey-900 h4'
       : 'w-[166px] h-[66px] p-[12px_0] rounded-[20px] border-2 border-sdp-grey-300 text-sdp-grey-600 h4',
   }
 
