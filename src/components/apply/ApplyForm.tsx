@@ -16,21 +16,29 @@ const ApplyForm = () => {
         <div className="mt-[50px] flex flex-row gap-x-[25px]">
           <div className="flex flex-col gap-y-[32px]">
             <div className="flex flex-col gap-y-[16px]">
-              <h3 className="h3 font-semibold">{APPLY_NAME}</h3>
+              <h3 className="h3 flex justify-items-start font-semibold">
+                {APPLY_NAME}
+              </h3>
               {/* Input Component */}
             </div>
             <div className="flex flex-col gap-y-[16px]">
-              <h3 className="h3 font-semibold">{APPLY_BIRTH}</h3>
+              <h3 className="h3 flex justify-items-start font-semibold">
+                {APPLY_BIRTH}
+              </h3>
               {/* Input Component */}
             </div>
           </div>
           <div className="flex flex-col gap-y-[32px]">
             <div className="flex flex-col gap-y-[16px]">
-              <h3 className="h3 font-semibold">{APPLY_CONTRACT}</h3>
+              <h3 className="h3 flex justify-items-start font-semibold">
+                {APPLY_CONTRACT}
+              </h3>
               {/* Input Component */}
             </div>
             <div className="flex flex-col gap-y-[16px]">
-              <h3 className="h3 font-semibold">{APPLY_EMAIL}</h3>
+              <h3 className="h3 flex justify-items-start font-semibold">
+                {APPLY_EMAIL}
+              </h3>
               {/* Input Component */}
             </div>
           </div>
@@ -39,14 +47,18 @@ const ApplyForm = () => {
 
       {/* 지원 부서 선택 */}
       <section className="mt-[150px] flex flex-col gap-x-[16px]">
-        <h3 className="h3 font-semibold">{APPLY_TEAM}</h3>
+        <h3 className="h3 flex justify-items-start font-semibold">
+          {APPLY_TEAM}
+        </h3>
         {/* Button Component - v3 */}
         <div className="flex flex-row gap-x-[23px]"></div>
       </section>
 
       {/* 포트폴리오 */}
       <section className="mt-[120px] flex flex-col gap-x-[16px]">
-        <h3 className="h3 font-semibold">{APPLY_PORTFOLIO}</h3>
+        <h3 className="h3 flex justify-items-start font-semibold">
+          {APPLY_PORTFOLIO}
+        </h3>
         {/* pdf 입력 폼 */}
         <div className="outline-sdp-grey-300 inline-flex flex-col items-center justify-start gap-[8px] self-stretch rounded-[20px] p-[32px] outline-2 -outline-offset-2">
           {/* pdf 이미지 */}
@@ -100,16 +112,19 @@ const ApplyForm = () => {
       </section>
 
       {/* 최종 제출 */}
-      <section>
+      <section className="mt-[78px] flex flex-col">
         <div className="bg-sdp-main-secondary inline-flex h-[80px] w-full flex-col items-center justify-center rounded-xl p-[16px]">
           <div className="flex flex-col items-center justify-start self-stretch">
-            <body className="body1 justify-center text-center">
-              작성하신 내용은 수정이 불가능하므로 제출 전 다시 한번 확인
-              부탁드립니다.
-            </body>
+            <p className="body1 justify-center text-center">
+              {APPLY_FINAL_TEXT}
+            </p>
           </div>
         </div>
+        <div>{/* Button Component */}</div>
       </section>
+
+      {/* 문의하기 */}
+      <section className="my-[150px]"></section>
     </form>
   )
 }
@@ -125,5 +140,8 @@ const APPLY_TEAM = '지원 부서 선택'
 const APPLY_PORTFOLIO = '포트폴리오'
 const APPLY_FILE_TEXT = 'PDF 또는 PPT 파일 첨부'
 const APPLY_FILE_SELECT = '파일 선택'
+
+const APPLY_FINAL_TEXT =
+  '작성하신 내용은 수정이 불가능하므로 제출 전 다시 한번 확인 부탁드립니다.'
 
 export default ApplyForm
