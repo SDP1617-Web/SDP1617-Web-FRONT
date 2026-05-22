@@ -110,12 +110,10 @@ const ApplyForm = () => {
               {APPLY_FILE_TEXT}
             </h4>
           </div>
-          <div className="inline-flex h-16 items-center justify-center rounded-[20px] bg-neutral-100 px-8 py-4">
-            {/* Button Component - v6 */}
-            <div className="justify-center text-center">
-              {APPLY_FILE_SELECT}
-            </div>
-          </div>
+          {/* Button Component - v6 */}
+          <Button variant="v6">
+            <h4 className="h4 font-medium">{APPLY_FILE_SELECT}</h4>
+          </Button>
         </div>
       </section>
       {/* 지원동기 */}
