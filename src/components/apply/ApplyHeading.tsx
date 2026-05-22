@@ -15,6 +15,7 @@ const ApplyHeading = () => {
           className="absolute right-[50px] bottom-0"
           width={430}
           height={0}
+          loading="eager"
           alt="recruiting background"
         />
       </div>
