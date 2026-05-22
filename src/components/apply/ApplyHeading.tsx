@@ -4,9 +4,13 @@ const ApplyHeading = () => {
   return (
     <div className="relative flex h-96 w-full flex-row">
       <div className="from-sdp-main-primary to-sdp-grey-900 absolute left-[-110px] h-full w-[calc(50%+110px)] bg-linear-to-r to-20%">
-        <div className="pt-[174px] pl-[410px]">
-          <h1 className="h1 text-sdp-grey-50">{APPLY_H1}</h1>
-          <h3 className="h3 text-sdp-grey-300 font-semibold">{APPLY_H3}</h3>
+        <div className="flex flex-col pt-[174px] pl-[410px]">
+          <h1 className="h1 text-sdp-grey-50 flex justify-items-start">
+            {APPLY_H1}
+          </h1>
+          <h3 className="h3 text-sdp-grey-300 flex justify-start justify-items-start font-semibold">
+            {APPLY_H3}
+          </h3>
         </div>
       </div>
       <div className="bg-sdp-grey-900 h-full w-full">
