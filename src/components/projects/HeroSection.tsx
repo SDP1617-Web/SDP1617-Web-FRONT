@@ -1,85 +1,47 @@
-// app/project/components/HeroSection.tsx
-
-import type { CSSProperties } from 'react'
-
-import Image from 'next/image'
-
-import Container from '../layout/Container'
-import ProjectCard from './ProjectCard'
-
-// 상수
-const HERO_HEIGHT = '360px'
-
-const TITLE_FONT_FAMILY = 'Pretendard Variable'
-const TITLE_FONT_SIZE = '64px'
-const TITLE_COLOR = '#FFFFFF'
-
-export default function HeroSection() {
+export const HeroSection = () => {
   return (
-    <>
-      {/* Hero Banner */}
-      <section
-        className="relative w-full overflow-hidden"
-        style={{ height: HERO_HEIGHT }}
-      >
-        <Image
-          src="/images/project/project-header.jpg"
-          alt="project-header"
-          fill
-          priority
-          style={{ objectFit: 'cover' }}
+    <section className="relative h-[200px] w-full overflow-hidden bg-[#4a7a1e]">
+      <img
+        src="/images/ball-1.png"
+        alt=""
+        className="absolute -top-10 -right-10 h-48 w-48 object-contain opacity-60"
+      />
+      <img
+        src="/images/ball-2.png"
+        alt=""
+        className="absolute bottom-0 left-1/3 h-56 w-56 object-contain opacity-40"
+      />
+      <img
+        src="/images/ball-3.png"
+        alt=""
+        className="absolute top-4 right-1/4 h-32 w-32 object-contain opacity-50"
+      />
+      <img
+        src="/images/ball-4.png"
+        alt=""
+        className="absolute top-6 right-10 h-20 w-20 object-contain opacity-60"
+      />
+
+      <img
+        src="/images/sparkle.png"
+        alt="Sparkle"
+        className="absolute top-8 right-16 h-[72px] w-[72px] object-contain opacity-90"
+      />
+
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2">
+        <img
+          src="/images/grass-bottom.png"
+          alt=""
+          className="h-24 w-48 object-contain opacity-70"
         />
+      </div>
 
-        <div style={overlayStyle} />
-
-        <Container className="relative flex h-full items-center">
-          <h1 style={titleStyle}>PROJECT</h1>
-        </Container>
-      </section>
-
-      {/* Project Card Section */}
-      <Container>
-        <section className="py-24">
-          <div className="grid grid-cols-2 gap-10">
-            <ProjectCard
-              title="Beanspot"
-              description="안정화를 갖기 위해 노력중"
-              image="/images/project/project-1.png"
-            />
-
-            <ProjectCard
-              title="카카오톡 선물하기 플랫폼"
-              description="다양한 상품을 전달하는 서비스"
-              image="/images/project/project-2.png"
-            />
-
-            <ProjectCard
-              title="네트워킹 데이"
-              description="자유롭게 활동을 공유하는 행사"
-              image="/images/project/project-3.png"
-            />
-
-            <ProjectCard
-              title="행복부에서 진행하는 활동들"
-              description="다양한 활동 및 프로그램"
-              image="/images/project/project-4.png"
-            />
-          </div>
-        </section>
-      </Container>
-    </>
+      {/* 타이틀 (기존 유지) */}
+      <div className="relative z-10 flex h-full items-end pb-8 pl-16">
+        <h1 className="text-[42px] leading-none font-bold tracking-tight text-white">
+          PROJECT
+        </h1>
+      </div>
+    </section>
   )
-}
-
-const overlayStyle: CSSProperties = {
-  position: 'absolute',
-  inset: 0,
-  backgroundColor: 'rgba(0, 0, 0, 0.3)',
-}
-
-const titleStyle: CSSProperties = {
-  fontFamily: TITLE_FONT_FAMILY,
-  fontWeight: 700,
-  fontSize: TITLE_FONT_SIZE,
-  color: TITLE_COLOR,
 }
