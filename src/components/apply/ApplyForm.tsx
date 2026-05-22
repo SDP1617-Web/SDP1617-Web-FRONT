@@ -1,15 +1,26 @@
+'use client'
+
+import { useRef, useState } from 'react'
+import { Button } from '@/components/common/Button'
+import { BaseInput, LayoutInput } from '@/components/common/Input'
+import { Icon } from '@/components/common/Icon'
+
+/** YYYY-MM-DD → YY-MM-DD 변환 */
+const formatDate = (iso: string) => {
+  const [year, month, day] = iso.split('-')
+  return `${year.slice(2)}-${month}-${day}`
+}
+
 const ApplyForm = () => {
+  const [birth, setBirth] = useState('')
+  const dateInputRef = useRef<HTMLInputElement>(null)
+
   return (
     <form action="" className="h-auto w-full px-[360px] pt-[90px]">
       {/* 지원자 정보 */}
       <section className="flex flex-col">
         <div className="flex flex-row items-center gap-[20px]">
-          {/* Button Component - v4 */}
-          <div className="bg-sdp-main-secondary inline-flex size-11 items-center justify-center rounded-full">
-            <h3 className="h3 text-sdp-grey-900 justify-center font-semibold">
-              1
-            </h3>
-          </div>
+          <Button variant="v4">1</Button>
           <h3 className="h3 text-sdp-grey-900">{APPLY_INFORMATION}</h3>
         </div>
         {/* 개인정보 입력 */}
@@ -20,26 +31,51 @@ const ApplyForm = () => {
                 {APPLY_NAME}
               </h3>
               {/* Input Component */}
+              <BaseInput placeholder={PLACE_HOLDER.NAME}></BaseInput>
             </div>
-            <div className="flex flex-col gap-y-[16px]">
+            <div className="relative flex flex-col gap-y-[16px]">
               <h3 className="h3 flex justify-items-start font-semibold">
                 {APPLY_BIRTH}
               </h3>
               {/* Input Component */}
+              <BaseInput
+                placeholder={PLACE_HOLDER.BIRTH}
+                value={birth}
+                onChange={(e) => setBirth(e.target.value)}
+                suffix={
+                  <button
+                    type="button"
+                    onClick={() => dateInputRef.current?.showPicker()}
+                    aria-label="날짜 선택"
+                    className="ml-[8px] shrink-0 transition-transform active:scale-90"
+                  >
+                    <Icon name="calendar" />
+                  </button>
+                }
+              />
+              {/* 숨겨진 date input으로 실제 날짜 선택 */}
+              <input
+                ref={dateInputRef}
+                type="date"
+                className="invisible absolute"
+                onChange={(e) => setBirth(formatDate(e.target.value))}
+              />
             </div>
           </div>
           <div className="flex flex-col gap-y-[32px]">
             <div className="flex flex-col gap-y-[16px]">
               <h3 className="h3 flex justify-items-start font-semibold">
-                {APPLY_CONTRACT}
+                {APPLY_CONTACT}
               </h3>
               {/* Input Component */}
+              <BaseInput placeholder={PLACE_HOLDER.CONTACT}></BaseInput>
             </div>
             <div className="flex flex-col gap-y-[16px]">
               <h3 className="h3 flex justify-items-start font-semibold">
                 {APPLY_EMAIL}
               </h3>
               {/* Input Component */}
+              <BaseInput placeholder={PLACE_HOLDER.EMAIL}></BaseInput>
             </div>
           </div>
         </div>
@@ -132,8 +168,15 @@ const ApplyForm = () => {
 const APPLY_INFORMATION = '지원자 정보'
 const APPLY_NAME = '이름'
 const APPLY_BIRTH = '생년월일'
-const APPLY_CONTRACT = '연락처'
+const APPLY_CONTACT = '연락처'
 const APPLY_EMAIL = '이메일'
+
+const PLACE_HOLDER = {
+  NAME: '성함을 입력해 주세요.',
+  CONTACT: '연락처를 입력해 주세요.',
+  BIRTH: 'YY-MM-DD',
+  EMAIL: '공지사항 및 안내 메일을 수신할 이메일 주소',
+}
 
 const APPLY_TEAM = '지원 부서 선택'
 
