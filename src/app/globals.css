@@ -1,4 +1,4 @@
-@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+@import 'https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css';
 @import 'tailwindcss';
 
 :root {
@@ -11,10 +11,10 @@
   --color-foreground: var(--foreground);
 
   --font-sans: 'Pretendard', sans-serif;
-  --font-regular: 400;
-  --font-medium: 500;
-  --font-semibold: 600;
-  --font-bold: 700;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
 
   --color-sdp-main-primary: #ccfb55;
   --color-sdp-main-secondary: #efffc7;
@@ -88,7 +88,7 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
-  font-weight: var(--font-regular);
+  font-weight: var(--font-weight-regular);
   min-width: 1280px;
   max-width: 1920px;
   margin: 0 auto;
