@@ -16,7 +16,7 @@ const textStyle: CSSProperties = {
   left: '359.5px',
 }
 
-export default function AboutHero() {
+const AboutHero = () => {
   return (
     <div style={heroStyle}>
       {/* sphere1 — 좌측 구체 */}
@@ -44,3 +44,5 @@ export default function AboutHero() {
     </div>
   )
 }
+
+export default AboutHero

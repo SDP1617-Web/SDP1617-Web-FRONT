@@ -2,7 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Button } from '@/components/common/Button'
 
-export default function HeroSection1() {
+const HeroSection1 = () => {
   return (
     <section className="relative w-full" style={{ height: '100vh' }}>
       {/* 배경 SVG */}
@@ -23,3 +23,5 @@ export default function HeroSection1() {
     </section>
   )
 }
+
+export default HeroSection1

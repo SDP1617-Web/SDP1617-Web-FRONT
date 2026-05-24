@@ -36,12 +36,12 @@ const activeStyle: CSSProperties = {
   cursor: 'pointer',
 }
 
-export default function FaqAccordion({
+const FaqAccordion = ({
   question,
   answer,
   isActive,
   onClick,
-}: FaqAccordionProps) {
+}: FaqAccordionProps) => {
   return (
     <div style={isActive ? activeStyle : inactiveStyle} onClick={onClick}>
       {/* 질문 행 */}
@@ -74,3 +74,5 @@ export default function FaqAccordion({
     </div>
   )
 }
+
+export default FaqAccordion

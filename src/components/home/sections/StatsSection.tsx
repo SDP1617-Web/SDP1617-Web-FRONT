@@ -7,7 +7,7 @@ const STATS_CARDS = [
   { title: '몇 기수?', value: '17', unit: '기' },
 ]
 
-export default function StatsSection() {
+const StatsSection = () => {
   return (
     <section
       style={{ marginTop: '120px', marginBottom: '121px' }}
@@ -37,3 +37,5 @@ export default function StatsSection() {
     </section>
   )
 }
+
+export default StatsSection

@@ -45,7 +45,7 @@ const CARDS = [
   },
 ]
 
-export default function ProjectsSection() {
+const ProjectsSection = () => {
   return (
     <section style={sectionStyle}>
       <div style={sphere1Style} />
@@ -91,3 +91,5 @@ export default function ProjectsSection() {
     </section>
   )
 }
+
+export default ProjectsSection

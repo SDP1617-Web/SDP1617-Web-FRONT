@@ -48,7 +48,7 @@ const FAQ_DATA: Record<string, { question: string; answer: string }[]> = {
 
 const TABS = Object.keys(FAQ_DATA)
 
-export default function FaqSection() {
+const FaqSection = () => {
   const [activeTab, setActiveTab] = useState(TABS[0])
   const [activeIndex, setActiveIndex] = useState<number | null>(null)
 
@@ -98,3 +98,5 @@ export default function FaqSection() {
     </section>
   )
 }
+
+export default FaqSection

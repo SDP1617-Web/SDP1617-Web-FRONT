@@ -32,7 +32,7 @@ const imageFrameStyle: CSSProperties = {
   flexShrink: 0,
 }
 
-export default function ActivitiesSection() {
+const ActivitiesSection = () => {
   const [activeTab, setActiveTab] = useState(TABS[0].id)
   const activeImage =
     TABS.find((t) => t.id === activeTab)?.image ?? TABS[0].image
@@ -80,3 +80,5 @@ export default function ActivitiesSection() {
     </section>
   )
 }
+
+export default ActivitiesSection
