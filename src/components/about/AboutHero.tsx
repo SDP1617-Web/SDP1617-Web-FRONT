@@ -1,20 +1,20 @@
-import type { CSSProperties } from "react";
-import Image from "next/image";
+import type { CSSProperties } from 'react'
+import Image from 'next/image'
 
 const heroStyle: CSSProperties = {
-  width: "100%",
-  height: "347px",
-  background: "linear-gradient(359deg, #000 -28.14%, #CCFB55 105.87%)",
-  position: "relative",
-  overflow: "hidden",
-};
+  width: '100%',
+  height: '347px',
+  background: 'linear-gradient(359deg, #000 -28.14%, #CCFB55 105.87%)',
+  position: 'relative',
+  overflow: 'hidden',
+}
 
 const textStyle: CSSProperties = {
-  textShadow: "0 0 4.7px rgba(0, 0, 0, 0.75)",
-  position: "absolute",
-  top: "153.65px",
-  left: "359.5px",
-};
+  textShadow: '0 0 4.7px rgba(0, 0, 0, 0.75)',
+  position: 'absolute',
+  top: '153.65px',
+  left: '359.5px',
+}
 
 export default function AboutHero() {
   return (
@@ -25,7 +25,7 @@ export default function AboutHero() {
         alt="sphere1"
         width={1438}
         height={823}
-        style={{ position: "absolute", top: "0x", left: "-300px" }}
+        style={{ position: 'absolute', top: '0px', left: '-300px' }}
       />
 
       {/* sphere2 — 우측 구체 */}
@@ -34,7 +34,7 @@ export default function AboutHero() {
         alt="sphere2"
         width={451}
         height={366}
-        style={{ position: "absolute", top: "0px", right: "500px" }}
+        style={{ position: 'absolute', top: '0px', right: '500px' }}
       />
 
       <div className="text-white" style={textStyle}>
@@ -42,5 +42,5 @@ export default function AboutHero() {
         <p className="h1">SDP</p>
       </div>
     </div>
-  );
+  )
 }
