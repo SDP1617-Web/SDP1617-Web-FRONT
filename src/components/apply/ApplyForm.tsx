@@ -127,10 +127,10 @@ const ApplyForm = () => {
       <section className="mt-[100px] flex flex-col gap-y-[28px]">
         {/* TextBox Component */}
         <LayoutInput
-          num="1"
-          title="지원한 동기와 활동을 통해 이루고 싶은 목표를 서술해주세요."
-          maxLength={200}
-          placeholder="공백 포함 200자 이내"
+          num={QUESTIONS[0].num}
+          title={QUESTIONS[0].title}
+          maxLength={QUESTIONS[0].maxLength}
+          placeholder={QUESTIONS[0].placeholder}
         />
       </section>
 
@@ -138,11 +138,11 @@ const ApplyForm = () => {
       <section className="mt-[100px] flex flex-col gap-y-[28px]">
         {/* TextBox Component */}
         <LayoutInput
-          num="2"
-          title="디자인팀에서 본인이 가장 잘 기여할 수 있는 역할과 그 이유를 본인의 강점 및 약점을 중심으로 설명해주세요."
-          subTitle="예시: UI 시스템 구축, 프로토타이핑 등"
-          maxLength={200}
-          placeholder="공백 포함 200자 이내"
+          num={QUESTIONS[1].num}
+          title={QUESTIONS[1].title}
+          subTitle={QUESTIONS[1].subTitle}
+          maxLength={QUESTIONS[1].maxLength}
+          placeholder={QUESTIONS[1].placeholder}
         />
       </section>
 
@@ -150,10 +150,10 @@ const ApplyForm = () => {
       <section className="mt-[100px] flex flex-col gap-y-[28px]">
         {/* TextBox Component */}
         <LayoutInput
-          num="3"
-          title="팀 또는 개인 프로젝트 중, 기획자 혹은 개발자와 함께 협업한 경험에 대해 서술해주세요."
-          maxLength={350}
-          placeholder="공백 포함 350자 이내"
+          num={QUESTIONS[2].num}
+          title={QUESTIONS[2].title}
+          maxLength={QUESTIONS[2].maxLength}
+          placeholder={QUESTIONS[2].placeholder}
         />
       </section>
 
@@ -161,10 +161,10 @@ const ApplyForm = () => {
       <section className="mt-[100px] flex flex-col gap-y-[28px]">
         {/* TextBox Component */}
         <LayoutInput
-          num="4"
-          title="기존 앱이나 웹사이트 중 UX/UI 측면에서 불편했던 점이나 개선이 필요하다고 생각한 사례를 소개 하고, 이를 해결할 수 있는 자신만의 창의적인 아이디어를 설명해 주세요."
-          maxLength={200}
-          placeholder="공백 포함 200자 이내"
+          num={QUESTIONS[3].num}
+          title={QUESTIONS[3].title}
+          maxLength={QUESTIONS[3].maxLength}
+          placeholder={QUESTIONS[3].placeholder}
         />
       </section>
 
@@ -172,10 +172,10 @@ const ApplyForm = () => {
       <section className="mt-[100px] flex flex-col gap-y-[28px]">
         {/* TextBox Component */}
         <LayoutInput
-          num="5"
-          title="본인이 주도적으로 문제를 발견하고, 해당 문제를 끝까지 책임지고 해결한 경험을 구체적으로 서술해주세요."
-          maxLength={200}
-          placeholder="공백 포함 200자 이내"
+          num={QUESTIONS[4].num}
+          title={QUESTIONS[4].title}
+          maxLength={QUESTIONS[4].maxLength}
+          placeholder={QUESTIONS[4].placeholder}
         />
       </section>
 
@@ -183,10 +183,10 @@ const ApplyForm = () => {
       <section className="mt-[100px] flex flex-col gap-y-[28px]">
         {/* TextBox Component */}
         <LayoutInput
-          num="6"
-          title="의견 충돌이나 소통의 어려움이 있었던 상황에서, 타인과 조율하며 문제를 해결하거나 결과를 개선한 경험을 서술해주세요."
-          maxLength={200}
-          placeholder="공백 포함 200자 이내"
+          num={QUESTIONS[5].num}
+          title={QUESTIONS[5].title}
+          maxLength={QUESTIONS[5].maxLength}
+          placeholder={QUESTIONS[5].placeholder}
         />
       </section>
 
@@ -217,7 +217,7 @@ const ApplyForm = () => {
         </div>
         <div className="mt-[29px] flex justify-end">
           {/* Button Component */}
-          <Button variant="v9">최종제출</Button>
+          <Button variant="v9">{APPLY_SUBMIT}</Button>
         </div>
       </section>
 
@@ -227,15 +227,15 @@ const ApplyForm = () => {
           <div className="flex flex-row justify-center gap-[26px]">
             <div className="flex flex-row items-center gap-[8px]">
               <Icon name="email" />
-              <p className="body1 text-sdp-grey-700">문의하기</p>
+              <p className="body1 text-sdp-grey-700">{FOOTER_CONTACT}</p>
             </div>
             <div className="flex flex-row items-center gap-[8px]">
               <Icon name="instagram" />
-              <p className="body1 text-sdp-grey-700">인스타그램</p>
+              <p className="body1 text-sdp-grey-700">{FOOTER_INSTAGRAM}</p>
             </div>
           </div>
           <p className="body2 text-sdp-grey-400 flex justify-center">
-            © 2026 SDP All rights reserved.
+            {FOOTER_COPYRIGHT}
           </p>
         </div>
       </section>
@@ -264,7 +264,57 @@ const APPLY_PORTFOLIO = '포트폴리오'
 const APPLY_FILE_TEXT = 'PDF 또는 PPT 파일 첨부'
 const APPLY_FILE_SELECT = '파일 선택'
 
+const QUESTIONS = [
+  {
+    num: '1',
+    title: '지원한 동기와 활동을 통해 이루고 싶은 목표를 서술해주세요.',
+    maxLength: 200,
+    placeholder: '공백 포함 200자 이내',
+  },
+  {
+    num: '2',
+    title:
+      '디자인팀에서 본인이 가장 잘 기여할 수 있는 역할과 그 이유를 본인의 강점 및 약점을 중심으로 설명해주세요.',
+    subTitle: '예시: UI 시스템 구축, 프로토타이핑 등',
+    maxLength: 200,
+    placeholder: '공백 포함 200자 이내',
+  },
+  {
+    num: '3',
+    title:
+      '팀 또는 개인 프로젝트 중, 기획자 혹은 개발자와 함께 협업한 경험에 대해 서술해주세요.',
+    maxLength: 350,
+    placeholder: '공백 포함 350자 이내',
+  },
+  {
+    num: '4',
+    title:
+      '기존 앱이나 웹사이트 중 UX/UI 측면에서 불편했던 점이나 개선이 필요하다고 생각한 사례를 소개 하고, 이를 해결할 수 있는 자신만의 창의적인 아이디어를 설명해 주세요.',
+    maxLength: 200,
+    placeholder: '공백 포함 200자 이내',
+  },
+  {
+    num: '5',
+    title:
+      '본인이 주도적으로 문제를 발견하고, 해당 문제를 끝까지 책임지고 해결한 경험을 구체적으로 서술해주세요.',
+    maxLength: 200,
+    placeholder: '공백 포함 200자 이내',
+  },
+  {
+    num: '6',
+    title:
+      '의견 충돌이나 소통의 어려움이 있었던 상황에서, 타인과 조율하며 문제를 해결하거나 결과를 개선한 경험을 서술해주세요.',
+    maxLength: 200,
+    placeholder: '공백 포함 200자 이내',
+  },
+]
+
 const APPLY_FINAL_TEXT =
   '작성하신 내용은 수정이 불가능하므로 제출 전 다시 한번 확인 부탁드립니다.'
+const APPLY_SUBMIT = '최종제출'
+
+const FOOTER_CONTACT = '문의하기'
+const FOOTER_INSTAGRAM = '인스타그램'
+const FOOTER_COPYRIGHT = '© 2026 SDP All rights reserved.'
 
 export default ApplyForm
