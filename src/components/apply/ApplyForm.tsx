@@ -110,9 +110,7 @@ const ApplyForm = () => {
         {/* pdf 입력 폼 */}
         <div className="outline-sdp-grey-300 inline-flex flex-col items-center justify-start gap-[8px] self-stretch rounded-[20px] p-[32px] outline-2 -outline-offset-2">
           {/* pdf 이미지 */}
-          <div className="size-12 justify-center text-center font-['Font_Awesome_5_Free'] text-5xl leading-[47.76px] font-black text-neutral-300">
-            
-          </div>
+          <Icon name="pdf" />
           <div className="flex h-14 flex-col items-center justify-start self-stretch pt-2">
             <h4 className="h4 text-sdp-grey-500 justify-center text-center font-medium">
               {APPLY_FILE_TEXT}
