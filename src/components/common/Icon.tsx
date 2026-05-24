@@ -4,6 +4,7 @@ import CalendarIcon from '@/assets/icons/calendar.svg'
 import CloseIcon from '@/assets/icons/close.svg'
 import EmailIcon from '@/assets/icons/email.svg'
 import InstagramIcon from '@/assets/icons/instagram.svg'
+import PdfIcon from '@/assets/icons/pdf.svg'
 
 const COLORS = {
   active: 'var(--color-sdp-main-primary)',
@@ -12,6 +13,7 @@ const COLORS = {
   calendar: 'var(--color-sdp-gray-300)',
   email: 'var(--color-sdp-gray-700)',
   instagram: 'var(--color-sdp-gray-700)',
+  pdf: 'var(--color-sdp-gray-300)',
 } as const
 
 const ICON_CONFIG = {
@@ -22,6 +24,7 @@ const ICON_CONFIG = {
   calendar: { size: 30, viewBox: '0 0 30 30', Component: CalendarIcon },
   email: { size: 20, viewBox: '0 0 20 20 ', Component: EmailIcon },
   instagram: { size: 20, viewBox: '0 0 17 20', Component: InstagramIcon },
+  pdf: { size: 48, viewBox: '0 0 48 48', Component: PdfIcon },
 } as const
 
 type IconName = keyof typeof ICON_CONFIG
