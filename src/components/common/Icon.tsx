@@ -20,11 +20,21 @@ const ICON_CONFIG = {
   pattern1: { size: 100, viewBox: '0 0 100 102' },
   pattern2: { size: 100, viewBox: '0 0 100 102' },
   pattern3: { size: 100, viewBox: '0 0 101 102' },
-  close: { size: 21, viewBox: '0 0 21 21', Component: CloseIcon },
-  calendar: { size: 30, viewBox: '0 0 30 30', Component: CalendarIcon },
-  email: { size: 20, viewBox: '0 0 20 20 ', Component: EmailIcon },
-  instagram: { size: 20, viewBox: '0 0 17 20', Component: InstagramIcon },
-  pdf: { size: 48, viewBox: '0 0 48 48', Component: PdfIcon },
+  close: { width: 21, height: 21, viewBox: '0 0 21 21', Component: CloseIcon },
+  calendar: {
+    width: 30,
+    height: 30,
+    viewBox: '0 0 30 30',
+    Component: CalendarIcon,
+  },
+  email: { width: 20, height: 15, viewBox: '0 0 20 15', Component: EmailIcon },
+  instagram: {
+    width: 17,
+    height: 20,
+    viewBox: '0 0 17 20',
+    Component: InstagramIcon,
+  },
+  pdf: { width: 48, height: 48, viewBox: '0 0 48 48', Component: PdfIcon },
 } as const
 
 type IconName = keyof typeof ICON_CONFIG
@@ -39,15 +49,15 @@ export const Icon = ({ name, level = 0, className, ...props }: IconProps) => {
 
   // 정적 아이콘 (Close, Calendar) 렌더링
   if ('Component' in config) {
-    const { Component, size } = config
+    const { Component, width, height } = config
     const colorClass =
       name === 'close'
         ? 'text-[var(--color-sdp-grey-200)]'
         : 'text-[var(--color-sdp-grey-300)]'
     return (
       <Component
-        width={size}
-        height={size}
+        width={width}
+        height={height}
         className={cn('shrink-0', colorClass, className)}
         {...props}
       />
