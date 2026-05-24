@@ -2,12 +2,16 @@ import { cn } from '@/lib/utils'
 import { DOT_DATA } from '@/constants/iconData'
 import CalendarIcon from '@/assets/icons/calendar.svg'
 import CloseIcon from '@/assets/icons/close.svg'
+import EmailIcon from '@/assets/icons/email.svg'
+import InstagramIcon from '@/assets/icons/instagram.svg'
 
 const COLORS = {
   active: 'var(--color-sdp-main-primary)',
   off: 'var(--color-sdp-gray-800)',
   close: 'var(--color-sdp-gray-200)',
   calendar: 'var(--color-sdp-gray-300)',
+  email: 'var(--color-sdp-gray-700)',
+  instagram: 'var(--color-sdp-gray-700)',
 } as const
 
 const ICON_CONFIG = {
@@ -16,6 +20,8 @@ const ICON_CONFIG = {
   pattern3: { size: 100, viewBox: '0 0 101 102' },
   close: { size: 21, viewBox: '0 0 21 21', Component: CloseIcon },
   calendar: { size: 30, viewBox: '0 0 30 30', Component: CalendarIcon },
+  email: { size: 20, viewBox: '0 0 20 20 ', Component: EmailIcon },
+  instagram: { size: 20, viewBox: '0 0 17 20', Component: InstagramIcon },
 } as const
 
 type IconName = keyof typeof ICON_CONFIG
