@@ -25,7 +25,8 @@ const ApplyForm = () => {
         </div>
         {/* 개인정보 입력 */}
         <div className="mt-[50px] flex flex-row gap-x-[25px]">
-          <div className="flex flex-col gap-y-[32px]">
+          <div className="flex w-auto flex-1 flex-col gap-y-[32px]">
+            {/* 지원자 이름 */}
             <div className="flex flex-col gap-y-[16px]">
               <h3 className="h3 flex justify-items-start font-semibold">
                 {APPLY_NAME}
@@ -33,6 +34,7 @@ const ApplyForm = () => {
               {/* Input Component */}
               <BaseInput placeholder={PLACE_HOLDER.NAME}></BaseInput>
             </div>
+            {/* 지원자 생년월일 */}
             <div className="relative flex flex-col gap-y-[16px]">
               <h3 className="h3 flex justify-items-start font-semibold">
                 {APPLY_BIRTH}
@@ -62,7 +64,8 @@ const ApplyForm = () => {
               />
             </div>
           </div>
-          <div className="flex flex-col gap-y-[32px]">
+          <div className="flex w-auto flex-1 flex-col gap-y-[32px]">
+            {/* 지원자 연락처 */}
             <div className="flex flex-col gap-y-[16px]">
               <h3 className="h3 flex justify-items-start font-semibold">
                 {APPLY_CONTACT}
@@ -70,6 +73,7 @@ const ApplyForm = () => {
               {/* Input Component */}
               <BaseInput placeholder={PLACE_HOLDER.CONTACT}></BaseInput>
             </div>
+            {/* 지원자 이메일 */}
             <div className="flex flex-col gap-y-[16px]">
               <h3 className="h3 flex justify-items-start font-semibold">
                 {APPLY_EMAIL}
@@ -213,7 +217,10 @@ const ApplyForm = () => {
             </p>
           </div>
         </div>
-        <div>{/* Button Component */}</div>
+        <div className="mt-[29px] flex justify-end">
+          {/* Button Component */}
+          <Button variant="v9">최종제출</Button>
+        </div>
       </section>
 
       {/* 문의하기 */}
