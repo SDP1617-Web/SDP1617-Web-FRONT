@@ -116,21 +116,72 @@ const ApplyForm = () => {
           </Button>
         </div>
       </section>
+
       {/* 지원동기 */}
-      {/* 해당 값들 6개 */}
       <section className="mt-[100px] flex flex-col gap-y-[28px]">
-        <div className="flex flex-row items-center gap-[22px]">
-          {/* Button Component - v4 */}
-          <div className="bg-sdp-main-secondary inline-flex size-11 items-center justify-center rounded-full">
-            <h3 className="h3 text-sdp-grey-900 justify-center font-semibold">
-              1
-            </h3>
-          </div>
-          {/* Question Text */}
-          <h3 className="h3 text-sdp-grey-900">{APPLY_INFORMATION}</h3>
-        </div>
         {/* TextBox Component */}
-        <div className="outline-sdp-grey-300 inline-flex h-[260px] w-full flex-col items-center justify-start gap-[8px] self-stretch rounded-[20px] p-[32px] outline-2 -outline-offset-2" />
+        <LayoutInput
+          num="1"
+          title="지원한 동기와 활동을 통해 이루고 싶은 목표를 서술해주세요."
+          maxLength={200}
+          placeholder="공백 포함 200자 이내"
+        />
+      </section>
+
+      {/* 강점, 약점 */}
+      <section className="mt-[100px] flex flex-col gap-y-[28px]">
+        {/* TextBox Component */}
+        <LayoutInput
+          num="2"
+          title="디자인팀에서 본인이 가장 잘 기여할 수 있는 역할과 그 이유를 본인의 강점 및 약점을 중심으로 설명해주세요."
+          subTitle="예시: UI 시스템 구축, 프로토타이핑 등"
+          maxLength={200}
+          placeholder="공백 포함 200자 이내"
+        />
+      </section>
+
+      {/* 협업 경험 */}
+      <section className="mt-[100px] flex flex-col gap-y-[28px]">
+        {/* TextBox Component */}
+        <LayoutInput
+          num="3"
+          title="팀 또는 개인 프로젝트 중, 기획자 혹은 개발자와 함께 협업한 경험에 대해 서술해주세요."
+          maxLength={350}
+          placeholder="공백 포함 350자 이내"
+        />
+      </section>
+
+      {/* 창의적 사고 */}
+      <section className="mt-[100px] flex flex-col gap-y-[28px]">
+        {/* TextBox Component */}
+        <LayoutInput
+          num="4"
+          title="기존 앱이나 웹사이트 중 UX/UI 측면에서 불편했던 점이나 개선이 필요하다고 생각한 사례를 소개 하고, 이를 해결할 수 있는 자신만의 창의적인 아이디어를 설명해 주세요."
+          maxLength={200}
+          placeholder="공백 포함 200자 이내"
+        />
+      </section>
+
+      {/* 주도적 문제 해결 */}
+      <section className="mt-[100px] flex flex-col gap-y-[28px]">
+        {/* TextBox Component */}
+        <LayoutInput
+          num="5"
+          title="본인이 주도적으로 문제를 발견하고, 해당 문제를 끝까지 책임지고 해결한 경험을 구체적으로 서술해주세요."
+          maxLength={200}
+          placeholder="공백 포함 200자 이내"
+        />
+      </section>
+
+      {/* 의견 조율 능력 */}
+      <section className="mt-[100px] flex flex-col gap-y-[28px]">
+        {/* TextBox Component */}
+        <LayoutInput
+          num="6"
+          title="의견 충돌이나 소통의 어려움이 있었던 상황에서, 타인과 조율하며 문제를 해결하거나 결과를 개선한 경험을 서술해주세요."
+          maxLength={200}
+          placeholder="공백 포함 200자 이내"
+        />
       </section>
 
       {/* 면접 시간대 */}
