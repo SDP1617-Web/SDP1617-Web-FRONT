@@ -1,4 +1,4 @@
-import DepartmentCard from './DepartmentCard'
+import DepartmentCard from '@/components/about/DepartmentCard'
 
 const DEPARTMENTS = [
   { korean: '대외협력', english: 'Research', isActive: true },

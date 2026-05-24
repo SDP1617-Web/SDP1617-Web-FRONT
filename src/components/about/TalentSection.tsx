@@ -1,4 +1,4 @@
-import TalentCard from './TalentCard'
+import TalentCard from '@/components/about/TalentCard'
 
 const TALENTS = [
   {

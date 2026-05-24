@@ -1,8 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import FaqTab from '../components/FaqTab'
-import FaqAccordion from '../components/FaqAccordion'
+import FaqTab from '@/components/home/components/FaqTab'
+import FaqAccordion from '@/components/home/components/FaqAccordion'
 
 const FAQ_DATA: Record<string, { question: string; answer: string }[]> = {
   지원자격: [
