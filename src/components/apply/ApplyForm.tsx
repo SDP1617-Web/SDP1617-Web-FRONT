@@ -13,7 +13,17 @@ const formatDate = (iso: string) => {
 
 const ApplyForm = () => {
   const [birth, setBirth] = useState('')
+  const [selectedSlots, setSelectedSlots] = useState<Set<string>>(new Set())
   const dateInputRef = useRef<HTMLInputElement>(null)
+
+  const toggleSlot = (key: string) => {
+    setSelectedSlots((prev) => {
+      const next = new Set(prev)
+      if (next.has(key)) next.delete(key)
+      else next.add(key)
+      return next
+    })
+  }
 
   return (
     <form action="" className="h-auto w-full px-[360px] pt-[90px]">
@@ -192,18 +202,61 @@ const ApplyForm = () => {
 
       {/* 면접 시간대 */}
       <section className="mt-[100px] flex flex-col gap-y-[28px]">
-        <div className="flex flex-row items-center gap-[22px]">
-          {/* Button Component - v4 */}
-          <div className="bg-sdp-main-secondary inline-flex size-11 items-center justify-center rounded-full">
-            <h3 className="h3 text-sdp-grey-900 justify-center font-semibold">
-              1
+        <div className="flex flex-col">
+          <div className="flex flex-row items-center gap-[20px]">
+            <Button variant="v4">{INTERVIEW.num}</Button>
+            <h3 className="h3 text-sdp-grey-800 leading-9">
+              {INTERVIEW.title}
             </h3>
           </div>
-          {/* Question Text */}
-          <h3 className="h3 text-sdp-grey-900">{APPLY_INFORMATION}</h3>
+          <p className="h4 text-sdp-grey-500 pl-[64px] font-medium">
+            {INTERVIEW.subTitle}
+          </p>
         </div>
-        {/* Ratio Area */}
-        <div className="outline-sdp-grey-300 inline-flex h-[260px] w-full flex-col items-center justify-start gap-[8px] self-stretch rounded-[20px] p-[32px] outline-2 -outline-offset-2" />
+        {/* 시간대 선택 그리드 */}
+        <div className="outline-sdp-grey-300 overflow-hidden rounded-[20px] outline-2 -outline-offset-2">
+          <table className="w-full table-fixed">
+            <thead>
+              <tr>
+                <th className="w-[80px]" />
+                {TIME_SLOTS.map((time) => (
+                  <th
+                    key={time}
+                    className="body2 text-sdp-grey-700 py-[16px] text-center font-medium"
+                  >
+                    {time}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {DAYS.map((day) => (
+                <tr key={day} className="border-sdp-grey-200 border-t">
+                  <td className="body1 text-sdp-grey-900 py-[16px] text-center font-semibold">
+                    {day}
+                  </td>
+                  {TIME_SLOTS.map((time) => {
+                    const key = `${day}-${time}`
+                    return (
+                      <td key={key} className="py-[16px] text-center">
+                        <button
+                          type="button"
+                          onClick={() => toggleSlot(key)}
+                          className={`size-[24px] rounded-full border-2 transition-colors ${
+                            selectedSlots.has(key)
+                              ? 'bg-sdp-main-primary border-sdp-grey-400'
+                              : 'border-sdp-grey-300'
+                          }`}
+                          aria-label={`${day} ${time}`}
+                        />
+                      </td>
+                    )
+                  })}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </section>
 
       {/* 최종 제출 */}
@@ -307,6 +360,25 @@ const QUESTIONS = [
     maxLength: 200,
     placeholder: '공백 포함 200자 이내',
   },
+]
+
+const INTERVIEW = {
+  num: '7',
+  title: '면접 가능한 시간을 모두 체크해주세요.',
+  subTitle: '가능한 시간을 체크해주시면 면접 시간을 조율해서 연락드릴게요.',
+}
+
+const DAYS = ['월', '화', '수', '목', '금', '토', '일']
+
+const TIME_SLOTS = [
+  '18:00',
+  '18:30',
+  '19:00',
+  '19:30',
+  '20:00',
+  '20:30',
+  '21:00',
+  '21:30',
 ]
 
 const APPLY_FINAL_TEXT =
