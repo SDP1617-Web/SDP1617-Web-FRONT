@@ -88,10 +88,7 @@ export const BaseInput = ({
         onChange={onChange}
         placeholder={placeholder}
         className={cn(
-          'flex flex-1 flex-col items-start border-none bg-transparent text-[22px] leading-[30px] outline-none',
-          hasValue
-            ? 'text-sdp-grey-800'
-            : 'text-sdp-grey-400 placeholder:text-sdp-grey-400'
+          'h4 text-sdp-grey-900 placeholder:text-sdp-grey-400 flex flex-1 flex-col items-start border-none bg-transparent font-semibold outline-none'
         )}
         {...props}
       />
