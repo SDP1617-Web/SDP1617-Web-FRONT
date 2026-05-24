@@ -45,7 +45,9 @@ export default function ActivitiesSection() {
           className="h2"
           style={{ color: 'var(--color-sdp-grey-900)', marginBottom: '36px' }}
         >
-          지속가능한 발전을 위해{'\n'}노력하는 모습들
+          지속가능한 발전을 위해
+          <br />
+          노력하는 모습들
         </p>
 
         {/* 탭 + 이미지 */}
