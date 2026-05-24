@@ -222,7 +222,23 @@ const ApplyForm = () => {
       </section>
 
       {/* 문의하기 */}
-      <section className="my-[150px]"></section>
+      <section className="my-[150px]">
+        <div className="flex flex-col gap-[24px]">
+          <div className="flex flex-row justify-center gap-[26px]">
+            <div className="flex flex-row items-center gap-[8px]">
+              <Icon name="email" />
+              <p className="body1 text-sdp-grey-700">문의하기</p>
+            </div>
+            <div className="flex flex-row items-center gap-[8px]">
+              <Icon name="instagram" />
+              <p className="body1 text-sdp-grey-700">인스타그램</p>
+            </div>
+          </div>
+          <p className="body2 text-sdp-grey-400 flex justify-center">
+            © 2026 SDP All rights reserved.
+          </p>
+        </div>
+      </section>
     </form>
   )
 }
