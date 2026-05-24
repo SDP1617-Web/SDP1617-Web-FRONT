@@ -89,7 +89,11 @@ const ApplyForm = () => {
         {/* Button Component - v3 */}
         <div className="flex flex-row gap-x-[23px]">
           {TEAM_LIST.map((TEAM, index) => {
-            return <Button variant="v3">{TEAM}</Button>
+            return (
+              <Button key={index} variant="v3" className="w-auto flex-1">
+                {TEAM}
+              </Button>
+            )
           })}
         </div>
       </section>
