@@ -1,3 +1,6 @@
+'use client'
+
+import React, { useRef, useState, useEffect } from 'react'
 import { ReviewCard } from '@/components/common/Card'
 
 const REVIEWS = [
@@ -21,25 +24,148 @@ const REVIEWS = [
   },
   {
     id: 4,
-    name: '이서연',
+    name: '박우주',
+    cohort: '16기 · 프론트엔드 개발자',
+    text: '디자인 시스템과 컴포넌트 구조를 같이 정의하면서 협업하는 방법을 자연스럽게 배울 수 있었어요. 코드 리뷰 문화도 큰 도움이 됐습니다.',
+  },
+  {
+    id: 5,
+    name: '이소희',
     cohort: '16기 · 프론트엔드 개발자',
     text: '디자인 시스템과 컴포넌트 구조를 같이 정의하면서 협업하는 방법을 자연스럽게 배울 수 있었어요. 코드 리뷰 문화도 큰 도움이 됐습니다.',
   },
 ]
 
 export const ReviewSection = () => {
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const animationRef = useRef<number | null>(null)
+  const [showLeftShadow, setShowLeftShadow] = useState(true)
+  const [showRightShadow, setShowRightShadow] = useState(true)
+
+  const checkScrollPosition = () => {
+    const slider = scrollRef.current
+    if (!slider) return
+
+    const { scrollLeft, scrollWidth, clientWidth } = slider
+    setShowLeftShadow(scrollLeft > 1)
+    setShowRightShadow(scrollLeft < scrollWidth - clientWidth - 1)
+  }
+
+  const startAutoScroll = (direction: 'left' | 'right') => {
+    if (animationRef.current) return
+
+    const scroll = () => {
+      if (scrollRef.current) {
+        const speed = 6
+        scrollRef.current.scrollLeft += direction === 'right' ? speed : -speed
+        checkScrollPosition()
+        animationRef.current = requestAnimationFrame(scroll)
+      }
+    }
+    animationRef.current = requestAnimationFrame(scroll)
+  }
+
+  const stopAutoScroll = () => {
+    if (animationRef.current) {
+      cancelAnimationFrame(animationRef.current)
+      animationRef.current = null
+    }
+  }
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    const slider = scrollRef.current
+    if (!slider) return
+
+    stopAutoScroll()
+    slider.classList.add('active')
+    const startX = e.pageX - slider.offsetLeft
+    const scrollLeft = slider.scrollLeft
+
+    const handleMouseMove = (moveEvent: MouseEvent) => {
+      const x = moveEvent.pageX - slider.offsetLeft
+      const walk = (x - startX) * 1.5
+      slider.scrollLeft = scrollLeft - walk
+      checkScrollPosition()
+    }
+
+    const handleMouseUp = () => {
+      slider.classList.remove('active')
+      document.removeEventListener('mousemove', handleMouseMove)
+      document.removeEventListener('mouseup', handleMouseUp)
+    }
+
+    document.addEventListener('mousemove', handleMouseMove)
+    document.addEventListener('mouseup', handleMouseUp)
+  }
+
+  useEffect(() => {
+    const slider = scrollRef.current
+    if (slider) {
+      const initialCenter = (slider.scrollWidth - slider.clientWidth) / 2
+      slider.scrollLeft = initialCenter
+    }
+
+    const timer = setTimeout(checkScrollPosition, 100)
+    window.addEventListener('resize', checkScrollPosition)
+    return () => {
+      clearTimeout(timer)
+      window.removeEventListener('resize', checkScrollPosition)
+    }
+  }, [])
+
   return (
-    <section className="bg-sdp-grey-900 px-16 py-16">
-      <div className="mx-auto max-w-[1160px]">
-        <div className="mb-2">
-          <h2 className="text-sdp-grey-100 text-[28px] leading-[38px] font-bold">
-            활동 후기
-          </h2>
+    <section className="relative w-[1920px] max-w-full overflow-hidden bg-black py-16">
+      <div className="flex w-full flex-col gap-4 px-[360px]">
+        <div>
+          <h2 className="h2 text-white">활동 후기</h2>
         </div>
-        <p className="text-sdp-grey-500 mb-8 text-[16px] leading-[24px]">
-          기수별 프로젝트와 세션을 경험한 학원원들의 목소리입니다.
+        <p className="h4 text-sdp-grey-400">
+          기수별 프로젝트와 세션을 경험한 학회원들의 목소리입니다.
         </p>
-        <div className="flex gap-5 overflow-x-auto pb-4 [&::-webkit-scrollbar]:hidden">
+      </div>
+
+      <div className="relative mt-9 w-full">
+        {showLeftShadow && (
+          <div
+            onMouseEnter={() => startAutoScroll('left')}
+            onMouseLeave={stopAutoScroll}
+            className="pointer-events-none absolute top-0 bottom-4 left-0 z-10 w-[246px] select-none"
+            style={{
+              background:
+                'linear-gradient(90deg, var(--color-sdp-grey-900) 5.7%, rgba(20, 20, 20, 0.00) 99.51%)',
+            }}
+          />
+        )}
+
+        {showRightShadow && (
+          <div
+            onMouseEnter={() => startAutoScroll('right')}
+            onMouseLeave={stopAutoScroll}
+            className="pointer-events-none absolute top-0 right-0 bottom-4 z-10 w-[246px] select-none"
+            style={{
+              background:
+                'linear-gradient(270deg, var(--color-sdp-grey-900) 5.7%, rgba(20, 20, 20, 0.00) 99.51%)',
+            }}
+          />
+        )}
+
+        <div
+          onMouseEnter={() => startAutoScroll('left')}
+          onMouseLeave={stopAutoScroll}
+          className="absolute top-0 bottom-4 left-0 z-20 w-[100px] cursor-w-resize"
+        />
+        <div
+          onMouseEnter={() => startAutoScroll('right')}
+          onMouseLeave={stopAutoScroll}
+          className="absolute top-0 right-0 bottom-4 z-20 w-[100px] cursor-e-resize"
+        />
+
+        <div
+          ref={scrollRef}
+          onMouseDown={handleMouseDown}
+          onScroll={checkScrollPosition}
+          className="flex cursor-grab gap-5 overflow-x-auto pb-4 select-none [-ms-overflow-style:none] [scrollbar-width:none] active:cursor-grabbing [&::-webkit-scrollbar]:hidden"
+        >
           {REVIEWS.map((review) => (
             <ReviewCard
               key={review.id}

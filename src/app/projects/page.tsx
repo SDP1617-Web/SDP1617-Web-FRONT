@@ -1,7 +1,7 @@
 // 프로젝트 페이지
-import HeroSection from '@/components/projects/ProjectSection'
+import HeroSection from '@/components/projects/HeroSection'
 import ProjectSection from '@/components/projects/ProjectSection'
-// import ProgramSection from '@/components/projects/ProgramSection'
+import ProgramSection from '@/components/projects/ProgramSection'
 import { ReviewSection } from '@/components/projects/ReviewSection'
 
 export default function ProjectsPage() {
@@ -10,7 +10,7 @@ export default function ProjectsPage() {
       <main className="bg-sdp-grey-900 min-h-screen">
         <HeroSection />
         <ProjectSection />
-        {/* <ProgramSection /> */}
+        <ProgramSection />
         <ReviewSection />
       </main>
     </>

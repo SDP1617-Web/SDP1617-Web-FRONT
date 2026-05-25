@@ -1,3 +1,4 @@
+'use client'
 import React, { useState } from 'react'
 import { ProjectCard } from '@/components/common/Card'
 
@@ -61,6 +62,7 @@ export default function ProjectPage() {
             imageUrl={project.imageUrl}
             isActive={activeId === project.id}
             onClick={() => setActiveId(project.id)}
+            date={project.date}
           />
         ))}
       </div>

@@ -1,3 +1,4 @@
+'use client'
 import { cn } from '@/lib/utils'
 
 interface CardProps {
@@ -16,9 +17,13 @@ interface CardProps {
   sessions?: string[]
   goals?: string[]
   schedule?: string
-  support?: string
+  week?: string[]
   period?: string
   variant?: 'highlight' | 'default'
+  notice?: string
+  sessionsLabel?: string
+  goalsLabel?: string
+  weekLabel?: string
 }
 
 const CategoryChip = ({
@@ -108,7 +113,10 @@ export const ProjectCard = ({
       style={{ backgroundImage: imageUrl ? `url(${imageUrl})` : undefined }}
     />
     <div className="flex flex-1 flex-col justify-center gap-3.5 p-7 md:p-8">
-      {category && <CategoryChip text={category} />}
+      <div className="flex items-center gap-[10.667px] self-stretch">
+        {category && <CategoryChip text={category} />}
+        {date && <span className="caption text-sdp-grey-500">{date}</span>}
+      </div>
       <div className="flex flex-col gap-3">
         <h3 className="h3 text-sdp-grey-900 leading-tight">{title}</h3>
         <p className="body2 text-sdp-grey-600 line-clamp-1">{description}</p>
@@ -286,73 +294,69 @@ export const QuarterCard = ({
   period,
   sessions = [],
   goals = [],
-  support,
+  week = [],
   schedule,
   className,
-  onClick,
+  notice,
+  weekLabel = '1주차',
+  sessionsLabel = '세션 구성',
+  goalsLabel = '이번 주 목표',
 }: CardProps) => (
   <div
     className={cn(
-      'flex min-h-[280px] w-full max-w-[1055px] flex-col items-start bg-white',
+      'flex h-[280px] w-[1055px] flex-col items-start bg-white',
       'border-sdp-grey-100 rounded-[26.667px] border-[1.333px]',
       'gap-[21.333px] p-[32px_42.667px]',
       className
     )}
   >
-    <div className="flex w-full items-start gap-[104px] self-stretch">
-      <div className="flex flex-1 flex-col items-start gap-2">
-        <p className="text-sdp-grey-600 text-[18px] leading-[26px] font-normal">
-          세션 구성
-        </p>
-        <div className="text-sdp-grey-900 text-[20px] leading-[28px] font-normal">
-          {sessions.join(', ')}
+    <div className="flex w-full items-start gap-[104px]">
+      <div className="flex min-w-0 flex-col items-start gap-2">
+        <p className="text-sdp-grey-500 body2">{weekLabel}</p>
+        <div className="text-sdp-grey-600 body2 flex flex-col gap-1 whitespace-nowrap">
+          {week.map((item, index) => (
+            <div key={index}>{item}</div>
+          ))}
         </div>
       </div>
 
-      <div className="flex flex-1 flex-col items-start gap-2">
-        <p className="text-sdp-grey-600 text-[18px] leading-[26px] font-normal">
-          이번 주 목표
+      <div className="flex min-w-0 flex-col items-start gap-2">
+        <p className="text-sdp-grey-900 text-[18px] font-bold">
+          {sessionsLabel}
         </p>
-        <div className="text-sdp-grey-900 text-[20px] leading-[28px] font-normal">
-          {goals.join(', ')}
+        <div className="text-sdp-grey-600 body2 flex flex-col gap-1 whitespace-nowrap">
+          {sessions.map((item, index) => (
+            <div key={index}>{item}</div>
+          ))}
         </div>
       </div>
 
-      <div className="flex flex-1 flex-col items-start gap-2">
-        <p className="text-sdp-grey-600 text-[18px] leading-[26px] font-normal">
-          지원
-        </p>
-        <div className="text-sdp-grey-900 text-[20px] leading-[28px] font-normal">
-          {support}
+      <div className="flex min-w-0 flex-col items-start gap-2">
+        <p className="text-sdp-grey-900 text-[18px] font-bold">{goalsLabel}</p>
+        <div className="text-sdp-grey-600 body2 flex flex-col gap-1 whitespace-nowrap">
+          {goals.map((item, index) => (
+            <div key={index}>{item}</div>
+          ))}
         </div>
       </div>
     </div>
 
     <div className="h-[0.8px] w-full self-stretch bg-[#E8E8E8]" />
 
-    {/* 하단 영역 */}
     <div className="flex w-full items-center justify-between self-stretch">
       <div className="flex items-center gap-4">
         <div className="rounded-[44739200px] bg-[#F3F3F3] px-[10.667px] py-[5.333px]">
-          <span className="text-sdp-grey-500 text-[18px] leading-[26px] font-normal">
-            {period}
-          </span>
+          <span className="text-sdp-grey-500 body2">{period}</span>
         </div>
 
-        {schedule && (
-          <p className="text-sdp-grey-500 text-[18px] leading-[26px] font-normal">
-            {schedule}
-          </p>
-        )}
+        {schedule && <p className="text-sdp-grey-500 body2">{schedule}</p>}
       </div>
 
-      <button
-        type="button"
-        onClick={onClick}
-        className="text-sdp-grey-600 text-[18px] leading-[26px] font-normal hover:underline"
-      >
-        상세보기
-      </button>
+      {notice && (
+        <span className="caption text-sdp-grey-500 leading-[22px] font-normal">
+          {notice}
+        </span>
+      )}
     </div>
   </div>
 )
