@@ -4,8 +4,8 @@ const HERO_H1 = 'PROJECT'
 
 const HeroSection = () => {
   return (
-    <section className="relative mx-auto h-[347px] w-full max-w-[1920px] overflow-hidden bg-[linear-gradient(359deg,#000_-28.14%,var(--color-sdp-main-primary)_105.87%)]">
-      <div className="relative z-10 flex h-full items-center pl-[410px]">
+    <section className="relative mx-auto h-[280px] w-full max-w-[1920px] overflow-hidden bg-[linear-gradient(359deg,#000_-28.14%,var(--color-sdp-main-primary)_105.87%)] md:h-[347px]">
+      <div className="relative z-10 flex h-full items-center px-6 md:px-16 xl:pl-[410px]">
         <h1 className="h1 text-sdp-grey-50">{HERO_H1}</h1>
       </div>
 
@@ -18,7 +18,13 @@ const HeroSection = () => {
           height: '280.415px',
         }}
       >
-        <img src="/images/ProjectHero1.png" alt="icon 1" />
+        <Image
+          src="/images/ProjectHero1.png"
+          alt=""
+          width={1155}
+          height={280}
+          aria-hidden="true"
+        />
       </div>
 
       <div

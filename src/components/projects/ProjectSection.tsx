@@ -51,8 +51,8 @@ export default function ProjectPage() {
   ]
 
   return (
-    <div className="flex w-[1920px] flex-col items-start justify-center gap-8 bg-black px-[360px] py-[104px]">
-      <div className="grid w-full grid-cols-2 gap-x-[48px] gap-y-[57px]">
+    <div className="flex w-full max-w-[1920px] flex-col items-start justify-center gap-8 bg-black px-4 py-[104px] md:px-12 xl:px-[360px]">
+      <div className="grid w-full grid-cols-1 gap-x-[48px] gap-y-[57px] md:grid-cols-2">
         {projects.map((project) => (
           <ProjectCard
             key={project.id}

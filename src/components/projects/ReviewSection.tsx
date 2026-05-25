@@ -39,6 +39,8 @@ const REVIEWS = [
 export const ReviewSection = () => {
   const scrollRef = useRef<HTMLDivElement>(null)
   const animationRef = useRef<number | null>(null)
+  const dragCleanupRef = useRef<(() => void) | null>(null)
+
   const [showLeftShadow, setShowLeftShadow] = useState(true)
   const [showRightShadow, setShowRightShadow] = useState(true)
 
@@ -88,14 +90,16 @@ export const ReviewSection = () => {
       checkScrollPosition()
     }
 
-    const handleMouseUp = () => {
+    const cleanupDrag = () => {
       slider.classList.remove('active')
       document.removeEventListener('mousemove', handleMouseMove)
-      document.removeEventListener('mouseup', handleMouseUp)
+      document.removeEventListener('mouseup', cleanupDrag)
+      dragCleanupRef.current = null
     }
 
     document.addEventListener('mousemove', handleMouseMove)
-    document.addEventListener('mouseup', handleMouseUp)
+    document.addEventListener('mouseup', cleanupDrag)
+    dragCleanupRef.current = cleanupDrag
   }
 
   useEffect(() => {
@@ -110,6 +114,8 @@ export const ReviewSection = () => {
     return () => {
       clearTimeout(timer)
       window.removeEventListener('resize', checkScrollPosition)
+      stopAutoScroll()
+      dragCleanupRef.current?.()
     }
   }, [])
 

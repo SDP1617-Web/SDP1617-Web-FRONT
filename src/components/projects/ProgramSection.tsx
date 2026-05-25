@@ -105,7 +105,7 @@ export default function ProgramSection() {
     PROGRAM_DATA.find((p) => p.id === activeTab) || PROGRAM_DATA[0]
 
   return (
-    <div className="flex w-[1920px] max-w-full flex-col items-start justify-center gap-9 bg-black px-[360px] pt-[160px] pb-[104px]">
+    <div className="flex w-full max-w-[1920px] flex-col items-start justify-center gap-9 bg-black px-4 pt-[160px] pb-[104px] md:px-12 xl:px-[360px]">
       <div className="flex flex-col gap-4 self-stretch">
         <div className="flex items-center gap-4 self-stretch">
           <h2 className="h2 text-white">분기별 프로그램</h2>
@@ -122,8 +122,8 @@ export default function ProgramSection() {
         </div>
       </div>
 
-      <div className="flex items-start gap-4 self-stretch">
-        <div className="flex w-[129px] shrink-0 flex-col items-start gap-4">
+      <div className="flex flex-col items-start gap-4 self-stretch xl:flex-row">
+        <div className="flex w-full shrink-0 flex-wrap items-start gap-4 xl:w-[129px] xl:flex-col xl:flex-nowrap">
           {PROGRAM_DATA.map((program) => (
             <Button
               key={program.id}
