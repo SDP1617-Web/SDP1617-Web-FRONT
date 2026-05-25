@@ -314,8 +314,8 @@ export const QuarterCard = ({
       <div className="flex min-w-0 flex-col items-start gap-2">
         <p className="text-sdp-grey-500 body2">{weekLabel}</p>
         <div className="text-sdp-grey-600 body2 flex flex-col gap-1 whitespace-nowrap">
-          {week.map((item, index) => (
-            <div key={index}>{item}</div>
+          {week.map((item) => (
+            <div key={item}>{item}</div>
           ))}
         </div>
       </div>

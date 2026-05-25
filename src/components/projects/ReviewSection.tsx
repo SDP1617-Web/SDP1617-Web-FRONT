@@ -59,8 +59,14 @@ export const ReviewSection = () => {
     const scroll = () => {
       if (scrollRef.current) {
         const speed = 6
-        scrollRef.current.scrollLeft += direction === 'right' ? speed : -speed
+        const delta = direction === 'right' ? speed : -speed
+        const prev = scrollRef.current.scrollLeft
+        scrollRef.current.scrollLeft = prev + delta
         checkScrollPosition()
+        if (scrollRef.current.scrollLeft === prev) {
+          animationRef.current = null
+          return
+        }
         animationRef.current = requestAnimationFrame(scroll)
       }
     }
