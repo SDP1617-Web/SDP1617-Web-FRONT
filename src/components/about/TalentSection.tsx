@@ -1,4 +1,4 @@
-import TalentCard from '@/components/about/TalentCard'
+import { HeroBannerCard } from '@/components/common/Card'
 
 const TALENTS = [
   {
@@ -23,8 +23,6 @@ const TalentSection = () => {
         <p className="h1" style={{ color: 'var(--color-sdp-grey-900)' }}>
           SDP 인재상
         </p>
-
-        {/* 부제목 */}
         <p
           className="h4-m"
           style={{ color: 'var(--color-sdp-grey-400)', marginTop: '17px' }}
@@ -38,10 +36,10 @@ const TalentSection = () => {
           style={{ marginTop: '36px', gap: '32px' }}
         >
           {TALENTS.map((talent, i) => (
-            <TalentCard
+            <HeroBannerCard
               key={i}
-              title={talent.title}
-              description={talent.description}
+              subTitle={talent.title}
+              title={talent.description}
             />
           ))}
         </div>

@@ -44,14 +44,19 @@ const BulletItem = ({ text }: { text: string }) => (
 export const HeroBannerCard = ({ title, subTitle, className }: CardProps) => (
   <div
     className={cn(
-      'border-sdp-grey-800 bg-sdp-grey-900 relative flex h-[262px] w-full flex-col justify-end overflow-hidden rounded-[40px] border p-10',
-      'bg-linear-to-b from-transparent to-black/40',
+      'group border-sdp-grey-800 relative flex h-[262px] w-[1194px] cursor-pointer flex-col justify-end overflow-hidden rounded-[40px] border p-10 transition-all duration-300',
+      'bg-[#0A0A0A]',
+      'hover:bg-sdp-grey-900 hover:shadow-[9px_10px_11px_0_rgba(0,0,0,0.25)]',
       className
     )}
   >
     <div className="flex flex-col gap-4">
-      {subTitle && <h3 className="h3 text-white">{subTitle}</h3>}
-      {title && <h2 className="body1 text-sdp-grey-400">{title}</h2>}
+      {subTitle && <h2 className="h2 text-white">{subTitle}</h2>}
+      {title && (
+        <p className="text-sdp-grey-400 text-[26px] leading-[38px] font-semibold whitespace-pre-line transition-all duration-300 group-hover:leading-[160%] group-hover:font-normal">
+          {title}
+        </p>
+      )}
     </div>
   </div>
 )

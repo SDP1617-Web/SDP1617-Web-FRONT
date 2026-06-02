@@ -1,5 +1,6 @@
 import type { CSSProperties } from 'react'
 import Image from 'next/image'
+import { EmblemCard } from '@/components/common/Card'
 
 const sectionStyle: CSSProperties = {
   position: 'relative',
@@ -8,53 +9,43 @@ const sectionStyle: CSSProperties = {
   backgroundColor: 'var(--color-sdp-grey-900)',
 }
 
-const timelineStyle: CSSProperties = {
+const at = (top: number, left: number): CSSProperties => ({
   position: 'absolute',
-  top: '411px',
-  left: '390px',
-}
+  top,
+  left,
+})
 
-const eclipse1Style: CSSProperties = {
-  position: 'absolute',
-  top: '383px',
-  left: '364px',
-}
-
-const eclipse2Style: CSSProperties = {
-  position: 'absolute',
-  top: '663px',
-  left: '364px',
-}
-
-const eclipse3Style: CSSProperties = {
-  position: 'absolute',
-  top: '1046px',
-  left: '364px',
-}
-
-const yearStyle: CSSProperties = {
-  position: 'absolute',
-  left: '444px',
-  color: 'var(--base-white, #FFF)',
-  fontFamily: '"Pretendard Variable"',
-  fontSize: '32px',
-  fontStyle: 'normal',
-  fontWeight: 700,
-  lineHeight: '42px',
-  opacity: 0.7,
-}
-
-const bodyStyle: CSSProperties = {
-  position: 'absolute',
-  left: '444px',
-  color: 'var(--base-white, #FFF)',
-  fontFamily: '"Pretendard Variable"',
-  fontSize: '32px',
-  fontStyle: 'normal',
-  fontWeight: 700,
-  lineHeight: '42px',
-  whiteSpace: 'pre-line',
-}
+const eclipses = [383, 663, 1046]
+const years = [
+  { top: 390, label: '2025', opacity: 0.7 },
+  { top: 670, label: '2024', opacity: 0.7 },
+  { top: 1053, label: '2023', opacity: 0.3 },
+]
+const bodies = [
+  {
+    top: 475,
+    text: '한국그린캠퍼스협회 그린리더 다양성 프로그램\n기후에너지환경부 장관상',
+  },
+  { top: 755, text: '한국그린캠퍼스협회 그린리더 양성 프로그램\n이사장상' },
+  { top: 891, text: '연세대학교 고등교육혁신원 IHEI Festa\n최우수상' },
+]
+const emblems = [
+  {
+    title: '리서치팀 엠블럼',
+    description:
+      '어쩌고 저쩌고 리서치에 대한 설명들과 우리가 어떤팀이야!를 말하는 내용을 적어야하는 자리.',
+  },
+  {
+    title: '디자인팀 엠블럼',
+    description:
+      '어쩌고 저쩌고 디자인에 대한 설명들과 우리가 어떤팀이야!를 말하는 내용을 적어야하는 자리.',
+  },
+  {
+    title: '테크팀 엠블럼',
+    description:
+      '어쩌고 저쩌고 테크에 대한 설명들과 우리가 어떤팀이야!를 말하는 내용을 적어야하는 자리.',
+  },
+]
 
 const AboutDark = () => {
   return (
@@ -64,42 +55,49 @@ const AboutDark = () => {
         alt=""
         width={4.5}
         height={881}
-        style={timelineStyle}
+        style={at(411, 390)}
       />
-      <Image
-        src="/timeline-eclipse1.svg"
-        alt=""
-        width={56}
-        height={56}
-        style={eclipse1Style}
-      />
-      <Image
-        src="/timeline-eclipse2.svg"
-        alt=""
-        width={56}
-        height={56}
-        style={eclipse2Style}
-      />
-      <Image
-        src="/timeline-eclipse3.svg"
-        alt=""
-        width={56}
-        height={56}
-        style={eclipse3Style}
-      />
-      <span style={{ ...yearStyle, top: '390px' }}>2025</span>
-      <span style={{ ...yearStyle, top: '670px' }}>2024</span>
-      <span style={{ ...yearStyle, top: '1053px', opacity: 0.3 }}>2023</span>
 
-      <p style={{ ...bodyStyle, top: '475px' }}>
-        {'한국그린캠퍼스협회 그린리더 다양성 프로그램\n기후에너지환경부 장관상'}
-      </p>
-      <p style={{ ...bodyStyle, top: '755px' }}>
-        {'한국그린캠퍼스협회 그린리더 양성 프로그램\n이사장상'}
-      </p>
-      <p style={{ ...bodyStyle, top: '891px' }}>
-        {'연세대학교 고등교육혁신원 IHEI Festa\n최우수상'}
-      </p>
+      {eclipses.map((top, i) => (
+        <Image
+          key={i}
+          src={`/timeline-eclipse${i + 1}.svg`}
+          alt=""
+          width={56}
+          height={56}
+          style={at(top, 364)}
+        />
+      ))}
+
+      {years.map(({ top, label, opacity }) => (
+        <span
+          key={label}
+          className="h2"
+          style={{ ...at(top, 444), color: '#FFF', opacity }}
+        >
+          {label}
+        </span>
+      ))}
+
+      {bodies.map(({ top, text }) => (
+        <p
+          key={top}
+          className="h2"
+          style={{ ...at(top, 444), color: '#FFF', whiteSpace: 'pre-line' }}
+        >
+          {text}
+        </p>
+      ))}
+
+      <span className="h1" style={{ ...at(1446, 362), color: '#FFF' }}>
+        파트소개
+      </span>
+
+      <div style={{ ...at(1542, 362), display: 'flex', gap: '24px' }}>
+        {emblems.map(({ title, description }) => (
+          <EmblemCard key={title} title={title} description={description} />
+        ))}
+      </div>
     </section>
   )
 }

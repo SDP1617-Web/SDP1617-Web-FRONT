@@ -1,7 +1,7 @@
-import DepartmentCard from '@/components/about/DepartmentCard'
+import { ExternalCard } from '@/components/common/Card'
 
 const DEPARTMENTS = [
-  { korean: '대외협력', english: 'Research', isActive: true },
+  { korean: '대외협력', english: 'Research', isActive: false },
   { korean: '대외홍보', english: 'Design', isActive: false },
   { korean: '경영지원', english: 'Tech', isActive: false },
 ]
@@ -24,10 +24,10 @@ const DepartmentSection = () => {
         {/* 카드 */}
         <div className="flex flex-row" style={{ gap: '24px' }}>
           {DEPARTMENTS.map((dept, i) => (
-            <DepartmentCard
+            <ExternalCard
               key={i}
-              korean={dept.korean}
-              english={dept.english}
+              title={dept.korean}
+              subTitle={dept.english}
               isActive={dept.isActive}
             />
           ))}
