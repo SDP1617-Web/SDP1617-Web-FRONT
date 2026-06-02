@@ -23,29 +23,27 @@ export const LayoutInput = ({
   return (
     <div
       className={cn(
-        'flex w-[1200px] flex-col items-start gap-[28px] text-left',
+        'flex w-full flex-col items-start gap-[28px] text-left',
         className
       )}
     >
-      <div className="flex items-start gap-[22px] self-stretch">
+      <div className="item flex items-start gap-[22px] self-stretch">
         <Button variant="v4">{num}</Button>
         <div className="flex flex-1 flex-col gap-1">
           {title && (
-            <h3 className="text-sdp-grey-800 text-[26px] leading-[38px]">
+            <h3 className="h3 text-sdp-grey-800 leading-9 font-semibold">
               {title}
             </h3>
           )}
           {subTitle && (
-            <h4 className="text-sdp-grey-700 text-[22px] leading-[30px]">
-              {subTitle}
-            </h4>
+            <h4 className="h4 text-sdp-grey-700 font-medium">{subTitle}</h4>
           )}
         </div>
       </div>
 
-      <div className="border-sdp-grey-300 focus-within:border-sdp-grey-400 flex h-[290px] w-[1200px] flex-col items-end gap-[18px] rounded-[20px] border-2 bg-transparent p-[24px] transition-all">
+      <div className="border-sdp-grey-300 focus-within:border-sdp-grey-400 flex h-[290px] w-full flex-col items-end gap-[18px] rounded-[20px] border-2 bg-transparent p-[24px] transition-all">
         <textarea
-          className="text-sdp-grey-900 placeholder:text-sdp-grey-500 h-[180px] shrink-0 resize-none self-stretch border-none bg-transparent text-[22px] leading-[30px] outline-none"
+          className="h4 text-sdp-grey-900 placeholder:text-sdp-grey-500 h-[180px] shrink-0 resize-none self-stretch border-none bg-transparent outline-none"
           maxLength={maxLength}
           value={value}
           onChange={onChange}
@@ -62,6 +60,7 @@ export const LayoutInput = ({
 
 interface BaseInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   onClear?: () => void
+  suffix?: React.ReactNode
 }
 
 export const BaseInput = ({
@@ -70,6 +69,7 @@ export const BaseInput = ({
   onChange,
   onClear,
   placeholder,
+  suffix,
   ...props
 }: BaseInputProps) => {
   const hasValue = typeof value === 'string' && value.length > 0
@@ -77,8 +77,9 @@ export const BaseInput = ({
   return (
     <div
       className={cn(
-        'flex h-[66px] w-[588px] items-center justify-between self-stretch rounded-[20px] border-2 bg-transparent px-[23.881px] pt-[27.861px] pb-[29.851px] transition-all',
-        hasValue ? 'border-sdp-grey-400' : 'border-sdp-grey-300'
+        'flex h-[66px] w-full items-center justify-between self-stretch rounded-[20px] border-2 bg-transparent px-[23.881px] pt-[27.861px] pb-[29.851px] transition-all',
+        hasValue ? 'border-sdp-grey-400' : 'border-sdp-grey-300',
+        className
       )}
     >
       <input
@@ -87,10 +88,7 @@ export const BaseInput = ({
         onChange={onChange}
         placeholder={placeholder}
         className={cn(
-          'flex flex-1 flex-col items-start border-none bg-transparent text-[22px] leading-[30px] outline-none',
-          hasValue
-            ? 'text-sdp-grey-800'
-            : 'text-sdp-grey-400 placeholder:text-sdp-grey-400'
+          'h4 text-sdp-grey-900 placeholder:text-sdp-grey-400 flex flex-1 flex-col items-start border-none bg-transparent font-semibold outline-none'
         )}
         {...props}
       />
@@ -130,6 +128,7 @@ export const BaseInput = ({
           </svg>
         </button>
       )}
+      {suffix}
     </div>
   )
 }

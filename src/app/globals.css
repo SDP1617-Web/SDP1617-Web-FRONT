@@ -62,10 +62,10 @@
     line-height: 48px;
     font-weight: 700;
   }
-  .h3-sb { 
-    font-size: 26px; 
-    line-height: 38px; 
-    font-weight: 600; 
+  .h3-sb {
+    font-size: 26px;
+    line-height: 38px;
+    font-weight: 600;
   }
   .h4 {
     font-size: 22px;
@@ -95,7 +95,12 @@
 
   /* 그라데이션 텍스트 */
   .gradient-text-korean {
-    background: linear-gradient(90deg, var(--color-sdp-main-primary) 0%, var(--color-sdp-grey-900) 50.96%, var(--color-sdp-main-primary) 100%);
+    background: linear-gradient(
+      90deg,
+      var(--color-sdp-main-primary) 0%,
+      var(--color-sdp-grey-900) 50.96%,
+      var(--color-sdp-main-primary) 100%
+    );
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -103,7 +108,7 @@
   }
 
   .gradient-text-english {
-    background: linear-gradient(91deg, #D4FE6B 14.22%, #C4C4C4 109.75%);
+    background: linear-gradient(91deg, #d4fe6b 14.22%, #c4c4c4 109.75%);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;

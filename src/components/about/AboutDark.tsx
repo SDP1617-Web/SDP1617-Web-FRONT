@@ -47,7 +47,7 @@ const emblems = [
   },
 ]
 
-export default function AboutDark() {
+const AboutDark = () => {
   return (
     <section style={sectionStyle}>
       <Image
@@ -101,3 +101,5 @@ export default function AboutDark() {
     </section>
   )
 }
+
+export default AboutDark

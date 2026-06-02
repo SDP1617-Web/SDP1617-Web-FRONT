@@ -6,7 +6,7 @@ const DEPARTMENTS = [
   { korean: '경영지원', english: 'Tech', isActive: false },
 ]
 
-export default function DepartmentSection() {
+const DepartmentSection = () => {
   return (
     <section
       style={{ marginTop: '193px', marginBottom: '250px' }}
@@ -36,3 +36,5 @@ export default function DepartmentSection() {
     </section>
   )
 }
+
+export default DepartmentSection

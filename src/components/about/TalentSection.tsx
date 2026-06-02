@@ -15,10 +15,11 @@ const TALENTS = [
   },
 ]
 
-export default function TalentSection() {
+const TalentSection = () => {
   return (
     <section style={{ marginTop: '154.63px' }} className="flex justify-center">
       <div className="flex flex-col items-start">
+        {/* 타이틀 */}
         <p className="h1" style={{ color: 'var(--color-sdp-grey-900)' }}>
           SDP 인재상
         </p>
@@ -28,6 +29,8 @@ export default function TalentSection() {
         >
           단순한 동아리가 아닌, 혁신가를 위한 생태계입니다.
         </p>
+
+        {/* 카드 리스트 */}
         <div
           className="flex flex-col"
           style={{ marginTop: '36px', gap: '32px' }}
@@ -44,3 +47,5 @@ export default function TalentSection() {
     </section>
   )
 }
+
+export default TalentSection

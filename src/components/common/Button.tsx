@@ -21,8 +21,8 @@ export const Button = ({
 
   const variantStyles = {
     v1: isActive
-      ? 'w-[129px] h-[53px] p-[8px_16px] rounded-[44739200px] bg-sdp-main-primary text-black body1'
-      : 'w-[129px] h-[53px] p-[8px_16px] rounded-[44739200px] bg-sdp-grey-100 text-sdp-grey-400 body1',
+      ? 'w-[129px] h-[53px] p-[8px_16px] rounded-full bg-sdp-main-primary text-black body1'
+      : 'w-[129px] h-[53px] p-[8px_16px] rounded-full bg-sdp-grey-100 text-sdp-grey-400 body1',
 
     v2: isActive
       ? 'w-[301px] p-[17px] justify-between rounded-[8px] bg-sdp-main-secondary text-sdp-grey-900 h4'
@@ -32,7 +32,7 @@ export const Button = ({
       ? 'w-[384.667px] h-[66px] p-[12px_0] rounded-[12px] bg-sdp-main-primary text-sdp-grey-900 h4'
       : 'w-[384.667px] h-[66px] p-[12px_0] rounded-[12px] bg-sdp-grey-200 text-sdp-grey-900 h4',
 
-    v4: 'w-[43px] h-[44px] rounded-[66774924px] bg-sdp-main-secondary text-black text-[26px] font-semibold leading-[38px]',
+    v4: 'w-[43px] h-[44px] rounded-full bg-sdp-main-secondary text-black text-[26px] font-semibold leading-[38px]',
 
     v5: 'w-[304px] h-[80px] p-[24px_32px] gap-[24px] rounded-[999px] bg-sdp-grey-900 text-sdp-main-primary h2',
 
