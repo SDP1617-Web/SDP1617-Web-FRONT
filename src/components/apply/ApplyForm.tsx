@@ -4,6 +4,7 @@ import { useRef, useState } from 'react'
 import { Button } from '@/components/common/Button'
 import { BaseInput, LayoutInput } from '@/components/common/Input'
 import { Icon } from '@/components/common/Icon'
+import { submitApply } from '@/lib/api/apply'
 
 /** YYYY-MM-DD → YY-MM-DD 변환 */
 const formatDate = (iso: string) => {
@@ -12,8 +13,16 @@ const formatDate = (iso: string) => {
 }
 
 const ApplyForm = () => {
+  const [name, setName] = useState('')
   const [birth, setBirth] = useState('')
+  const [contact, setContact] = useState('')
+  const [email, setEmail] = useState('')
+  const [team, setTeam] = useState('')
+  const [answers, setAnswers] = useState<string[]>(() =>
+    QUESTIONS.map(() => '')
+  )
   const [selectedSlots, setSelectedSlots] = useState<Set<string>>(new Set())
+  const [submitting, setSubmitting] = useState(false)
   const dateInputRef = useRef<HTMLInputElement>(null)
 
   const toggleSlot = (key: string) => {
@@ -25,8 +34,46 @@ const ApplyForm = () => {
     })
   }
 
+  const updateAnswer = (index: number, value: string) => {
+    setAnswers((prev) => {
+      const next = [...prev]
+      next[index] = value
+      return next
+    })
+  }
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    if (submitting) return
+
+    const payload = {
+      name,
+      birth,
+      contact,
+      email,
+      team,
+      answers: QUESTIONS.map((question, index) => ({
+        question: question.title,
+        answer: answers[index] ?? '',
+      })),
+      interviewSlots: Array.from(selectedSlots),
+    }
+
+    setSubmitting(true)
+    try {
+      await submitApply(payload)
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
   return (
-    <form action="" className="h-auto w-full px-[360px] pt-[90px]">
+    <form
+      onSubmit={handleSubmit}
+      className="h-auto w-full px-[360px] pt-[90px]"
+    >
       {/* 지원자 정보 */}
       <section className="flex flex-col">
         <div className="flex flex-row items-center gap-[20px]">
@@ -42,7 +89,11 @@ const ApplyForm = () => {
                 {APPLY_NAME}
               </h3>
               {/* Input Component */}
-              <BaseInput placeholder={PLACE_HOLDER.NAME}></BaseInput>
+              <BaseInput
+                placeholder={PLACE_HOLDER.NAME}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
             </div>
             {/* 지원자 생년월일 */}
             <div className="relative flex flex-col gap-y-[16px]">
@@ -81,7 +132,11 @@ const ApplyForm = () => {
                 {APPLY_CONTACT}
               </h3>
               {/* Input Component */}
-              <BaseInput placeholder={PLACE_HOLDER.CONTACT}></BaseInput>
+              <BaseInput
+                placeholder={PLACE_HOLDER.CONTACT}
+                value={contact}
+                onChange={(e) => setContact(e.target.value)}
+              />
             </div>
             {/* 지원자 이메일 */}
             <div className="flex flex-col gap-y-[16px]">
@@ -89,7 +144,12 @@ const ApplyForm = () => {
                 {APPLY_EMAIL}
               </h3>
               {/* Input Component */}
-              <BaseInput placeholder={PLACE_HOLDER.EMAIL}></BaseInput>
+              <BaseInput
+                type="email"
+                placeholder={PLACE_HOLDER.EMAIL}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
             </div>
           </div>
         </div>
@@ -104,7 +164,13 @@ const ApplyForm = () => {
         <div className="flex flex-row gap-x-[23px]">
           {TEAM_LIST.map((TEAM, index) => {
             return (
-              <Button key={index} variant="v3" className="w-auto flex-1">
+              <Button
+                key={index}
+                variant="v3"
+                isActive={team === TEAM}
+                onClick={() => setTeam(TEAM)}
+                className="w-auto flex-1"
+              >
                 {TEAM}
               </Button>
             )
@@ -141,6 +207,8 @@ const ApplyForm = () => {
           title={QUESTIONS[0].title}
           maxLength={QUESTIONS[0].maxLength}
           placeholder={QUESTIONS[0].placeholder}
+          value={answers[0]}
+          onChange={(e) => updateAnswer(0, e.target.value)}
         />
       </section>
 
@@ -153,6 +221,8 @@ const ApplyForm = () => {
           subTitle={QUESTIONS[1].subTitle}
           maxLength={QUESTIONS[1].maxLength}
           placeholder={QUESTIONS[1].placeholder}
+          value={answers[1]}
+          onChange={(e) => updateAnswer(1, e.target.value)}
         />
       </section>
 
@@ -164,6 +234,8 @@ const ApplyForm = () => {
           title={QUESTIONS[2].title}
           maxLength={QUESTIONS[2].maxLength}
           placeholder={QUESTIONS[2].placeholder}
+          value={answers[2]}
+          onChange={(e) => updateAnswer(2, e.target.value)}
         />
       </section>
 
@@ -175,6 +247,8 @@ const ApplyForm = () => {
           title={QUESTIONS[3].title}
           maxLength={QUESTIONS[3].maxLength}
           placeholder={QUESTIONS[3].placeholder}
+          value={answers[3]}
+          onChange={(e) => updateAnswer(3, e.target.value)}
         />
       </section>
 
@@ -186,6 +260,8 @@ const ApplyForm = () => {
           title={QUESTIONS[4].title}
           maxLength={QUESTIONS[4].maxLength}
           placeholder={QUESTIONS[4].placeholder}
+          value={answers[4]}
+          onChange={(e) => updateAnswer(4, e.target.value)}
         />
       </section>
 
@@ -197,6 +273,8 @@ const ApplyForm = () => {
           title={QUESTIONS[5].title}
           maxLength={QUESTIONS[5].maxLength}
           placeholder={QUESTIONS[5].placeholder}
+          value={answers[5]}
+          onChange={(e) => updateAnswer(5, e.target.value)}
         />
       </section>
 
@@ -270,7 +348,9 @@ const ApplyForm = () => {
         </div>
         <div className="mt-[29px] flex justify-end">
           {/* Button Component */}
-          <Button variant="v9">{APPLY_SUBMIT}</Button>
+          <Button type="submit" variant="v9" disabled={submitting}>
+            {APPLY_SUBMIT}
+          </Button>
         </div>
       </section>
 
