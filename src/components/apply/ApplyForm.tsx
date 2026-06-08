@@ -4,26 +4,40 @@ import { useRef, useState } from 'react'
 import { Button } from '@/components/common/Button'
 import { BaseInput, LayoutInput } from '@/components/common/Input'
 import { Icon } from '@/components/common/Icon'
-import { submitApply } from '@/lib/api/apply'
+import { submitApply, submitApplyPdf } from '@/lib/api/apply'
+import { Department } from '@/types/apply'
 
 /** YYYY-MM-DD → YY-MM-DD 변환 */
 const formatDate = (iso: string) => {
   const [year, month, day] = iso.split('-')
-  return `${year.slice(2)}-${month}-${day}`
+  return `${year}-${month}-${day}`
 }
 
 const ApplyForm = () => {
+  // const [recruitmentId, setRecruitmentId] = useState('')
+  // TODO: 모집 공고 ID 가져오기
+  const recruitmentId = '1'
   const [name, setName] = useState('')
-  const [birth, setBirth] = useState('')
-  const [contact, setContact] = useState('')
+  const [phone, setPhone] = useState('')
+  const [birthDate, setBirthDate] = useState('')
   const [email, setEmail] = useState('')
-  const [team, setTeam] = useState('')
+  const [university, setUniversity] = useState('')
+  const [major, setMajor] = useState('')
+  const [department, setDepartment] = useState<Department>(null)
+  const [techRole, setTechRole] = useState('')
   const [answers, setAnswers] = useState<string[]>(() =>
     QUESTIONS.map(() => '')
   )
   const [selectedSlots, setSelectedSlots] = useState<Set<string>>(new Set())
+  const [file, setFile] = useState<File | null>(null)
   const [submitting, setSubmitting] = useState(false)
   const dateInputRef = useRef<HTMLInputElement>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selected = e.target.files?.[0]
+    if (selected) setFile(selected)
+  }
 
   const toggleSlot = (key: string) => {
     setSelectedSlots((prev) => {
@@ -48,12 +62,15 @@ const ApplyForm = () => {
 
     const payload = {
       name,
-      birth,
-      contact,
+      phone,
+      birthDate,
       email,
-      team,
+      university,
+      major,
+      department,
+      techRole,
       answers: QUESTIONS.map((question, index) => ({
-        question: question.title,
+        questionId: index + 1,
         answer: answers[index] ?? '',
       })),
       interviewSlots: Array.from(selectedSlots),
@@ -61,7 +78,10 @@ const ApplyForm = () => {
 
     setSubmitting(true)
     try {
-      await submitApply(payload)
+      // 1. 지원서 본문을 먼저 제출하고 결과 ID를 받는다
+      const result = await submitApply(recruitmentId, payload)
+      // 2. 받은 결과 ID로 PDF를 별도 업로드한다
+      if (file) await submitApplyPdf(result.applicationId, file)
     } catch (error) {
       console.error(error)
     } finally {
@@ -103,8 +123,8 @@ const ApplyForm = () => {
               {/* Input Component */}
               <BaseInput
                 placeholder={PLACE_HOLDER.BIRTH}
-                value={birth}
-                onChange={(e) => setBirth(e.target.value)}
+                value={birthDate}
+                onChange={(e) => setBirthDate(e.target.value)}
                 suffix={
                   <button
                     type="button"
@@ -121,7 +141,7 @@ const ApplyForm = () => {
                 ref={dateInputRef}
                 type="date"
                 className="invisible absolute"
-                onChange={(e) => setBirth(formatDate(e.target.value))}
+                onChange={(e) => setBirthDate(formatDate(e.target.value))}
               />
             </div>
           </div>
@@ -134,8 +154,8 @@ const ApplyForm = () => {
               {/* Input Component */}
               <BaseInput
                 placeholder={PLACE_HOLDER.CONTACT}
-                value={contact}
-                onChange={(e) => setContact(e.target.value)}
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
               />
             </div>
             {/* 지원자 이메일 */}
@@ -162,19 +182,21 @@ const ApplyForm = () => {
         </h3>
         {/* Button Component - v3 */}
         <div className="flex flex-row gap-x-[23px]">
-          {TEAM_LIST.map((TEAM, index) => {
-            return (
-              <Button
-                key={index}
-                variant="v3"
-                isActive={team === TEAM}
-                onClick={() => setTeam(TEAM)}
-                className="w-auto flex-1"
-              >
-                {TEAM}
-              </Button>
-            )
-          })}
+          {(Object.entries(DEPARTMENT_LIST) as [Department, string][]).map(
+            ([key, label]) => {
+              return (
+                <Button
+                  key={key}
+                  variant="v3"
+                  isActive={department === key}
+                  onClick={() => setDepartment(key)}
+                  className="w-auto flex-1"
+                >
+                  {label}
+                </Button>
+              )
+            }
+          )}
         </div>
       </section>
 
@@ -189,11 +211,23 @@ const ApplyForm = () => {
           <Icon name="pdf" />
           <div className="flex h-14 flex-col items-center justify-start self-stretch pt-2">
             <h4 className="h4 text-sdp-grey-500 justify-center text-center font-medium">
-              {APPLY_FILE_TEXT}
+              {file ? file.name : APPLY_FILE_TEXT}
             </h4>
           </div>
+          {/* 숨겨진 file input으로 로컬 파일 선택 */}
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept={FILE_ACCEPT}
+            className="hidden"
+            onChange={handleFileChange}
+          />
           {/* Button Component - v6 */}
-          <Button variant="v6">
+          <Button
+            variant="v6"
+            disabled={submitting}
+            onClick={() => fileInputRef.current?.click()}
+          >
             <h4 className="h4 font-medium">{APPLY_FILE_SELECT}</h4>
           </Button>
         </div>
@@ -385,17 +419,22 @@ const APPLY_EMAIL = '이메일'
 const PLACE_HOLDER = {
   NAME: '성함을 입력해 주세요.',
   CONTACT: '연락처를 입력해 주세요.',
-  BIRTH: 'YY-MM-DD',
+  BIRTH: 'YYYY-MM-DD',
   EMAIL: '공지사항 및 안내 메일을 수신할 이메일 주소',
 }
 
 const APPLY_TEAM = '지원 부서 선택'
 
-const TEAM_LIST = ['리서치', '디자인', '테크']
+const DEPARTMENT_LIST = {
+  RESEARCH: '리서치',
+  DESIGN: '디자인',
+  TECH: '테크',
+} as const
 
 const APPLY_PORTFOLIO = '포트폴리오'
 const APPLY_FILE_TEXT = 'PDF 또는 PPT 파일 첨부'
 const APPLY_FILE_SELECT = '파일 선택'
+const FILE_ACCEPT = '.pdf,.ppt,.pptx'
 
 const QUESTIONS = [
   {
