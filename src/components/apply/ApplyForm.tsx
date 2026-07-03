@@ -144,6 +144,18 @@ const ApplyForm = () => {
                 onChange={(e) => setBirthDate(formatDate(e.target.value))}
               />
             </div>
+            {/* 지원자 학교 */}
+            <div className="flex flex-col gap-y-[16px]">
+              <h3 className="h3 flex justify-items-start font-semibold">
+                {APPLY_UNIVERSITY}
+              </h3>
+              {/* Input Component */}
+              <BaseInput
+                placeholder={PLACE_HOLDER.UNIVERSITY}
+                value={university}
+                onChange={(e) => setUniversity(e.target.value)}
+              />
+            </div>
           </div>
           <div className="flex w-auto flex-1 flex-col gap-y-[32px]">
             {/* 지원자 연락처 */}
@@ -169,6 +181,18 @@ const ApplyForm = () => {
                 placeholder={PLACE_HOLDER.EMAIL}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+            {/* 지원자 전공 */}
+            <div className="flex flex-col gap-y-[16px]">
+              <h3 className="h3 flex justify-items-start font-semibold">
+                {APPLY_MAJOR}
+              </h3>
+              {/* Input Component */}
+              <BaseInput
+                placeholder={PLACE_HOLDER.MAJOR}
+                value={major}
+                onChange={(e) => setMajor(e.target.value)}
               />
             </div>
           </div>
@@ -413,14 +437,18 @@ const ApplyForm = () => {
 const APPLY_INFORMATION = '지원자 정보'
 const APPLY_NAME = '이름'
 const APPLY_BIRTH = '생년월일'
+const APPLY_UNIVERSITY = '학교'
 const APPLY_CONTACT = '연락처'
 const APPLY_EMAIL = '이메일'
+const APPLY_MAJOR = '전공'
 
 const PLACE_HOLDER = {
   NAME: '성함을 입력해 주세요.',
   CONTACT: '연락처를 입력해 주세요.',
   BIRTH: 'YYYY-MM-DD',
   EMAIL: '공지사항 및 안내 메일을 수신할 이메일 주소',
+  UNIVERSITY: '학교를 입력해 주세요.',
+  MAJOR: '전공을 입력해 주세요.',
 }
 
 const APPLY_TEAM = '지원 부서 선택'
