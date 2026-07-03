@@ -11,7 +11,7 @@ export type ApplyPayload = {
   university: string
   major: string
   department: Department
-  techRole: string
+  techRole: string | null
   answers: ApplyAnswer[]
   interviewSlots: string[]
 }
@@ -28,4 +28,12 @@ export type ApplyPortfolioResult = {
   portfolioId: number
   fileUrl: string
   fileName: string
+}
+
+export type RecruitmentActiveResult = {
+  recruitmentId: number
+  title: string
+  semester: string
+  startAt: string
+  deadlineAt: string
 }
