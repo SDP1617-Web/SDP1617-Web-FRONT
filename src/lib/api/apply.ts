@@ -1,10 +1,15 @@
-import { ApplyPayload, ApplyResult, ApplyPortfolioResult } from '@/types/apply'
+import {
+  ApplyPayload,
+  ApplyResult,
+  ApplyPortfolioResult,
+  RecruitmentActiveResult,
+} from '@/types/apply'
 
 // 지원서 제출 결과 (PDF 업로드에 사용할 ID 포함)
 // TODO: 백엔드 응답 형태에 맞춰 필드명 확인 필요
 
 export const submitApply = async (
-  recruitmentId: string,
+  recruitmentId: number,
   payload: ApplyPayload
 ): Promise<ApplyResult> => {
   const response = await fetch(`/api/apply/${recruitmentId}`, {
@@ -37,4 +42,13 @@ export const submitApplyPdf = async (
   }
 
   return response.json()
+}
+
+export const getRecruitmentId = async (): Promise<number> => {
+  const response = await fetch(`/api/recruitments/active`)
+  if (!response.ok) {
+    throw new Error(`모집 공고 조회에 실패했습니다. (${response.status})`)
+  }
+  const data = await response.json()
+  return data
 }
