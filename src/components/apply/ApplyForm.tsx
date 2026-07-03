@@ -1,11 +1,12 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Button } from '@/components/common/Button'
 import { BaseInput, LayoutInput } from '@/components/common/Input'
 import { Icon } from '@/components/common/Icon'
-import { submitApply, submitApplyPdf } from '@/lib/api/apply'
+import { getRecruitmentId, submitApply, submitApplyPdf } from '@/lib/api/apply'
 import { Department, TechRole } from '@/types/apply'
+import { useRouter } from 'next/navigation'
 
 /** YYYY-MM-DD → YY-MM-DD 변환 */
 const formatDate = (iso: string) => {
@@ -14,9 +15,10 @@ const formatDate = (iso: string) => {
 }
 
 const ApplyForm = () => {
-  // const [recruitmentId, setRecruitmentId] = useState('')
+  const router = useRouter()
+  const [recruitmentId, setRecruitmentId] = useState<number>(0)
   // TODO: 모집 공고 ID 가져오기
-  const recruitmentId = '1'
+  // const recruitmentId = '1'
   const [name, setName] = useState('')
   const [phone, setPhone] = useState('')
   const [birthDate, setBirthDate] = useState('')
@@ -82,12 +84,21 @@ const ApplyForm = () => {
       const result = await submitApply(recruitmentId, payload)
       // 2. 받은 결과 ID로 PDF를 별도 업로드한다
       if (file) await submitApplyPdf(result.applicationId, file)
+      router.push(`/apply/success`)
     } catch (error) {
       console.error(error)
     } finally {
       setSubmitting(false)
     }
   }
+
+  useEffect(() => {
+    const fetchRecruitmentId = async () => {
+      const recruitmentId = await getRecruitmentId()
+      setRecruitmentId(recruitmentId)
+    }
+    fetchRecruitmentId()
+  }, [])
 
   return (
     <form
