@@ -5,7 +5,7 @@ import { Button } from '@/components/common/Button'
 import { BaseInput, LayoutInput } from '@/components/common/Input'
 import { Icon } from '@/components/common/Icon'
 import { submitApply, submitApplyPdf } from '@/lib/api/apply'
-import { Department } from '@/types/apply'
+import { Department, TechRole } from '@/types/apply'
 
 /** YYYY-MM-DD → YY-MM-DD 변환 */
 const formatDate = (iso: string) => {
@@ -24,7 +24,7 @@ const ApplyForm = () => {
   const [university, setUniversity] = useState('')
   const [major, setMajor] = useState('')
   const [department, setDepartment] = useState<Department>(null)
-  const [techRole, setTechRole] = useState('')
+  const [techRole, setTechRole] = useState<TechRole>(null)
   const [answers, setAnswers] = useState<string[]>(() =>
     QUESTIONS.map(() => '')
   )
@@ -222,6 +222,26 @@ const ApplyForm = () => {
             }
           )}
         </div>
+        {/* Button Component - v3 */}
+        {department === 'TECH' && (
+          <div className="flex flex-row gap-x-[23px]">
+            {(Object.entries(TECH_ROLE_LIST) as [TechRole, string][]).map(
+              ([key, label]) => {
+                return (
+                  <Button
+                    key={key}
+                    variant="v3"
+                    isActive={techRole === key}
+                    onClick={() => setTechRole(key)}
+                    className="w-auto flex-1"
+                  >
+                    {label}
+                  </Button>
+                )
+              }
+            )}
+          </div>
+        )}
       </section>
 
       {/* 포트폴리오 */}
@@ -457,6 +477,11 @@ const DEPARTMENT_LIST = {
   RESEARCH: '리서치',
   DESIGN: '디자인',
   TECH: '테크',
+} as const
+
+const TECH_ROLE_LIST = {
+  FRONTEND: '프론트엔드',
+  BACKEND: '백엔드',
 } as const
 
 const APPLY_PORTFOLIO = '포트폴리오'

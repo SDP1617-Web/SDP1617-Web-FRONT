@@ -18,6 +18,8 @@ export type ApplyPayload = {
 
 export type Department = 'RESEARCH' | 'DESIGN' | 'TECH' | null
 
+export type TechRole = 'FRONTEND' | 'BACKEND' | null
+
 export type ApplyResult = {
   applicationId: number
 }
