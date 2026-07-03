@@ -1,7 +1,5 @@
 import React, { useState } from 'react'
-
-// common components
-// import ProjectCard from '../../components/';
+import { ProjectCard } from '@/components/common/Card'
 
 interface ProjectData {
   id: number
