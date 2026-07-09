@@ -11,11 +11,15 @@ export default function InterceptedProjectModal() {
   const imgRef = useRef<HTMLImageElement>(null)
 
   useEffect(() => {
-    console.log('현재 useParams의 projectId:', projectId)
     if (!projectId) return
-    fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/projects/${projectId}`)
+    fetch(`/api/projects/${projectId}`)
       .then((res) => res.json())
-      .then((data) => setProject(data.result))
+      .then((data) => {
+        if (data.success && data.result) {
+          setProject(data.result)
+        }
+      })
+      .catch((err) => console.error('프로젝트 상세 로드 실패:', err))
   }, [projectId])
 
   const extractColor = () => {
@@ -36,6 +40,12 @@ export default function InterceptedProjectModal() {
     <div
       className="fixed inset-0 z-50 flex items-start justify-center bg-black/80 pt-[100px] backdrop-blur-sm"
       onClick={() => router.back()}
+      onKeyDown={(e) => {
+        if (e.key === 'Escape') router.back()
+      }}
+      role="dialog"
+      aria-modal="true"
+      aria-label="프로젝트 상세"
     >
       <div
         className="relative max-h-[85vh] w-[1400px] overflow-y-auto rounded-[32px] bg-white"
@@ -58,6 +68,7 @@ export default function InterceptedProjectModal() {
         <button
           onClick={() => router.back()}
           className="text-sdp-grey-900 absolute top-8 right-8 z-10 text-2xl font-bold"
+          aria-label="닫기"
         >
           ✕
         </button>

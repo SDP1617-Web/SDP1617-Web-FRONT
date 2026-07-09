@@ -1,11 +1,9 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import { ProjectCard } from '@/components/common/Card'
-import { ProjectModal } from '@/components/common/ProjectModal'
 
 export default function ProjectSection() {
   const [projects, setProjects] = useState<any[]>([])
-  const [selectedProject, setSelectedProject] = useState<any>(null)
 
   useEffect(() => {
     fetch('/api/projects')
@@ -32,7 +30,7 @@ export default function ProjectSection() {
 
   return (
     <div className="flex w-full max-w-[1920px] flex-col items-start justify-center gap-8 bg-black px-4 py-[104px] md:px-12 xl:px-[360px]">
-      <div className="lg:grid-cols=2 grid w-full grid-cols-1 gap-x-[48px] gap-y-[57px] md:grid-cols-2">
+      <div className="grid w-full grid-cols-1 gap-x-[48px] gap-y-[57px] md:grid-cols-2 lg:grid-cols-2">
         {projects.map((p) => {
           if (!p.id || isNaN(p.id)) return null
           return (
@@ -40,12 +38,6 @@ export default function ProjectSection() {
           )
         })}
       </div>
-      {selectedProject && (
-        <ProjectModal
-          project={selectedProject}
-          onClose={() => setSelectedProject(null)}
-        />
-      )}
     </div>
   )
 }

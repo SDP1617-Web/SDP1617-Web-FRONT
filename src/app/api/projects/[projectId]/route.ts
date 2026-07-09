@@ -8,7 +8,7 @@ export async function GET(
   const { projectId } = await params
 
   if (!projectId || projectId === 'string' || projectId === 'undefined') {
-    console.warn(`[DEBUG] Invalid projetId`)
+    console.warn(`[DEBUG] Invalid projectId`)
     return NextResponse.json(
       { error: '잘못된 프로젝트 ID입니다.' },
       { status: 400 }
@@ -24,18 +24,17 @@ export async function GET(
       }
     )
 
-    const data = await response.json()
-
     if (!response.ok) {
+      const errorData = await response.json().catch(() => null)
       return NextResponse.json(
         { error: '프로젝트 상세 조회 실패' },
         { status: response.status }
       )
     }
-
+    const data = await response.json()
     return NextResponse.json(data)
   } catch (error) {
-    console.error('Project detail fetch failed')
+    console.error('Project detail fetch failed:', error)
     return NextResponse.json({ error: '서버 통신 오류' }, { status: 500 })
   }
 }
