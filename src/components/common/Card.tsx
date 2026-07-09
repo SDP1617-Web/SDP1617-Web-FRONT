@@ -1,4 +1,5 @@
 'use client'
+import Link from 'next/link'
 import { cn } from '@/lib/utils'
 
 interface CardProps {
@@ -93,43 +94,58 @@ export const FeatureCard = ({ title, description, className }: CardProps) => (
 
 // 3. ProjectCard
 export const ProjectCard = ({
-  title,
-  description,
-  category,
-  imageUrl,
-  date,
+  project,
   className,
-  isActive,
-  onClick,
-}: CardProps) => (
-  <button
-    type="button"
-    onClick={onClick}
-    className={cn(
-      'group flex h-auto min-h-[467px] w-full cursor-pointer flex-col overflow-hidden rounded-[21px] bg-white text-left transition-all',
-      isActive
-        ? 'shadow-[0_0_28px_0_rgba(204,251,85,0.5)]'
-        : 'shadow-none hover:shadow-lg',
-      className
-    )}
-  >
-    <div
-      className="bg-sdp-main-primary h-[293px] w-full shrink-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
-      style={{ backgroundImage: imageUrl ? `url(${imageUrl})` : undefined }}
-    />
-    <div className="flex flex-1 flex-col justify-center gap-3.5 p-7 md:p-8">
-      <div className="flex items-center gap-[10.667px] self-stretch">
-        {category && <CategoryChip text={category} />}
-        {date && <span className="caption text-sdp-grey-500">{date}</span>}
+}: {
+  project: any
+  className?: string
+}) => {
+  if (!project || !project.id) {
+    return (
+      <div className="min-h-[467px] w-full animate-pulse rounded-[21px] bg-gray-100" />
+    )
+  }
+  return (
+    <Link
+      href={`/projects/${project.id || ''}`}
+      prefetch={false}
+      className={cn(
+        'group flex h-auto min-h-[467px] w-full cursor-pointer flex-col overflow-hidden rounded-[21px] bg-white text-left transition-all hover:shadow-lg',
+        className
+      )}
+    >
+      <div
+        className="bg-sdp-main-primary h-[293px] w-full shrink-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
+        style={{
+          backgroundImage:
+            project.thumbnailUrl && project.thumbnailUrl !== 'string'
+              ? `url(${project.thumbnailUrl})`
+              : undefined,
+        }}
+      />
+      <div className="flex flex-1 flex-col justify-center gap-3.5 p-7 md:p-8">
+        <div className="flex items-center gap-[10.667px] self-stretch">
+          {project.status && (
+            <div className="bg-sdp-grey-100 text-sdp-grey-600 body2 inline-flex items-center justify-center rounded-[44739200px] px-[10.667px] py-[5.333px]">
+              {project.status}
+            </div>
+          )}
+          {project.startDate && (
+            <span className="caption text-sdp-grey-500">
+              {project.startDate}
+            </span>
+          )}
+        </div>
+        <div className="flex flex-col gap-3">
+          <h3 className="h3 text-sdp-grey-900 leading-tight">{project.name}</h3>
+          <p className="body2 text-sdp-grey-600 line-clamp-1">
+            {project.summary}
+          </p>
+        </div>
       </div>
-      <div className="flex flex-col gap-3">
-        <h3 className="h3 text-sdp-grey-900 leading-tight">{title}</h3>
-        <p className="body2 text-sdp-grey-600 line-clamp-1">{description}</p>
-      </div>
-    </div>
-  </button>
-)
-
+    </Link>
+  )
+}
 // 4. StatCard (수치/기수)
 export const StatCard = ({ title, value, unit, className }: CardProps) => (
   <div
