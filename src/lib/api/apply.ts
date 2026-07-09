@@ -22,7 +22,10 @@ export const submitApply = async (
     throw new Error(`지원서 제출에 실패했습니다. (${response.status})`)
   }
 
-  return response.json()
+  const data = await response.json()
+  const applyResult: ApplyResult = data.result
+
+  return applyResult
 }
 
 export const submitApplyPdf = async (
@@ -41,7 +44,10 @@ export const submitApplyPdf = async (
     throw new Error(`파일 업로드에 실패했습니다. (${response.status})`)
   }
 
-  return response.json()
+  const data = await response.json()
+  const applyPortfolioResult: ApplyPortfolioResult = data.result
+
+  return applyPortfolioResult
 }
 
 export const getRecruitmentId = async (): Promise<number> => {

@@ -92,8 +92,8 @@ const ApplyForm = () => {
       // 1. 지원서 본문을 먼저 제출하고 결과 ID를 받는다
       const result = await submitApply(recruitmentId, payload)
       // 2. 받은 결과 ID로 PDF를 별도 업로드한다
-      // if (file) await submitApplyPdf(result.applicationId, file)
-      // router.push(`/apply/success`)
+      if (file) await submitApplyPdf(result.applicationId, file)
+      router.push(`/apply/success`)
     } catch (error) {
       console.error(error)
     } finally {
