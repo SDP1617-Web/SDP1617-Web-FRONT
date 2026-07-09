@@ -31,7 +31,7 @@ export type ApplyPortfolioResult = {
 }
 
 export type RecruitmentActiveResult = {
-  recruitmentId: number
+  id: number
   title: string
   semester: string
   startAt: string
