@@ -13,7 +13,9 @@ export type ApplyPayload = {
   department: Department
   techRole: string | null
   answers: ApplyAnswer[]
-  interviewSlots: string[]
+  // 추후에 일자에 대한 의논 필요
+  interviewSlotIds: string[]
+  // interviewSlotIds: number[]
 }
 
 export type Department = 'RESEARCH' | 'DESIGN' | 'TECH' | null

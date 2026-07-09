@@ -16,8 +16,8 @@ const formatDate = (iso: string) => {
 
 const ApplyForm = () => {
   const router = useRouter()
-  const [recruitmentId, setRecruitmentId] = useState<number>(0)
   // TODO: 모집 공고 ID 가져오기
+  const [recruitmentId, setRecruitmentId] = useState<number>(0)
   // const recruitmentId = '1'
   const [name, setName] = useState('')
   const [phone, setPhone] = useState('')
@@ -50,6 +50,15 @@ const ApplyForm = () => {
     })
   }
 
+  // const toggleSlotIdx = (idx: number) => {
+  //   setSelectedSlots((prev) => {
+  //     const next = new Set(prev)
+  //     if (next.has(idx)) next.delete(idx)
+  //     else next.add(idx)
+  //     return next
+  //   })
+  // }
+
   const updateAnswer = (index: number, value: string) => {
     setAnswers((prev) => {
       const next = [...prev]
@@ -75,7 +84,7 @@ const ApplyForm = () => {
         questionId: index + 1,
         answer: answers[index] ?? '',
       })),
-      interviewSlots: Array.from(selectedSlots),
+      interviewSlotIds: Array.from(selectedSlots),
     }
 
     setSubmitting(true)
@@ -83,8 +92,8 @@ const ApplyForm = () => {
       // 1. 지원서 본문을 먼저 제출하고 결과 ID를 받는다
       const result = await submitApply(recruitmentId, payload)
       // 2. 받은 결과 ID로 PDF를 별도 업로드한다
-      if (file) await submitApplyPdf(result.applicationId, file)
-      router.push(`/apply/success`)
+      // if (file) await submitApplyPdf(result.applicationId, file)
+      // router.push(`/apply/success`)
     } catch (error) {
       console.error(error)
     } finally {
@@ -92,6 +101,7 @@ const ApplyForm = () => {
     }
   }
 
+  // 공고 ID 불러오기
   useEffect(() => {
     const fetchRecruitmentId = async () => {
       const recruitmentId = await getRecruitmentId()
