@@ -2,7 +2,10 @@ import {
   ApplyPayload,
   ApplyResult,
   ApplyPortfolioResult,
+  ApplyQuestion,
   RecruitmentActiveResult,
+  Department,
+  TechRole,
 } from '@/types/apply'
 
 // 지원서 제출 결과 (PDF 업로드에 사용할 ID 포함)
@@ -24,6 +27,9 @@ export const submitApply = async (
 
   const data = await response.json()
   const applyResult: ApplyResult = data.result
+
+  console.log(payload)
+  console.log(applyResult)
 
   return applyResult
 }
@@ -60,4 +66,28 @@ export const getRecruitmentId = async (): Promise<number> => {
   const data = await response.json()
   const { id }: RecruitmentActiveResult = data.result
   return id
+}
+
+export const getApplyQuestion = async (
+  recruitmentId: number,
+  department: Department,
+  techRole: TechRole
+): Promise<ApplyQuestion[]> => {
+  const params = new URLSearchParams()
+  if (department) params.set('department', department)
+  if (techRole) params.set('techRole', techRole)
+
+  const response = await fetch(
+    `/api/recruitments/${recruitmentId}/questions?${params.toString()}`,
+    { method: 'GET' }
+  )
+
+  if (!response.ok) {
+    throw new Error(`지원자 질문 로딩에 실패했습니다. (${response.status})`)
+  }
+
+  const data = await response.json()
+  const questions: ApplyQuestion[] = data.result.questions
+
+  return questions
 }

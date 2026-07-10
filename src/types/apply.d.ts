@@ -1,6 +1,15 @@
 export type ApplyAnswer = {
   questionId: number
-  answer: string
+  content: string
+}
+
+export type ApplyQuestion = {
+  content: string
+  department: Department
+  id: number
+  maxLength: number
+  sequence: number
+  techRole: TechRole
 }
 
 export type ApplyPayload = {
