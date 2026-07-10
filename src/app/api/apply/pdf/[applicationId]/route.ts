@@ -26,6 +26,7 @@ export const POST = async (
     method: 'POST',
     body: upstreamForm,
   })
-  const data = await response.json()
+  const data = await response.text()
+
   return NextResponse.json(data)
 }

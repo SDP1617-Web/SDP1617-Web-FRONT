@@ -28,9 +28,6 @@ export const submitApply = async (
   const data = await response.json()
   const applyResult: ApplyResult = data.result
 
-  console.log(payload)
-  console.log(applyResult)
-
   return applyResult
 }
 
