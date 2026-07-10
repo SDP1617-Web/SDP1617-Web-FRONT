@@ -30,7 +30,7 @@ const ApplyForm = () => {
   const [answers, setAnswers] = useState<string[]>(() =>
     QUESTIONS.map(() => '')
   )
-  const [selectedSlots, setSelectedSlots] = useState<Set<string>>(new Set())
+  const [selectedSlots, setSelectedSlots] = useState<Set<number>>(new Set())
   const [file, setFile] = useState<File | null>(null)
   const [submitting, setSubmitting] = useState(false)
   const dateInputRef = useRef<HTMLInputElement>(null)
@@ -41,23 +41,14 @@ const ApplyForm = () => {
     if (selected) setFile(selected)
   }
 
-  const toggleSlot = (key: string) => {
+  const toggleSlot = (index: number) => {
     setSelectedSlots((prev) => {
       const next = new Set(prev)
-      if (next.has(key)) next.delete(key)
-      else next.add(key)
+      if (next.has(index)) next.delete(index)
+      else next.add(index)
       return next
     })
   }
-
-  // const toggleSlotIdx = (idx: number) => {
-  //   setSelectedSlots((prev) => {
-  //     const next = new Set(prev)
-  //     if (next.has(idx)) next.delete(idx)
-  //     else next.add(idx)
-  //     return next
-  //   })
-  // }
 
   const updateAnswer = (index: number, value: string) => {
     setAnswers((prev) => {
@@ -84,7 +75,7 @@ const ApplyForm = () => {
         questionId: index + 1,
         answer: answers[index] ?? '',
       })),
-      interviewSlotIds: Array.from(selectedSlots),
+      interviewSlotIds: Array.from(selectedSlots).sort((a, b) => a - b),
     }
 
     setSubmitting(true)
@@ -407,20 +398,20 @@ const ApplyForm = () => {
               </tr>
             </thead>
             <tbody>
-              {DAYS.map((day) => (
+              {DAYS.map((day, dayIndex) => (
                 <tr key={day} className="border-sdp-grey-200 border-t">
                   <td className="body1 text-sdp-grey-900 py-[16px] text-center font-semibold">
                     {day}
                   </td>
-                  {TIME_SLOTS.map((time) => {
-                    const key = `${day}-${time}`
+                  {TIME_SLOTS.map((time, timeIndex) => {
+                    const index = dayIndex * TIME_SLOTS.length + timeIndex
                     return (
-                      <td key={key} className="py-[16px] text-center">
+                      <td key={index} className="py-[16px] text-center">
                         <button
                           type="button"
-                          onClick={() => toggleSlot(key)}
+                          onClick={() => toggleSlot(index)}
                           className={`size-[24px] rounded-full border-2 transition-colors ${
-                            selectedSlots.has(key)
+                            selectedSlots.has(index)
                               ? 'bg-sdp-main-primary border-sdp-grey-400'
                               : 'border-sdp-grey-300'
                           }`}
