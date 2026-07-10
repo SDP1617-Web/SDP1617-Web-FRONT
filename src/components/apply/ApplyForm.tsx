@@ -4,8 +4,13 @@ import { useEffect, useRef, useState } from 'react'
 import { Button } from '@/components/common/Button'
 import { BaseInput, LayoutInput } from '@/components/common/Input'
 import { Icon } from '@/components/common/Icon'
-import { getRecruitmentId, submitApply, submitApplyPdf } from '@/lib/api/apply'
-import { Department, TechRole } from '@/types/apply'
+import {
+  getApplyQuestion,
+  getRecruitmentId,
+  submitApply,
+  submitApplyPdf,
+} from '@/lib/api/apply'
+import { ApplyQuestion, Department, TechRole } from '@/types/apply'
 import { useRouter } from 'next/navigation'
 
 /** YYYY-MM-DD → YY-MM-DD 변환 */
@@ -27,9 +32,8 @@ const ApplyForm = () => {
   const [major, setMajor] = useState('')
   const [department, setDepartment] = useState<Department>(null)
   const [techRole, setTechRole] = useState<TechRole>(null)
-  const [answers, setAnswers] = useState<string[]>(() =>
-    QUESTIONS.map(() => '')
-  )
+  const [questions, setQuestions] = useState<ApplyQuestion[]>([])
+  const [answers, setAnswers] = useState<Record<number, string>>({})
   const [selectedSlots, setSelectedSlots] = useState<Set<number>>(new Set())
   const [file, setFile] = useState<File | null>(null)
   const [submitting, setSubmitting] = useState(false)
@@ -50,12 +54,8 @@ const ApplyForm = () => {
     })
   }
 
-  const updateAnswer = (index: number, value: string) => {
-    setAnswers((prev) => {
-      const next = [...prev]
-      next[index] = value
-      return next
-    })
+  const updateAnswer = (questionId: number, value: string) => {
+    setAnswers((prev) => ({ ...prev, [questionId]: value }))
   }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -71,9 +71,9 @@ const ApplyForm = () => {
       major,
       department,
       techRole,
-      answers: QUESTIONS.map((question, index) => ({
-        questionId: index + 1,
-        answer: answers[index] ?? '',
+      answers: questions.map((question) => ({
+        questionId: question.id,
+        content: answers[question.id] ?? '',
       })),
       interviewSlotIds: Array.from(selectedSlots).sort((a, b) => a - b),
     }
@@ -83,6 +83,7 @@ const ApplyForm = () => {
       // 1. 지원서 본문을 먼저 제출하고 결과 ID를 받는다
       const result = await submitApply(recruitmentId, payload)
       // 2. 받은 결과 ID로 PDF를 별도 업로드한다
+      console.log(result)
       if (file) await submitApplyPdf(result.applicationId, file)
       router.push(`/apply/success`)
     } catch (error) {
@@ -100,6 +101,22 @@ const ApplyForm = () => {
     }
     fetchRecruitmentId()
   }, [])
+
+  useEffect(() => {
+    // 공고 ID가 아직 없거나 부서 미선택(최초 접속) 시에는 요청하지 않는다
+    if (!recruitmentId || !department) return
+    // TECH 부서는 세부 역할까지 선택돼야 질문을 요청한다
+    if (department === 'TECH' && !techRole) return
+
+    const fetchApplyQuestion = async () => {
+      const result = await getApplyQuestion(recruitmentId, department, techRole)
+      // 서버가 순서를 보장하지 않으므로 sequence 기준으로 정렬한다
+      setQuestions([...result].sort((a, b) => a.sequence - b.sequence))
+      // 질문이 바뀌면 이전 답변은 초기화한다
+      setAnswers({})
+    }
+    fetchApplyQuestion()
+  }, [recruitmentId, department, techRole])
 
   return (
     <form
@@ -289,90 +306,29 @@ const ApplyForm = () => {
         </div>
       </section>
 
-      {/* 지원동기 */}
-      <section className="mt-[100px] flex flex-col gap-y-[28px]">
-        {/* TextBox Component */}
-        <LayoutInput
-          num={QUESTIONS[0].num}
-          title={QUESTIONS[0].title}
-          maxLength={QUESTIONS[0].maxLength}
-          placeholder={QUESTIONS[0].placeholder}
-          value={answers[0]}
-          onChange={(e) => updateAnswer(0, e.target.value)}
-        />
-      </section>
-
-      {/* 강점, 약점 */}
-      <section className="mt-[100px] flex flex-col gap-y-[28px]">
-        {/* TextBox Component */}
-        <LayoutInput
-          num={QUESTIONS[1].num}
-          title={QUESTIONS[1].title}
-          subTitle={QUESTIONS[1].subTitle}
-          maxLength={QUESTIONS[1].maxLength}
-          placeholder={QUESTIONS[1].placeholder}
-          value={answers[1]}
-          onChange={(e) => updateAnswer(1, e.target.value)}
-        />
-      </section>
-
-      {/* 협업 경험 */}
-      <section className="mt-[100px] flex flex-col gap-y-[28px]">
-        {/* TextBox Component */}
-        <LayoutInput
-          num={QUESTIONS[2].num}
-          title={QUESTIONS[2].title}
-          maxLength={QUESTIONS[2].maxLength}
-          placeholder={QUESTIONS[2].placeholder}
-          value={answers[2]}
-          onChange={(e) => updateAnswer(2, e.target.value)}
-        />
-      </section>
-
-      {/* 창의적 사고 */}
-      <section className="mt-[100px] flex flex-col gap-y-[28px]">
-        {/* TextBox Component */}
-        <LayoutInput
-          num={QUESTIONS[3].num}
-          title={QUESTIONS[3].title}
-          maxLength={QUESTIONS[3].maxLength}
-          placeholder={QUESTIONS[3].placeholder}
-          value={answers[3]}
-          onChange={(e) => updateAnswer(3, e.target.value)}
-        />
-      </section>
-
-      {/* 주도적 문제 해결 */}
-      <section className="mt-[100px] flex flex-col gap-y-[28px]">
-        {/* TextBox Component */}
-        <LayoutInput
-          num={QUESTIONS[4].num}
-          title={QUESTIONS[4].title}
-          maxLength={QUESTIONS[4].maxLength}
-          placeholder={QUESTIONS[4].placeholder}
-          value={answers[4]}
-          onChange={(e) => updateAnswer(4, e.target.value)}
-        />
-      </section>
-
-      {/* 의견 조율 능력 */}
-      <section className="mt-[100px] flex flex-col gap-y-[28px]">
-        {/* TextBox Component */}
-        <LayoutInput
-          num={QUESTIONS[5].num}
-          title={QUESTIONS[5].title}
-          maxLength={QUESTIONS[5].maxLength}
-          placeholder={QUESTIONS[5].placeholder}
-          value={answers[5]}
-          onChange={(e) => updateAnswer(5, e.target.value)}
-        />
-      </section>
+      {/* 지원 질문 (서버에서 받아온 부서별 질문) */}
+      {questions.map((question) => (
+        <section
+          key={question.id}
+          className="mt-[100px] flex flex-col gap-y-[28px]"
+        >
+          {/* TextBox Component */}
+          <LayoutInput
+            num={String(question.sequence + 1)}
+            title={question.content}
+            maxLength={question.maxLength}
+            placeholder={`공백 포함 ${question.maxLength}자 이내`}
+            value={answers[question.id] ?? ''}
+            onChange={(e) => updateAnswer(question.id, e.target.value)}
+          />
+        </section>
+      ))}
 
       {/* 면접 시간대 */}
       <section className="mt-[100px] flex flex-col gap-y-[28px]">
         <div className="flex flex-col">
           <div className="flex flex-row items-center gap-[20px]">
-            <Button variant="v4">{INTERVIEW.num}</Button>
+            <Button variant="v4">{questions.length + 2}</Button>
             <h3 className="h3 text-sdp-grey-800 leading-9">
               {INTERVIEW.title}
             </h3>
@@ -501,53 +457,7 @@ const APPLY_FILE_TEXT = 'PDF 또는 PPT 파일 첨부'
 const APPLY_FILE_SELECT = '파일 선택'
 const FILE_ACCEPT = '.pdf,.ppt,.pptx'
 
-const QUESTIONS = [
-  {
-    num: '1',
-    title: '지원한 동기와 활동을 통해 이루고 싶은 목표를 서술해주세요.',
-    maxLength: 200,
-    placeholder: '공백 포함 200자 이내',
-  },
-  {
-    num: '2',
-    title:
-      '디자인팀에서 본인이 가장 잘 기여할 수 있는 역할과 그 이유를 본인의 강점 및 약점을 중심으로 설명해주세요.',
-    subTitle: '예시: UI 시스템 구축, 프로토타이핑 등',
-    maxLength: 200,
-    placeholder: '공백 포함 200자 이내',
-  },
-  {
-    num: '3',
-    title:
-      '팀 또는 개인 프로젝트 중, 기획자 혹은 개발자와 함께 협업한 경험에 대해 서술해주세요.',
-    maxLength: 350,
-    placeholder: '공백 포함 350자 이내',
-  },
-  {
-    num: '4',
-    title:
-      '기존 앱이나 웹사이트 중 UX/UI 측면에서 불편했던 점이나 개선이 필요하다고 생각한 사례를 소개 하고, 이를 해결할 수 있는 자신만의 창의적인 아이디어를 설명해 주세요.',
-    maxLength: 200,
-    placeholder: '공백 포함 200자 이내',
-  },
-  {
-    num: '5',
-    title:
-      '본인이 주도적으로 문제를 발견하고, 해당 문제를 끝까지 책임지고 해결한 경험을 구체적으로 서술해주세요.',
-    maxLength: 200,
-    placeholder: '공백 포함 200자 이내',
-  },
-  {
-    num: '6',
-    title:
-      '의견 충돌이나 소통의 어려움이 있었던 상황에서, 타인과 조율하며 문제를 해결하거나 결과를 개선한 경험을 서술해주세요.',
-    maxLength: 200,
-    placeholder: '공백 포함 200자 이내',
-  },
-]
-
 const INTERVIEW = {
-  num: '7',
   title: '면접 가능한 시간을 모두 체크해주세요.',
   subTitle: '가능한 시간을 체크해주시면 면접 시간을 조율해서 연락드릴게요.',
 }
