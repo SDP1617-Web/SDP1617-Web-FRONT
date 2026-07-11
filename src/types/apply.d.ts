@@ -46,3 +46,8 @@ export type RecruitmentActiveResult = {
   startAt: string
   deadlineAt: string
 }
+
+export type InterviewSlot = {
+  id: number
+  slotDateTime: string
+}

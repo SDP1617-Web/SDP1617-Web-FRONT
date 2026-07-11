@@ -1,16 +1,22 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Button } from '@/components/common/Button'
 import { BaseInput, LayoutInput } from '@/components/common/Input'
 import { Icon } from '@/components/common/Icon'
 import {
   getApplyQuestion,
+  getInterviewSlots,
   getRecruitmentId,
   submitApply,
   submitApplyPdf,
 } from '@/lib/api/apply'
-import { ApplyQuestion, Department, TechRole } from '@/types/apply'
+import {
+  ApplyQuestion,
+  Department,
+  InterviewSlot,
+  TechRole,
+} from '@/types/apply'
 import { useRouter } from 'next/navigation'
 
 /** YYYY-MM-DD → YY-MM-DD 변환 */
@@ -19,11 +25,19 @@ const formatDate = (iso: string) => {
   return `${year}-${month}-${day}`
 }
 
+const WEEKDAYS = ['일', '월', '화', '수', '목', '금', '토']
+
+/** '2026-07-11' → '7/11 (토)' */
+const formatSlotDate = (date: string) => {
+  const [, month, day] = date.split('-')
+  const weekday = WEEKDAYS[new Date(`${date}T00:00:00`).getDay()]
+  return `${Number(month)}/${Number(day)} (${weekday})`
+}
+
 const ApplyForm = () => {
   const router = useRouter()
   // TODO: 모집 공고 ID 가져오기
   const [recruitmentId, setRecruitmentId] = useState<number>(0)
-  // const recruitmentId = '1'
   const [name, setName] = useState('')
   const [phone, setPhone] = useState('')
   const [birthDate, setBirthDate] = useState('')
@@ -34,6 +48,7 @@ const ApplyForm = () => {
   const [techRole, setTechRole] = useState<TechRole>(null)
   const [questions, setQuestions] = useState<ApplyQuestion[]>([])
   const [answers, setAnswers] = useState<Record<number, string>>({})
+  const [slots, setSlots] = useState<InterviewSlot[]>([])
   const [selectedSlots, setSelectedSlots] = useState<Set<number>>(new Set())
   const [file, setFile] = useState<File | null>(null)
   const [submitting, setSubmitting] = useState(false)
@@ -45,14 +60,35 @@ const ApplyForm = () => {
     if (selected) setFile(selected)
   }
 
-  const toggleSlot = (index: number) => {
+  const toggleSlot = (slotId: number) => {
     setSelectedSlots((prev) => {
       const next = new Set(prev)
-      if (next.has(index)) next.delete(index)
-      else next.add(index)
+      if (next.has(slotId)) next.delete(slotId)
+      else next.add(slotId)
       return next
     })
   }
+
+  // 슬롯 목록을 날짜(행) × 시간(열) 그리드로 변환한다
+  const { dates, times, slotIdByCell } = useMemo(() => {
+    const dateSet = new Set<string>()
+    const timeSet = new Set<string>()
+    const cellMap = new Map<string, number>() // `${date} ${time}` → slotId
+
+    for (const slot of slots) {
+      const [date, rawTime] = slot.slotDateTime.split('T')
+      const time = rawTime.slice(0, 5) // 'HH:mm'
+      dateSet.add(date)
+      timeSet.add(time)
+      cellMap.set(`${date} ${time}`, slot.id)
+    }
+
+    return {
+      dates: [...dateSet].sort(),
+      times: [...timeSet].sort(),
+      slotIdByCell: cellMap,
+    }
+  }, [slots])
 
   const updateAnswer = (questionId: number, value: string) => {
     setAnswers((prev) => ({ ...prev, [questionId]: value }))
@@ -92,11 +128,13 @@ const ApplyForm = () => {
     }
   }
 
-  // 공고 ID 불러오기
+  // 공고 ID + 면접 슬롯 불러오기
   useEffect(() => {
     const fetchRecruitmentId = async () => {
       const recruitmentId = await getRecruitmentId()
+      const interviewSlots = await getInterviewSlots(recruitmentId)
       setRecruitmentId(recruitmentId)
+      setSlots(interviewSlots)
     }
     fetchRecruitmentId()
   }, [])
@@ -342,7 +380,7 @@ const ApplyForm = () => {
             <thead>
               <tr>
                 <th className="w-[80px]" />
-                {TIME_SLOTS.map((time) => (
+                {times.map((time) => (
                   <th
                     key={time}
                     className="body2 text-sdp-grey-700 py-[16px] text-center font-medium"
@@ -353,24 +391,35 @@ const ApplyForm = () => {
               </tr>
             </thead>
             <tbody>
-              {DAYS.map((day, dayIndex) => (
-                <tr key={day} className="border-sdp-grey-200 border-t">
+              {dates.map((date) => (
+                <tr key={date} className="border-sdp-grey-200 border-t">
                   <td className="body1 text-sdp-grey-900 py-[16px] text-center font-semibold">
-                    {day}
+                    {formatSlotDate(date)}
                   </td>
-                  {TIME_SLOTS.map((time, timeIndex) => {
-                    const index = dayIndex * TIME_SLOTS.length + timeIndex
+                  {times.map((time) => {
+                    const slotId = slotIdByCell.get(`${date} ${time}`)
+                    // 해당 날짜·시간에 슬롯이 없으면 빈 칸으로 둔다
+                    if (slotId === undefined) {
+                      return (
+                        <td
+                          key={time}
+                          className="text-sdp-grey-300 py-[16px] text-center"
+                        >
+                          -
+                        </td>
+                      )
+                    }
                     return (
-                      <td key={index} className="py-[16px] text-center">
+                      <td key={time} className="py-[16px] text-center">
                         <button
                           type="button"
-                          onClick={() => toggleSlot(index)}
+                          onClick={() => toggleSlot(slotId)}
                           className={`size-[24px] rounded-full border-2 transition-colors ${
-                            selectedSlots.has(index)
+                            selectedSlots.has(slotId)
                               ? 'bg-sdp-main-primary border-sdp-grey-400'
                               : 'border-sdp-grey-300'
                           }`}
-                          aria-label={`${day} ${time}`}
+                          aria-label={`${date} ${time}`}
                         />
                       </td>
                     )
@@ -460,19 +509,6 @@ const INTERVIEW = {
   title: '면접 가능한 시간을 모두 체크해주세요.',
   subTitle: '가능한 시간을 체크해주시면 면접 시간을 조율해서 연락드릴게요.',
 }
-
-const DAYS = ['월', '화', '수', '목', '금', '토', '일']
-
-const TIME_SLOTS = [
-  '18:00',
-  '18:30',
-  '19:00',
-  '19:30',
-  '20:00',
-  '20:30',
-  '21:00',
-  '21:30',
-]
 
 const APPLY_FINAL_TEXT =
   '작성하신 내용은 수정이 불가능하므로 제출 전 다시 한번 확인 부탁드립니다.'

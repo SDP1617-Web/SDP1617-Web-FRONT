@@ -6,6 +6,7 @@ import {
   RecruitmentActiveResult,
   Department,
   TechRole,
+  InterviewSlot,
 } from '@/types/apply'
 
 // 지원서 제출 결과 (PDF 업로드에 사용할 ID 포함)
@@ -87,4 +88,22 @@ export const getApplyQuestion = async (
   const questions: ApplyQuestion[] = data.result.questions
 
   return questions
+}
+
+// 면접 일정에 대한 API 요청
+export const getInterviewSlots = async (
+  recruitmentId: number
+): Promise<InterviewSlot[]> => {
+  const response = await fetch(
+    `/api/recruitments/${recruitmentId}/interview-slots`,
+    { method: 'GET' }
+  )
+
+  if (!response.ok) {
+    throw new Error(`면접 일정 로딩에 실패했습니다. (${response.status})`)
+  }
+
+  const data = await response.json()
+  const interviewSlots: InterviewSlot[] = data.result
+  return interviewSlots
 }
