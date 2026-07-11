@@ -132,7 +132,18 @@ const ApplyForm = () => {
   useEffect(() => {
     const fetchRecruitmentId = async () => {
       const recruitmentId = await getRecruitmentId()
-      const interviewSlots = await getInterviewSlots(recruitmentId)
+      // const interviewSlots = await getInterviewSlots(recruitmentId)
+      const interviewSlots = [
+        { id: 1, slotDateTime: '2026-07-11T18:00:00' },
+        { id: 2, slotDateTime: '2026-07-11T18:30:00' },
+        { id: 3, slotDateTime: '2026-07-11T19:00:00' },
+        { id: 4, slotDateTime: '2026-07-12T18:00:00' },
+        { id: 5, slotDateTime: '2026-07-12T19:00:00' },
+        { id: 6, slotDateTime: '2026-07-12T19:30:00' },
+        { id: 7, slotDateTime: '2026-07-13T18:30:00' },
+        { id: 8, slotDateTime: '2026-07-13T19:00:00' },
+        { id: 9, slotDateTime: '2026-07-13T19:30:00' },
+      ]
       setRecruitmentId(recruitmentId)
       setSlots(interviewSlots)
     }
@@ -379,7 +390,7 @@ const ApplyForm = () => {
           <table className="w-full table-fixed">
             <thead>
               <tr>
-                <th className="w-[80px]" />
+                <th className="w-[100px]" />
                 {times.map((time) => (
                   <th
                     key={time}
