@@ -18,25 +18,33 @@ import {
   TechRole,
 } from '@/types/apply'
 import { useRouter } from 'next/navigation'
-
-/** YYYY-MM-DD → YY-MM-DD 변환 */
-const formatDate = (iso: string) => {
-  const [year, month, day] = iso.split('-')
-  return `${year}-${month}-${day}`
-}
-
-const WEEKDAYS = ['일', '월', '화', '수', '목', '금', '토']
-
-/** '2026-07-11' → '7/11 (토)' */
-const formatSlotDate = (date: string) => {
-  const [, month, day] = date.split('-')
-  const weekday = WEEKDAYS[new Date(`${date}T00:00:00`).getDay()]
-  return `${Number(month)}/${Number(day)} (${weekday})`
-}
+import { formatDate, formatSlotDate } from '@/lib/date'
+import {
+  APPLY_BIRTH,
+  APPLY_CONTACT,
+  APPLY_EMAIL,
+  APPLY_FILE_SELECT,
+  APPLY_FILE_TEXT,
+  APPLY_FINAL_TEXT,
+  APPLY_INFORMATION,
+  APPLY_MAJOR,
+  APPLY_NAME,
+  APPLY_PORTFOLIO,
+  APPLY_SUBMIT,
+  APPLY_TEAM,
+  APPLY_UNIVERSITY,
+  DEPARTMENT_LIST,
+  FILE_ACCEPT,
+  FOOTER_CONTACT,
+  FOOTER_COPYRIGHT,
+  FOOTER_INSTAGRAM,
+  INTERVIEW,
+  PLACE_HOLDER,
+  TECH_ROLE_LIST,
+} from '@/constants/apply'
 
 const ApplyForm = () => {
   const router = useRouter()
-  // TODO: 모집 공고 ID 가져오기
   const [recruitmentId, setRecruitmentId] = useState<number>(0)
   const [name, setName] = useState('')
   const [phone, setPhone] = useState('')
@@ -55,11 +63,13 @@ const ApplyForm = () => {
   const dateInputRef = useRef<HTMLInputElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
+  // 포폴 등록
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selected = e.target.files?.[0]
     if (selected) setFile(selected)
   }
 
+  // 시간대 토글
   const toggleSlot = (slotId: number) => {
     setSelectedSlots((prev) => {
       const next = new Set(prev)
@@ -90,10 +100,12 @@ const ApplyForm = () => {
     }
   }, [slots])
 
+  // 답변 데이터 업데이트
   const updateAnswer = (questionId: number, value: string) => {
     setAnswers((prev) => ({ ...prev, [questionId]: value }))
   }
 
+  // 지원서 제출 시퀀스
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (submitting) return
@@ -132,18 +144,19 @@ const ApplyForm = () => {
   useEffect(() => {
     const fetchRecruitmentId = async () => {
       const recruitmentId = await getRecruitmentId()
-      // const interviewSlots = await getInterviewSlots(recruitmentId)
-      const interviewSlots = [
-        { id: 1, slotDateTime: '2026-07-11T18:00:00' },
-        { id: 2, slotDateTime: '2026-07-11T18:30:00' },
-        { id: 3, slotDateTime: '2026-07-11T19:00:00' },
-        { id: 4, slotDateTime: '2026-07-12T18:00:00' },
-        { id: 5, slotDateTime: '2026-07-12T19:00:00' },
-        { id: 6, slotDateTime: '2026-07-12T19:30:00' },
-        { id: 7, slotDateTime: '2026-07-13T18:30:00' },
-        { id: 8, slotDateTime: '2026-07-13T19:00:00' },
-        { id: 9, slotDateTime: '2026-07-13T19:30:00' },
-      ]
+      const interviewSlots = await getInterviewSlots(recruitmentId)
+      // 면접 시간대 mock 데이터
+      // const interviewSlots = [
+      //   { id: 1, slotDateTime: '2026-07-11T18:00:00' },
+      //   { id: 2, slotDateTime: '2026-07-11T18:30:00' },
+      //   { id: 3, slotDateTime: '2026-07-11T19:00:00' },
+      //   { id: 4, slotDateTime: '2026-07-12T18:00:00' },
+      //   { id: 5, slotDateTime: '2026-07-12T19:00:00' },
+      //   { id: 6, slotDateTime: '2026-07-12T19:30:00' },
+      //   { id: 7, slotDateTime: '2026-07-13T18:30:00' },
+      //   { id: 8, slotDateTime: '2026-07-13T19:00:00' },
+      //   { id: 9, slotDateTime: '2026-07-13T19:30:00' },
+      // ]
       setRecruitmentId(recruitmentId)
       setSlots(interviewSlots)
     }
@@ -480,53 +493,5 @@ const ApplyForm = () => {
     </form>
   )
 }
-
-const APPLY_INFORMATION = '지원자 정보'
-const APPLY_NAME = '이름'
-const APPLY_BIRTH = '생년월일'
-const APPLY_UNIVERSITY = '학교'
-const APPLY_CONTACT = '연락처'
-const APPLY_EMAIL = '이메일'
-const APPLY_MAJOR = '전공'
-
-const PLACE_HOLDER = {
-  NAME: '성함을 입력해 주세요.',
-  CONTACT: '연락처를 입력해 주세요.',
-  BIRTH: 'YYYY-MM-DD',
-  EMAIL: '공지사항 및 안내 메일을 수신할 이메일 주소',
-  UNIVERSITY: '학교를 입력해 주세요.',
-  MAJOR: '전공을 입력해 주세요.',
-}
-
-const APPLY_TEAM = '지원 부서 선택'
-
-const DEPARTMENT_LIST = {
-  RESEARCH: '리서치',
-  DESIGN: '디자인',
-  TECH: '테크',
-} as const
-
-const TECH_ROLE_LIST = {
-  FRONTEND: '프론트엔드',
-  BACKEND: '백엔드',
-} as const
-
-const APPLY_PORTFOLIO = '포트폴리오'
-const APPLY_FILE_TEXT = 'PDF 또는 PPT 파일 첨부'
-const APPLY_FILE_SELECT = '파일 선택'
-const FILE_ACCEPT = '.pdf,.ppt,.pptx'
-
-const INTERVIEW = {
-  title: '면접 가능한 시간을 모두 체크해주세요.',
-  subTitle: '가능한 시간을 체크해주시면 면접 시간을 조율해서 연락드릴게요.',
-}
-
-const APPLY_FINAL_TEXT =
-  '작성하신 내용은 수정이 불가능하므로 제출 전 다시 한번 확인 부탁드립니다.'
-const APPLY_SUBMIT = '최종제출'
-
-const FOOTER_CONTACT = '문의하기'
-const FOOTER_INSTAGRAM = '인스타그램'
-const FOOTER_COPYRIGHT = '© 2026 SDP All rights reserved.'
 
 export default ApplyForm
