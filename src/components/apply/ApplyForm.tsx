@@ -1,32 +1,189 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Button } from '@/components/common/Button'
 import { BaseInput, LayoutInput } from '@/components/common/Input'
 import { Icon } from '@/components/common/Icon'
-
-/** YYYY-MM-DD → YY-MM-DD 변환 */
-const formatDate = (iso: string) => {
-  const [year, month, day] = iso.split('-')
-  return `${year.slice(2)}-${month}-${day}`
-}
+import {
+  getApplyQuestion,
+  getInterviewSlots,
+  getRecruitmentId,
+  submitApply,
+  submitApplyPdf,
+} from '@/lib/api/apply'
+import {
+  ApplyQuestion,
+  Department,
+  InterviewSlot,
+  TechRole,
+} from '@/types/apply'
+import { useRouter } from 'next/navigation'
+import { formatDate, formatSlotDate } from '@/lib/date'
+import {
+  APPLY_BIRTH,
+  APPLY_CONTACT,
+  APPLY_EMAIL,
+  APPLY_FILE_SELECT,
+  APPLY_FILE_TEXT,
+  APPLY_FINAL_TEXT,
+  APPLY_INFORMATION,
+  APPLY_MAJOR,
+  APPLY_NAME,
+  APPLY_PORTFOLIO,
+  APPLY_SUBMIT,
+  APPLY_TEAM,
+  APPLY_UNIVERSITY,
+  DEPARTMENT_LIST,
+  FILE_ACCEPT,
+  FOOTER_CONTACT,
+  FOOTER_COPYRIGHT,
+  FOOTER_INSTAGRAM,
+  INTERVIEW,
+  PLACE_HOLDER,
+  TECH_ROLE_LIST,
+} from '@/constants/apply'
 
 const ApplyForm = () => {
-  const [birth, setBirth] = useState('')
-  const [selectedSlots, setSelectedSlots] = useState<Set<string>>(new Set())
+  const router = useRouter()
+  const [recruitmentId, setRecruitmentId] = useState<number>(0)
+  const [name, setName] = useState('')
+  const [phone, setPhone] = useState('')
+  const [birthDate, setBirthDate] = useState('')
+  const [email, setEmail] = useState('')
+  const [university, setUniversity] = useState('')
+  const [major, setMajor] = useState('')
+  const [department, setDepartment] = useState<Department>(null)
+  const [techRole, setTechRole] = useState<TechRole>(null)
+  const [questions, setQuestions] = useState<ApplyQuestion[]>([])
+  const [answers, setAnswers] = useState<Record<number, string>>({})
+  const [slots, setSlots] = useState<InterviewSlot[]>([])
+  const [selectedSlots, setSelectedSlots] = useState<Set<number>>(new Set())
+  const [file, setFile] = useState<File | null>(null)
+  const [submitting, setSubmitting] = useState(false)
   const dateInputRef = useRef<HTMLInputElement>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
-  const toggleSlot = (key: string) => {
+  // 포폴 등록
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selected = e.target.files?.[0]
+    if (selected) setFile(selected)
+  }
+
+  // 시간대 토글
+  const toggleSlot = (slotId: number) => {
     setSelectedSlots((prev) => {
       const next = new Set(prev)
-      if (next.has(key)) next.delete(key)
-      else next.add(key)
+      if (next.has(slotId)) next.delete(slotId)
+      else next.add(slotId)
       return next
     })
   }
 
+  // 슬롯 목록을 날짜(행) × 시간(열) 그리드로 변환한다
+  const { dates, times, slotIdByCell } = useMemo(() => {
+    const dateSet = new Set<string>()
+    const timeSet = new Set<string>()
+    const cellMap = new Map<string, number>() // `${date} ${time}` → slotId
+
+    for (const slot of slots) {
+      const [date, rawTime] = slot.slotDateTime.split('T')
+      const time = rawTime.slice(0, 5) // 'HH:mm'
+      dateSet.add(date)
+      timeSet.add(time)
+      cellMap.set(`${date} ${time}`, slot.id)
+    }
+
+    return {
+      dates: [...dateSet].sort(),
+      times: [...timeSet].sort(),
+      slotIdByCell: cellMap,
+    }
+  }, [slots])
+
+  // 답변 데이터 업데이트
+  const updateAnswer = (questionId: number, value: string) => {
+    setAnswers((prev) => ({ ...prev, [questionId]: value }))
+  }
+
+  // 지원서 제출 시퀀스
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    if (submitting) return
+
+    const payload = {
+      name,
+      phone,
+      birthDate,
+      email,
+      university,
+      major,
+      department,
+      techRole,
+      answers: questions.map((question) => ({
+        questionId: question.id,
+        content: answers[question.id] ?? '',
+      })),
+      interviewSlotIds: Array.from(selectedSlots).sort((a, b) => a - b),
+    }
+
+    setSubmitting(true)
+    try {
+      // 1. 지원서 본문을 먼저 제출하고 결과 ID를 받는다
+      const result = await submitApply(recruitmentId, payload)
+      // 2. 받은 결과 ID로 PDF를 별도 업로드한다
+      if (file) await submitApplyPdf(result.applicationId, file)
+      router.push(`/apply/success`)
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
+  // 공고 ID + 면접 슬롯 불러오기
+  useEffect(() => {
+    const fetchRecruitmentId = async () => {
+      const recruitmentId = await getRecruitmentId()
+      const interviewSlots = await getInterviewSlots(recruitmentId)
+      // 면접 시간대 mock 데이터
+      // const interviewSlots = [
+      //   { id: 1, slotDateTime: '2026-07-11T18:00:00' },
+      //   { id: 2, slotDateTime: '2026-07-11T18:30:00' },
+      //   { id: 3, slotDateTime: '2026-07-11T19:00:00' },
+      //   { id: 4, slotDateTime: '2026-07-12T18:00:00' },
+      //   { id: 5, slotDateTime: '2026-07-12T19:00:00' },
+      //   { id: 6, slotDateTime: '2026-07-12T19:30:00' },
+      //   { id: 7, slotDateTime: '2026-07-13T18:30:00' },
+      //   { id: 8, slotDateTime: '2026-07-13T19:00:00' },
+      //   { id: 9, slotDateTime: '2026-07-13T19:30:00' },
+      // ]
+      setRecruitmentId(recruitmentId)
+      setSlots(interviewSlots)
+    }
+    fetchRecruitmentId()
+  }, [])
+
+  useEffect(() => {
+    // 공고 ID가 아직 없거나 부서 미선택(최초 접속) 시에는 요청하지 않는다
+    if (!recruitmentId || !department) return
+    // TECH 부서는 세부 역할까지 선택돼야 질문을 요청한다
+    if (department === 'TECH' && !techRole) return
+
+    const fetchApplyQuestion = async () => {
+      const result = await getApplyQuestion(recruitmentId, department, techRole)
+      // 서버가 순서를 보장하지 않으므로 sequence 기준으로 정렬한다
+      setQuestions([...result].sort((a, b) => a.sequence - b.sequence))
+      // 질문이 바뀌면 이전 답변은 초기화한다
+      setAnswers({})
+    }
+    fetchApplyQuestion()
+  }, [recruitmentId, department, techRole])
+
   return (
-    <form action="" className="h-auto w-full px-[360px] pt-[90px]">
+    <form
+      onSubmit={handleSubmit}
+      className="h-auto w-full px-[360px] pt-[90px]"
+    >
       {/* 지원자 정보 */}
       <section className="flex flex-col">
         <div className="flex flex-row items-center gap-[20px]">
@@ -42,7 +199,11 @@ const ApplyForm = () => {
                 {APPLY_NAME}
               </h3>
               {/* Input Component */}
-              <BaseInput placeholder={PLACE_HOLDER.NAME}></BaseInput>
+              <BaseInput
+                placeholder={PLACE_HOLDER.NAME}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
             </div>
             {/* 지원자 생년월일 */}
             <div className="relative flex flex-col gap-y-[16px]">
@@ -52,8 +213,8 @@ const ApplyForm = () => {
               {/* Input Component */}
               <BaseInput
                 placeholder={PLACE_HOLDER.BIRTH}
-                value={birth}
-                onChange={(e) => setBirth(e.target.value)}
+                value={birthDate}
+                onChange={(e) => setBirthDate(e.target.value)}
                 suffix={
                   <button
                     type="button"
@@ -70,7 +231,19 @@ const ApplyForm = () => {
                 ref={dateInputRef}
                 type="date"
                 className="invisible absolute"
-                onChange={(e) => setBirth(formatDate(e.target.value))}
+                onChange={(e) => setBirthDate(formatDate(e.target.value))}
+              />
+            </div>
+            {/* 지원자 학교 */}
+            <div className="flex flex-col gap-y-[16px]">
+              <h3 className="h3 flex justify-items-start font-semibold">
+                {APPLY_UNIVERSITY}
+              </h3>
+              {/* Input Component */}
+              <BaseInput
+                placeholder={PLACE_HOLDER.UNIVERSITY}
+                value={university}
+                onChange={(e) => setUniversity(e.target.value)}
               />
             </div>
           </div>
@@ -81,7 +254,11 @@ const ApplyForm = () => {
                 {APPLY_CONTACT}
               </h3>
               {/* Input Component */}
-              <BaseInput placeholder={PLACE_HOLDER.CONTACT}></BaseInput>
+              <BaseInput
+                placeholder={PLACE_HOLDER.CONTACT}
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+              />
             </div>
             {/* 지원자 이메일 */}
             <div className="flex flex-col gap-y-[16px]">
@@ -89,7 +266,24 @@ const ApplyForm = () => {
                 {APPLY_EMAIL}
               </h3>
               {/* Input Component */}
-              <BaseInput placeholder={PLACE_HOLDER.EMAIL}></BaseInput>
+              <BaseInput
+                type="email"
+                placeholder={PLACE_HOLDER.EMAIL}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+            {/* 지원자 전공 */}
+            <div className="flex flex-col gap-y-[16px]">
+              <h3 className="h3 flex justify-items-start font-semibold">
+                {APPLY_MAJOR}
+              </h3>
+              {/* Input Component */}
+              <BaseInput
+                placeholder={PLACE_HOLDER.MAJOR}
+                value={major}
+                onChange={(e) => setMajor(e.target.value)}
+              />
             </div>
           </div>
         </div>
@@ -102,14 +296,42 @@ const ApplyForm = () => {
         </h3>
         {/* Button Component - v3 */}
         <div className="flex flex-row gap-x-[23px]">
-          {TEAM_LIST.map((TEAM, index) => {
-            return (
-              <Button key={index} variant="v3" className="w-auto flex-1">
-                {TEAM}
-              </Button>
-            )
-          })}
+          {(Object.entries(DEPARTMENT_LIST) as [Department, string][]).map(
+            ([key, label]) => {
+              return (
+                <Button
+                  key={key}
+                  variant="v3"
+                  isActive={department === key}
+                  onClick={() => setDepartment(key)}
+                  className="w-auto flex-1"
+                >
+                  {label}
+                </Button>
+              )
+            }
+          )}
         </div>
+        {/* Button Component - v3 */}
+        {department === 'TECH' && (
+          <div className="flex flex-row gap-x-[23px]">
+            {(Object.entries(TECH_ROLE_LIST) as [TechRole, string][]).map(
+              ([key, label]) => {
+                return (
+                  <Button
+                    key={key}
+                    variant="v3"
+                    isActive={techRole === key}
+                    onClick={() => setTechRole(key)}
+                    className="w-auto flex-1"
+                  >
+                    {label}
+                  </Button>
+                )
+              }
+            )}
+          </div>
+        )}
       </section>
 
       {/* 포트폴리오 */}
@@ -123,88 +345,51 @@ const ApplyForm = () => {
           <Icon name="pdf" />
           <div className="flex h-14 flex-col items-center justify-start self-stretch pt-2">
             <h4 className="h4 text-sdp-grey-500 justify-center text-center font-medium">
-              {APPLY_FILE_TEXT}
+              {file ? file.name : APPLY_FILE_TEXT}
             </h4>
           </div>
+          {/* 숨겨진 file input으로 로컬 파일 선택 */}
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept={FILE_ACCEPT}
+            className="hidden"
+            onChange={handleFileChange}
+          />
           {/* Button Component - v6 */}
-          <Button variant="v6">
+          <Button
+            variant="v6"
+            disabled={submitting}
+            onClick={() => fileInputRef.current?.click()}
+          >
             <h4 className="h4 font-medium">{APPLY_FILE_SELECT}</h4>
           </Button>
         </div>
       </section>
 
-      {/* 지원동기 */}
-      <section className="mt-[100px] flex flex-col gap-y-[28px]">
-        {/* TextBox Component */}
-        <LayoutInput
-          num={QUESTIONS[0].num}
-          title={QUESTIONS[0].title}
-          maxLength={QUESTIONS[0].maxLength}
-          placeholder={QUESTIONS[0].placeholder}
-        />
-      </section>
-
-      {/* 강점, 약점 */}
-      <section className="mt-[100px] flex flex-col gap-y-[28px]">
-        {/* TextBox Component */}
-        <LayoutInput
-          num={QUESTIONS[1].num}
-          title={QUESTIONS[1].title}
-          subTitle={QUESTIONS[1].subTitle}
-          maxLength={QUESTIONS[1].maxLength}
-          placeholder={QUESTIONS[1].placeholder}
-        />
-      </section>
-
-      {/* 협업 경험 */}
-      <section className="mt-[100px] flex flex-col gap-y-[28px]">
-        {/* TextBox Component */}
-        <LayoutInput
-          num={QUESTIONS[2].num}
-          title={QUESTIONS[2].title}
-          maxLength={QUESTIONS[2].maxLength}
-          placeholder={QUESTIONS[2].placeholder}
-        />
-      </section>
-
-      {/* 창의적 사고 */}
-      <section className="mt-[100px] flex flex-col gap-y-[28px]">
-        {/* TextBox Component */}
-        <LayoutInput
-          num={QUESTIONS[3].num}
-          title={QUESTIONS[3].title}
-          maxLength={QUESTIONS[3].maxLength}
-          placeholder={QUESTIONS[3].placeholder}
-        />
-      </section>
-
-      {/* 주도적 문제 해결 */}
-      <section className="mt-[100px] flex flex-col gap-y-[28px]">
-        {/* TextBox Component */}
-        <LayoutInput
-          num={QUESTIONS[4].num}
-          title={QUESTIONS[4].title}
-          maxLength={QUESTIONS[4].maxLength}
-          placeholder={QUESTIONS[4].placeholder}
-        />
-      </section>
-
-      {/* 의견 조율 능력 */}
-      <section className="mt-[100px] flex flex-col gap-y-[28px]">
-        {/* TextBox Component */}
-        <LayoutInput
-          num={QUESTIONS[5].num}
-          title={QUESTIONS[5].title}
-          maxLength={QUESTIONS[5].maxLength}
-          placeholder={QUESTIONS[5].placeholder}
-        />
-      </section>
+      {/* 지원 질문 (서버에서 받아온 부서별 질문) */}
+      {questions.map((question) => (
+        <section
+          key={question.id}
+          className="mt-[100px] flex flex-col gap-y-[28px]"
+        >
+          {/* TextBox Component */}
+          <LayoutInput
+            num={String(question.sequence + 1)}
+            title={question.content}
+            maxLength={question.maxLength}
+            placeholder={`공백 포함 ${question.maxLength}자 이내`}
+            value={answers[question.id] ?? ''}
+            onChange={(e) => updateAnswer(question.id, e.target.value)}
+          />
+        </section>
+      ))}
 
       {/* 면접 시간대 */}
       <section className="mt-[100px] flex flex-col gap-y-[28px]">
         <div className="flex flex-col">
           <div className="flex flex-row items-center gap-[20px]">
-            <Button variant="v4">{INTERVIEW.num}</Button>
+            <Button variant="v4">{questions.length + 2}</Button>
             <h3 className="h3 text-sdp-grey-800 leading-9">
               {INTERVIEW.title}
             </h3>
@@ -218,8 +403,8 @@ const ApplyForm = () => {
           <table className="w-full table-fixed">
             <thead>
               <tr>
-                <th className="w-[80px]" />
-                {TIME_SLOTS.map((time) => (
+                <th className="w-[100px]" />
+                {times.map((time) => (
                   <th
                     key={time}
                     className="body2 text-sdp-grey-700 py-[16px] text-center font-medium"
@@ -230,24 +415,35 @@ const ApplyForm = () => {
               </tr>
             </thead>
             <tbody>
-              {DAYS.map((day) => (
-                <tr key={day} className="border-sdp-grey-200 border-t">
+              {dates.map((date) => (
+                <tr key={date} className="border-sdp-grey-200 border-t">
                   <td className="body1 text-sdp-grey-900 py-[16px] text-center font-semibold">
-                    {day}
+                    {formatSlotDate(date)}
                   </td>
-                  {TIME_SLOTS.map((time) => {
-                    const key = `${day}-${time}`
+                  {times.map((time) => {
+                    const slotId = slotIdByCell.get(`${date} ${time}`)
+                    // 해당 날짜·시간에 슬롯이 없으면 빈 칸으로 둔다
+                    if (slotId === undefined) {
+                      return (
+                        <td
+                          key={time}
+                          className="text-sdp-grey-300 py-[16px] text-center"
+                        >
+                          -
+                        </td>
+                      )
+                    }
                     return (
-                      <td key={key} className="py-[16px] text-center">
+                      <td key={time} className="py-[16px] text-center">
                         <button
                           type="button"
-                          onClick={() => toggleSlot(key)}
+                          onClick={() => toggleSlot(slotId)}
                           className={`size-[24px] rounded-full border-2 transition-colors ${
-                            selectedSlots.has(key)
+                            selectedSlots.has(slotId)
                               ? 'bg-sdp-main-primary border-sdp-grey-400'
                               : 'border-sdp-grey-300'
                           }`}
-                          aria-label={`${day} ${time}`}
+                          aria-label={`${date} ${time}`}
                         />
                       </td>
                     )
@@ -270,7 +466,9 @@ const ApplyForm = () => {
         </div>
         <div className="mt-[29px] flex justify-end">
           {/* Button Component */}
-          <Button variant="v9">{APPLY_SUBMIT}</Button>
+          <Button type="submit" variant="v9" disabled={submitting}>
+            {APPLY_SUBMIT}
+          </Button>
         </div>
       </section>
 
@@ -295,98 +493,5 @@ const ApplyForm = () => {
     </form>
   )
 }
-
-const APPLY_INFORMATION = '지원자 정보'
-const APPLY_NAME = '이름'
-const APPLY_BIRTH = '생년월일'
-const APPLY_CONTACT = '연락처'
-const APPLY_EMAIL = '이메일'
-
-const PLACE_HOLDER = {
-  NAME: '성함을 입력해 주세요.',
-  CONTACT: '연락처를 입력해 주세요.',
-  BIRTH: 'YY-MM-DD',
-  EMAIL: '공지사항 및 안내 메일을 수신할 이메일 주소',
-}
-
-const APPLY_TEAM = '지원 부서 선택'
-
-const TEAM_LIST = ['리서치', '디자인', '테크']
-
-const APPLY_PORTFOLIO = '포트폴리오'
-const APPLY_FILE_TEXT = 'PDF 또는 PPT 파일 첨부'
-const APPLY_FILE_SELECT = '파일 선택'
-
-const QUESTIONS = [
-  {
-    num: '1',
-    title: '지원한 동기와 활동을 통해 이루고 싶은 목표를 서술해주세요.',
-    maxLength: 200,
-    placeholder: '공백 포함 200자 이내',
-  },
-  {
-    num: '2',
-    title:
-      '디자인팀에서 본인이 가장 잘 기여할 수 있는 역할과 그 이유를 본인의 강점 및 약점을 중심으로 설명해주세요.',
-    subTitle: '예시: UI 시스템 구축, 프로토타이핑 등',
-    maxLength: 200,
-    placeholder: '공백 포함 200자 이내',
-  },
-  {
-    num: '3',
-    title:
-      '팀 또는 개인 프로젝트 중, 기획자 혹은 개발자와 함께 협업한 경험에 대해 서술해주세요.',
-    maxLength: 350,
-    placeholder: '공백 포함 350자 이내',
-  },
-  {
-    num: '4',
-    title:
-      '기존 앱이나 웹사이트 중 UX/UI 측면에서 불편했던 점이나 개선이 필요하다고 생각한 사례를 소개 하고, 이를 해결할 수 있는 자신만의 창의적인 아이디어를 설명해 주세요.',
-    maxLength: 200,
-    placeholder: '공백 포함 200자 이내',
-  },
-  {
-    num: '5',
-    title:
-      '본인이 주도적으로 문제를 발견하고, 해당 문제를 끝까지 책임지고 해결한 경험을 구체적으로 서술해주세요.',
-    maxLength: 200,
-    placeholder: '공백 포함 200자 이내',
-  },
-  {
-    num: '6',
-    title:
-      '의견 충돌이나 소통의 어려움이 있었던 상황에서, 타인과 조율하며 문제를 해결하거나 결과를 개선한 경험을 서술해주세요.',
-    maxLength: 200,
-    placeholder: '공백 포함 200자 이내',
-  },
-]
-
-const INTERVIEW = {
-  num: '7',
-  title: '면접 가능한 시간을 모두 체크해주세요.',
-  subTitle: '가능한 시간을 체크해주시면 면접 시간을 조율해서 연락드릴게요.',
-}
-
-const DAYS = ['월', '화', '수', '목', '금', '토', '일']
-
-const TIME_SLOTS = [
-  '18:00',
-  '18:30',
-  '19:00',
-  '19:30',
-  '20:00',
-  '20:30',
-  '21:00',
-  '21:30',
-]
-
-const APPLY_FINAL_TEXT =
-  '작성하신 내용은 수정이 불가능하므로 제출 전 다시 한번 확인 부탁드립니다.'
-const APPLY_SUBMIT = '최종제출'
-
-const FOOTER_CONTACT = '문의하기'
-const FOOTER_INSTAGRAM = '인스타그램'
-const FOOTER_COPYRIGHT = '© 2026 SDP All rights reserved.'
 
 export default ApplyForm
