@@ -134,7 +134,7 @@ const ApplyForm = () => {
       if (file) await submitApplyPdf(result.applicationId, file)
       router.push(`/apply/success`)
     } catch (error) {
-      console.error(error)
+      alert(error instanceof Error ? error.message : String(error))
     } finally {
       setSubmitting(false)
     }
@@ -143,22 +143,27 @@ const ApplyForm = () => {
   // 공고 ID + 면접 슬롯 불러오기
   useEffect(() => {
     const fetchRecruitmentId = async () => {
-      const recruitmentId = await getRecruitmentId()
-      const interviewSlots = await getInterviewSlots(recruitmentId)
-      // 면접 시간대 mock 데이터
-      // const interviewSlots = [
-      //   { id: 1, slotDateTime: '2026-07-11T18:00:00' },
-      //   { id: 2, slotDateTime: '2026-07-11T18:30:00' },
-      //   { id: 3, slotDateTime: '2026-07-11T19:00:00' },
-      //   { id: 4, slotDateTime: '2026-07-12T18:00:00' },
-      //   { id: 5, slotDateTime: '2026-07-12T19:00:00' },
-      //   { id: 6, slotDateTime: '2026-07-12T19:30:00' },
-      //   { id: 7, slotDateTime: '2026-07-13T18:30:00' },
-      //   { id: 8, slotDateTime: '2026-07-13T19:00:00' },
-      //   { id: 9, slotDateTime: '2026-07-13T19:30:00' },
-      // ]
-      setRecruitmentId(recruitmentId)
-      setSlots(interviewSlots)
+      try {
+        const recruitmentId = await getRecruitmentId()
+        const interviewSlots = await getInterviewSlots(recruitmentId)
+        // 면접 시간대 mock 데이터
+        // const interviewSlots = [
+        //   { id: 1, slotDateTime: '2026-07-11T18:00:00' },
+        //   { id: 2, slotDateTime: '2026-07-11T18:30:00' },
+        //   { id: 3, slotDateTime: '2026-07-11T19:00:00' },
+        //   { id: 4, slotDateTime: '2026-07-12T18:00:00' },
+        //   { id: 5, slotDateTime: '2026-07-12T19:00:00' },
+        //   { id: 6, slotDateTime: '2026-07-12T19:30:00' },
+        //   { id: 7, slotDateTime: '2026-07-13T18:30:00' },
+        //   { id: 8, slotDateTime: '2026-07-13T19:00:00' },
+        //   { id: 9, slotDateTime: '2026-07-13T19:30:00' },
+        // ]
+        setRecruitmentId(recruitmentId)
+        setSlots(interviewSlots)
+      } catch (error) {
+        alert(error instanceof Error ? error.message : String(error))
+        router.push(`/`)
+      }
     }
     fetchRecruitmentId()
   }, [])
@@ -170,11 +175,19 @@ const ApplyForm = () => {
     if (department === 'TECH' && !techRole) return
 
     const fetchApplyQuestion = async () => {
-      const result = await getApplyQuestion(recruitmentId, department, techRole)
-      // 서버가 순서를 보장하지 않으므로 sequence 기준으로 정렬한다
-      setQuestions([...result].sort((a, b) => a.sequence - b.sequence))
-      // 질문이 바뀌면 이전 답변은 초기화한다
-      setAnswers({})
+      try {
+        const result = await getApplyQuestion(
+          recruitmentId,
+          department,
+          techRole
+        )
+        // 서버가 순서를 보장하지 않으므로 sequence 기준으로 정렬한다
+        setQuestions([...result].sort((a, b) => a.sequence - b.sequence))
+        // 질문이 바뀌면 이전 답변은 초기화한다
+        setAnswers({})
+      } catch (error) {
+        alert(error instanceof Error ? error.message : String(error))
+      }
     }
     fetchApplyQuestion()
   }, [recruitmentId, department, techRole])
