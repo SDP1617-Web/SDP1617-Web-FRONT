@@ -134,7 +134,7 @@ const ApplyForm = () => {
       if (file) await submitApplyPdf(result.applicationId, file)
       router.push(`/apply/success`)
     } catch (error) {
-      alert(error)
+      alert(error instanceof Error ? error.message : String(error))
     } finally {
       setSubmitting(false)
     }
@@ -161,7 +161,7 @@ const ApplyForm = () => {
         setRecruitmentId(recruitmentId)
         setSlots(interviewSlots)
       } catch (error) {
-        alert(error)
+        alert(error instanceof Error ? error.message : String(error))
         router.push(`/`)
       }
     }
@@ -185,8 +185,8 @@ const ApplyForm = () => {
         setQuestions([...result].sort((a, b) => a.sequence - b.sequence))
         // 질문이 바뀌면 이전 답변은 초기화한다
         setAnswers({})
-      } catch (e) {
-        alert(e)
+      } catch (error) {
+        alert(error instanceof Error ? error.message : String(error))
       }
     }
     fetchApplyQuestion()
