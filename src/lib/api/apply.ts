@@ -85,7 +85,7 @@ export const getApplyQuestion = async (
   }
 
   const data = await response.json()
-  const questions: ApplyQuestion[] = data.result.questions
+  const questions: ApplyQuestion[] = data.result.test
 
   return questions
 }
@@ -100,7 +100,7 @@ export const getInterviewSlots = async (
   )
 
   if (!response.ok) {
-    throw new Error(`면접 일정 로딩에 실패했습니다. (${response.status})`)
+    throw new Error(`인터뷰 일정 조회에 실패했습니다. (${response.status})`)
   }
 
   const data = await response.json()
