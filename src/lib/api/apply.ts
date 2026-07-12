@@ -85,7 +85,7 @@ export const getApplyQuestion = async (
   }
 
   const data = await response.json()
-  const questions: ApplyQuestion[] = data.result.test
+  const questions: ApplyQuestion[] = data.result
 
   return questions
 }
