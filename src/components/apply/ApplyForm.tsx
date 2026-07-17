@@ -132,7 +132,7 @@ const ApplyForm = () => {
       const result = await submitApply(recruitmentId, payload)
       // 2. 받은 결과 ID로 PDF를 별도 업로드한다
       if (file) await submitApplyPdf(result.applicationId, file)
-      router.push(`/apply/success`)
+      router.push(`/apply/complete`)
     } catch (error) {
       alert(error instanceof Error ? error.message : String(error))
     } finally {
