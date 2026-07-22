@@ -126,3 +126,8 @@ body {
   margin: 0 auto;
   overflow-x: hidden;
 }
+
+input,
+textarea {
+  cursor: text;
+}

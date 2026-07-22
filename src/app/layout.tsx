@@ -20,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko" className="h-full antialiased">
-      <body className="flex min-h-full flex-col">
+      <body className="flex min-h-full cursor-none flex-col">
         <Header />
         <CursorTrail />
         {children}
