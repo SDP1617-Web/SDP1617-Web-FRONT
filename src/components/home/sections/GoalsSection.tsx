@@ -75,6 +75,7 @@ const GoalsSection = () => {
                 level={levels[i]}
                 width={120}
                 height={120}
+                className="overflow-visible"
               />
               <p
                 className="h3 font-bold"
