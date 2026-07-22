@@ -2,10 +2,10 @@
 
 import { useEffect, useRef } from 'react'
 
-const DOT_COUNT = 14
+const DOT_COUNT = 10
 const DOT_SIZE = 20 // px
 const COLOR = '#CCFB55'
-const LERP = 0.35 // 따라오는 속도 (클수록 머리가 빠름)
+const LERP = 0.28 // 따라오는 속도 (클수록 머리가 빠름)
 const IDLE_MS = 2000 // 이 시간 동안 안 움직이면 사라짐
 
 const CursorTrail = () => {
