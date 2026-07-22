@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
+import CursorTrail from '@/components/common/CursorTrail'
 
 export const metadata: Metadata = {
   title: 'SDP | Sustainable Development Program',
@@ -21,6 +22,7 @@ export default function RootLayout({
     <html lang="ko" className="h-full antialiased">
       <body className="flex min-h-full flex-col">
         <Header />
+        <CursorTrail />
         {children}
         <Footer />
       </body>
