@@ -68,29 +68,49 @@ export const HeroBannerCard = ({ title, subTitle, className }: CardProps) => (
 )
 
 // 2. FeatureCard (세로형 다크 포인트)
-export const FeatureCard = ({ title, description, className }: CardProps) => (
-  <div
-    className={cn(
-      'group bg-sdp-grey-800 flex h-[498px] w-[381.66px] cursor-pointer flex-col justify-end overflow-hidden rounded-[40px] p-10 text-left',
-      'transition-all duration-500 ease-in-out',
-      'hover:w-[756px] hover:bg-linear-to-t hover:from-[#0A0A0A] hover:via-[#0A0A0A]/20 hover:to-transparent',
-      className
-    )}
-  >
-    <div className="flex flex-col gap-4 self-stretch">
-      {title && (
-        <h2 className="text-sdp-grey-50 self-stretch text-[32px] leading-[42px] font-bold">
-          {title}
-        </h2>
+export const FeatureCard = ({
+  title,
+  description,
+  className,
+  isActive,
+  onMouseEnter,
+}: CardProps & { onMouseEnter?: () => void }) => {
+  const controlled = isActive !== undefined
+
+  return (
+    <div
+      onMouseEnter={onMouseEnter}
+      className={cn(
+        'group bg-sdp-grey-800 flex h-[498px] cursor-pointer flex-col justify-end overflow-hidden rounded-[40px] p-10 text-left',
+        'transition-all duration-500 ease-in-out',
+        controlled
+          ? isActive
+            ? 'w-[756px] bg-linear-to-t from-[#0A0A0A] via-[#0A0A0A]/20 to-transparent'
+            : 'w-[381.66px]'
+          : 'w-[381.66px] hover:w-[756px] hover:bg-linear-to-t hover:from-[#0A0A0A] hover:via-[#0A0A0A]/20 hover:to-transparent',
+        className
       )}
-      {description && (
-        <p className="text-sdp-grey-500 w-[301.66px] self-stretch text-[20px] leading-[28px] font-normal transition-all duration-500">
-          {description}
-        </p>
-      )}
+    >
+      <div className="flex flex-col gap-4 self-stretch">
+        {title && (
+          <h2 className="text-sdp-grey-50 self-stretch text-[32px] leading-[42px] font-bold">
+            {title}
+          </h2>
+        )}
+        {description && (
+          <p
+            className={cn(
+              'text-sdp-grey-500 w-[301.66px] self-stretch text-[20px] leading-[28px] font-normal whitespace-pre-line transition-all duration-500',
+              controlled && !isActive ? 'opacity-0' : 'opacity-100'
+            )}
+          >
+            {description}
+          </p>
+        )}
+      </div>
     </div>
-  </div>
-)
+  )
+}
 
 // 3. ProjectCard
 export const ProjectCard = ({

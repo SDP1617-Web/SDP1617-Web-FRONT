@@ -1,4 +1,6 @@
-import type { CSSProperties } from 'react'
+'use client'
+
+import { useState, type CSSProperties } from 'react'
 import Image from 'next/image'
 import { FeatureCard } from '@/components/common/Card'
 
@@ -46,6 +48,8 @@ const CARDS = [
 ]
 
 const ProjectsSection = () => {
+  const [active, setActive] = useState(0) // 초기엔 1번(0)이 확장
+
   return (
     <section style={sectionStyle}>
       <div style={sphere1Style} />
@@ -78,12 +82,15 @@ const ProjectsSection = () => {
         <div
           style={{ marginTop: '48px', gap: '24px' }}
           className="flex flex-row"
+          onMouseLeave={() => setActive(0)}
         >
           {CARDS.map((card, i) => (
             <FeatureCard
               key={i}
               title={card.title}
               description={card.description}
+              isActive={active === i}
+              onMouseEnter={() => setActive(i)}
             />
           ))}
         </div>
