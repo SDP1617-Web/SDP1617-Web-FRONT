@@ -93,26 +93,39 @@
     font-weight: 400;
   }
 
-  /* 그라데이션 텍스트 */
+  /* 그라데이션 텍스트 (흐르는 애니메이션) */
   .gradient-text-korean {
     background: linear-gradient(
       90deg,
       var(--color-sdp-main-primary) 0%,
-      var(--color-sdp-grey-900) 50.96%,
+      var(--color-sdp-grey-900) 25%,
+      var(--color-sdp-main-primary) 50%,
+      var(--color-sdp-grey-900) 75%,
       var(--color-sdp-main-primary) 100%
     );
+    background-size: 200% auto;
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     display: inline-block;
+    animation: gradient-flow 5s linear infinite;
   }
 
   .gradient-text-english {
-    background: linear-gradient(91deg, #d4fe6b 14.22%, #c4c4c4 109.75%);
+    background: linear-gradient(
+      90deg,
+      #d4fe6b 0%,
+      #c4c4c4 25%,
+      #d4fe6b 50%,
+      #c4c4c4 75%,
+      #d4fe6b 100%
+    );
+    background-size: 200% auto;
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     display: inline-block;
+    animation: gradient-flow 5s linear infinite;
   }
 }
 
@@ -125,4 +138,22 @@ body {
   max-width: 1920px;
   margin: 0 auto;
   overflow-x: hidden;
+}
+
+@keyframes gradient-flow {
+  from {
+    background-position: 0% center;
+  }
+  to {
+    background-position: -200% center;
+  }
+}
+
+* {
+  cursor: none !important;
+}
+
+input,
+textarea {
+  cursor: text !important;
 }
