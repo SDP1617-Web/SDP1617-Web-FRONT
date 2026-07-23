@@ -127,7 +127,11 @@ body {
   overflow-x: hidden;
 }
 
+* {
+  cursor: none !important;
+}
+
 input,
 textarea {
-  cursor: text;
+  cursor: text !important;
 }
