@@ -21,8 +21,8 @@ export const Button = ({
 
   const variantStyles = {
     v1: isActive
-      ? 'w-[129px] h-[53px] p-[8px_16px] rounded-full bg-sdp-main-primary text-black body1'
-      : 'w-[129px] h-[53px] p-[8px_16px] rounded-full bg-sdp-grey-100 text-sdp-grey-400 body1',
+      ? 'w-[130px] h-[53px] p-[8px_16px] rounded-full bg-sdp-main-primary text-black body1'
+      : 'w-[130px] h-[53px] p-[8px_16px] rounded-full bg-sdp-grey-100 text-sdp-grey-400 body1',
 
     v2: isActive
       ? 'w-[301px] p-[17px] justify-between rounded-[8px] bg-sdp-main-secondary text-sdp-grey-900 h4'

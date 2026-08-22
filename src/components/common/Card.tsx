@@ -7,6 +7,7 @@ interface CardProps {
   category?: string
   subTitle?: string
   description?: string
+  bullets?: string[]
   date?: string
   footerText?: string
   className?: string
@@ -166,56 +167,84 @@ export const ProjectCard = ({
     </Link>
   )
 }
+
 // 4. StatCard (수치/기수)
-export const StatCard = ({ title, value, unit, className }: CardProps) => (
-  <div
-    className={cn(
-      'bg-sdp-grey-900 relative flex w-full max-w-[588px] items-end justify-between rounded-lg p-[36px_48px]',
-      className
-    )}
-  >
+export const StatCard = ({
+  title,
+  value,
+  unit = '',
+  footerText,
+  className,
+}: CardProps) => {
+  const hasPlus = unit.endsWith('+')
+  const baseUnit = hasPlus ? unit.slice(0, -1) : unit
+
+  return (
     <div
-      className="pointer-events-none absolute right-[0.002px] bottom-0 rounded-lg mix-blend-color-dodge"
-      style={{
-        width: '342.17px',
-        height: '123.568px',
-        backgroundImage: 'url("/images/card5-bg.png")',
-        backgroundPosition: '0.253px -133.821px',
-        backgroundSize: '147.628% 543.758%',
-        backgroundRepeat: 'no-repeat',
-      }}
-    />
+      className={cn(
+        'bg-sdp-grey-900 relative flex w-full max-w-[588px] items-end justify-between rounded-lg p-[36px_48px]',
+        className
+      )}
+    >
+      <div
+        className="pointer-events-none absolute right-[0.002px] bottom-0 rounded-lg mix-blend-color-dodge"
+        style={{
+          width: '342.17px',
+          height: '123.568px',
+          backgroundImage: 'url("/images/card5-bg.png")',
+          backgroundPosition: '0.253px -133.821px',
+          backgroundSize: '147.628% 543.758%',
+          backgroundRepeat: 'no-repeat',
+        }}
+      />
 
-    {title && (
-      <h3
-        className="z-10 w-[252px] shrink-0 text-left text-[26px] leading-[36px] text-white"
-        style={{ fontWeight: 700 }}
-      >
-        {title}
-      </h3>
-    )}
+      {title && (
+        <h3
+          className="z-10 w-[252px] shrink-0 text-left text-[26px] leading-[36px] text-white"
+          style={{ fontWeight: 700 }}
+        >
+          {title}
+        </h3>
+      )}
 
-    <div className="text-sdp-main-primary z-10 flex h-[69px] w-[209px] items-baseline justify-end gap-[7px]">
-      <span
-        className="text-right text-[72px] leading-[80px]"
-        style={{ fontWeight: 700 }}
-      >
-        {value}
-      </span>
+      <div className="text-sdp-main-primary z-10 flex h-[69px] w-[209px] items-baseline justify-end gap-[7px]">
+        <span
+          className="text-right text-[72px] leading-[80px]"
+          style={{ fontWeight: 700 }}
+        >
+          {value}
+        </span>
 
-      <span
-        className="w-[28px] text-center text-[32px] leading-[42px]"
-        style={{ fontWeight: 700 }}
-      >
-        {unit}
-      </span>
+        <span
+          className="relative w-[28px] text-center text-[32px] leading-[42px]"
+          style={{ fontWeight: 700 }}
+        >
+          {baseUnit}
+          {hasPlus && (
+            <span
+              className="absolute top-1/2 -right-5 -translate-y-1/2 text-[24px] leading-none"
+              style={{ fontWeight: 700 }}
+            >
+              +
+            </span>
+          )}
+        </span>
+      </div>
+
+      {footerText && (
+        <span className="text-sdp-grey-300 absolute right-12 bottom-3 z-10 text-[13px] leading-none whitespace-nowrap">
+          {footerText}
+        </span>
+      )}
     </div>
-  </div>
-)
+  )
+}
+
 // 5. ExternalCard (대외협력)
 export const ExternalCard = ({
   title,
   subTitle,
+  description,
   isActive = false,
   onClick,
   className,
@@ -256,11 +285,23 @@ export const ExternalCard = ({
           </span>
         )}
       </div>
+
+      {description && (
+        <p className="text-sdp-grey-400 mt-[24px] text-[18px] leading-[27px] font-normal">
+          {description}
+        </p>
+      )}
     </button>
   )
 }
+
 // 6. 팀 엠블럼 카드
-export const EmblemCard = ({ title, description, className }: CardProps) => (
+export const EmblemCard = ({
+  title,
+  subTitle,
+  description,
+  className,
+}: CardProps) => (
   <div
     className={cn(
       'group flex w-[383px] flex-col items-start gap-[27px] transition-all duration-300 ease-out',
@@ -269,11 +310,9 @@ export const EmblemCard = ({ title, description, className }: CardProps) => (
   >
     <div
       className={cn(
-        'bg-sdp-grey-600 flex h-[325px] w-full items-center justify-center self-stretch rounded-[20px] px-[31px]',
+        'bg-sdp-grey-600 flex h-[325px] w-full flex-col items-center justify-center gap-[12px] self-stretch rounded-[20px] px-[31px]',
         'transition-all duration-300 ease-out',
-
         'group-hover:-translate-y-3 group-hover:shadow-[0_20px_40px_-10px_rgba(204,251,85,0.3)]',
-
         'active:scale-[0.98]'
       )}
     >
@@ -282,10 +321,16 @@ export const EmblemCard = ({ title, description, className }: CardProps) => (
           {title}
         </h2>
       )}
+
+      {subTitle && (
+        <p className="text-sdp-grey-300 text-center text-[20px] leading-[26px] font-semibold tracking-[-0.36px]">
+          {subTitle}
+        </p>
+      )}
     </div>
 
     {description && (
-      <p className="text-sdp-grey-200 self-stretch text-[22px] leading-[160%] font-normal tracking-[-0.55px] transition-transform duration-300 group-hover:-translate-y-1">
+      <p className="text-sdp-grey-200 self-stretch text-[22px] leading-[160%] font-normal tracking-[-0.55px] whitespace-pre-line transition-transform duration-300 group-hover:-translate-y-1">
         {description}
       </p>
     )}
@@ -345,36 +390,38 @@ export const QuarterCard = ({
 }: CardProps) => (
   <div
     className={cn(
-      'flex h-[280px] w-[1055px] flex-col items-start bg-white',
+      'flex min-h-[280px] w-[1055px] flex-col items-start bg-white',
       'border-sdp-grey-100 rounded-[26.667px] border-[1.333px]',
       'gap-[21.333px] p-[32px_42.667px]',
       className
     )}
   >
-    <div className="flex w-full items-start gap-[104px]">
-      <div className="flex min-w-0 flex-col items-start gap-2">
-        <p className="text-sdp-grey-500 body2">{weekLabel}</p>
-        <div className="text-sdp-grey-600 body2 flex flex-col gap-1 whitespace-nowrap">
+    <div className="flex w-full items-start">
+      <div className="mr-[20px] flex w-[320px] shrink-0 flex-col items-start gap-2">
+        <p className="text-sdp-grey-500 body2 whitespace-nowrap">{weekLabel}</p>
+        <div className="text-sdp-grey-600 body2 flex flex-col gap-1">
           {week.map((item) => (
             <div key={item}>{item}</div>
           ))}
         </div>
       </div>
 
-      <div className="flex min-w-0 flex-col items-start gap-2">
-        <p className="text-sdp-grey-900 text-[18px] font-bold">
+      <div className="mr-[20px] flex min-w-0 flex-1 flex-col items-start gap-2">
+        <p className="text-sdp-grey-900 text-[18px] font-bold whitespace-nowrap">
           {sessionsLabel}
         </p>
-        <div className="text-sdp-grey-600 body2 flex flex-col gap-1 whitespace-nowrap">
+        <div className="text-sdp-grey-600 body2 flex flex-col gap-1">
           {sessions.map((item, index) => (
             <div key={index}>{item}</div>
           ))}
         </div>
       </div>
 
-      <div className="flex min-w-0 flex-col items-start gap-2">
-        <p className="text-sdp-grey-900 text-[18px] font-bold">{goalsLabel}</p>
-        <div className="text-sdp-grey-600 body2 flex flex-col gap-1 whitespace-nowrap">
+      <div className="flex min-w-0 flex-1 flex-col items-start gap-2">
+        <p className="text-sdp-grey-900 text-[18px] font-bold whitespace-nowrap">
+          {goalsLabel}
+        </p>
+        <div className="text-sdp-grey-600 body2 flex flex-col gap-1">
           {goals.map((item, index) => (
             <div key={index}>{item}</div>
           ))}

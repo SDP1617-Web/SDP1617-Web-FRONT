@@ -7,19 +7,22 @@ import { Button } from '@/components/common/Button'
 
 const TABS = [
   {
-    id: 'orientation',
-    label: '오리엔테이션',
+    id: 'alumnaimentoring',
+    label: '알럼나이 멘토링',
     image: '/activity-orientation.png',
   },
   {
-    id: 'mentoring',
-    label: '알럼나이 멘토링',
-    image: '/activity-mentoring.png',
+    id: 'networkingday',
+    label: '네트워킹 데이',
+    image: '/activity-environment.png',
   },
-  { id: 'environment', label: '환경활동', image: '/activity-environment.png' },
-  { id: 'volunteer', label: '봉사활동', image: '/activity-volunteer.png' },
-  { id: 'mt', label: 'MT', image: '/activity-mt.png' },
-  { id: 'homecoming', label: '홈커밍데이', image: '/activity-homecoming.png' },
+  {
+    id: 'mentoring',
+    label: '기후환경 동아리 멘토링',
+    image: '/activity-volunteer.png',
+  },
+  { id: 'minisemina', label: '미니 세미나', image: '/activity-mt.png' },
+  { id: 'opensemina', label: '오픈 세미나', image: '/activity-homecoming.png' },
 ]
 
 const imageFrameStyle: CSSProperties = {

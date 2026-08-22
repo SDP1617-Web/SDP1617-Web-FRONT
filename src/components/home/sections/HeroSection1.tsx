@@ -17,7 +17,8 @@ const HeroSection1 = () => {
         style={{ objectFit: 'cover' }}
       />
 
-      {/* 버튼 */}
+      {/* 버튼 (지원 기간 아님 - 임시로 숨김) */}
+      {/*
       <div
         className="absolute left-1/2 -translate-x-1/2"
         style={{ top: 'calc(80vh / var(--sw-scale, 1))' }}
@@ -26,6 +27,7 @@ const HeroSection1 = () => {
           <Button variant="v5">학회 지원하기</Button>
         </Link>
       </div>
+      */}
     </section>
   )
 }
