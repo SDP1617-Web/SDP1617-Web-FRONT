@@ -228,7 +228,6 @@ export const StatCard = ({ title, value, unit = '', className }: CardProps) => {
   )
 }
 // 5. ExternalCard (대외협력)
-// 5. ExternalCard (대외협력)
 export const ExternalCard = ({
   title,
   subTitle,
@@ -378,36 +377,38 @@ export const QuarterCard = ({
 }: CardProps) => (
   <div
     className={cn(
-      'flex h-[280px] w-[1055px] flex-col items-start bg-white',
+      'flex min-h-[280px] w-[1055px] flex-col items-start bg-white',
       'border-sdp-grey-100 rounded-[26.667px] border-[1.333px]',
       'gap-[21.333px] p-[32px_42.667px]',
       className
     )}
   >
-    <div className="flex w-full items-start gap-[104px]">
-      <div className="flex min-w-0 flex-col items-start gap-2">
-        <p className="text-sdp-grey-500 body2">{weekLabel}</p>
-        <div className="text-sdp-grey-600 body2 flex flex-col gap-1 whitespace-nowrap">
+    <div className="flex w-full items-start">
+      <div className="mr-[20px] flex w-[320px] shrink-0 flex-col items-start gap-2">
+        <p className="text-sdp-grey-500 body2 whitespace-nowrap">{weekLabel}</p>
+        <div className="text-sdp-grey-600 body2 flex flex-col gap-1">
           {week.map((item) => (
             <div key={item}>{item}</div>
           ))}
         </div>
       </div>
 
-      <div className="flex min-w-0 flex-col items-start gap-2">
-        <p className="text-sdp-grey-900 text-[18px] font-bold">
+      <div className="mr-[20px] flex min-w-0 flex-1 flex-col items-start gap-2">
+        <p className="text-sdp-grey-900 text-[18px] font-bold whitespace-nowrap">
           {sessionsLabel}
         </p>
-        <div className="text-sdp-grey-600 body2 flex flex-col gap-1 whitespace-nowrap">
+        <div className="text-sdp-grey-600 body2 flex flex-col gap-1">
           {sessions.map((item, index) => (
             <div key={index}>{item}</div>
           ))}
         </div>
       </div>
 
-      <div className="flex min-w-0 flex-col items-start gap-2">
-        <p className="text-sdp-grey-900 text-[18px] font-bold">{goalsLabel}</p>
-        <div className="text-sdp-grey-600 body2 flex flex-col gap-1 whitespace-nowrap">
+      <div className="flex min-w-0 flex-1 flex-col items-start gap-2">
+        <p className="text-sdp-grey-900 text-[18px] font-bold whitespace-nowrap">
+          {goalsLabel}
+        </p>
+        <div className="text-sdp-grey-600 body2 flex flex-col gap-1">
           {goals.map((item, index) => (
             <div key={index}>{item}</div>
           ))}

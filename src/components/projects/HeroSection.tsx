@@ -1,6 +1,6 @@
 import Image from 'next/image'
 
-const HERO_H1 = 'PROJECT'
+const HERO_H1 = 'PROCESS'
 
 const HeroSection = () => {
   return (
