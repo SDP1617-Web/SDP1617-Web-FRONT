@@ -6,7 +6,12 @@ import { StatCard } from '@/components/common/Card'
 
 const STATS_CARDS = [
   { title: '몇 기수?', value: '18', unit: '기' },
-  { title: '누적 세미나 참여', value: '450', unit: '명+' },
+  {
+    title: '누적 세미나 참여',
+    value: '450',
+    unit: '명+',
+    footerText: '*15회 오픈 세미나 기준',
+  },
   { title: '누적 학회원 수', value: '170', unit: '명+' },
   { title: '환경을 위한 프로젝트', value: '7', unit: '개+' },
 ]
@@ -20,11 +25,13 @@ function AnimatedStatCard({
   title,
   value,
   unit,
+  footerText,
   run,
 }: {
   title: string
   value: string
   unit: string
+  footerText?: string
   run: boolean
 }) {
   const target = Number(value)
@@ -56,6 +63,7 @@ function AnimatedStatCard({
       title={title}
       value={isNumeric ? String(display) : value}
       unit={unit}
+      footerText={footerText}
     />
   )
 }
@@ -89,6 +97,7 @@ const StatsSection = () => {
               title={card.title}
               value={card.value}
               unit={card.unit}
+              footerText={card.footerText}
               run={inView}
             />
           ))}

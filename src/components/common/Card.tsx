@@ -167,8 +167,15 @@ export const ProjectCard = ({
     </Link>
   )
 }
+
 // 4. StatCard (수치/기수)
-export const StatCard = ({ title, value, unit = '', className }: CardProps) => {
+export const StatCard = ({
+  title,
+  value,
+  unit = '',
+  footerText,
+  className,
+}: CardProps) => {
   const hasPlus = unit.endsWith('+')
   const baseUnit = hasPlus ? unit.slice(0, -1) : unit
 
@@ -208,7 +215,6 @@ export const StatCard = ({ title, value, unit = '', className }: CardProps) => {
           {value}
         </span>
 
-        {/* unit 글자 자체를 기준점(relative)으로 삼아서 + 를 바로 옆에 붙임 */}
         <span
           className="relative w-[28px] text-center text-[32px] leading-[42px]"
           style={{ fontWeight: 700 }}
@@ -224,9 +230,16 @@ export const StatCard = ({ title, value, unit = '', className }: CardProps) => {
           )}
         </span>
       </div>
+
+      {footerText && (
+        <span className="text-sdp-grey-300 absolute right-12 bottom-3 z-10 text-[13px] leading-none whitespace-nowrap">
+          {footerText}
+        </span>
+      )}
     </div>
   )
 }
+
 // 5. ExternalCard (대외협력)
 export const ExternalCard = ({
   title,
