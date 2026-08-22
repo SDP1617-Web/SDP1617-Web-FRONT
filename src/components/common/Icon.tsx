@@ -20,6 +20,9 @@ const ICON_CONFIG = {
   pattern1: { size: 100, viewBox: '0 0 100 102' },
   pattern2: { size: 100, viewBox: '0 0 100 102' },
   pattern3: { size: 100, viewBox: '0 0 101 102' },
+  plus: { size: 100, viewBox: '0 0 100 102' },
+  search: { size: 100, viewBox: '0 0 100 102' },
+  arrow: { size: 100, viewBox: '0 0 100 102' },
   close: { width: 21, height: 21, viewBox: '0 0 21 21', Component: CloseIcon },
   calendar: {
     width: 30,
@@ -71,7 +74,12 @@ export const Icon = ({ name, level = 0, className, ...props }: IconProps) => {
       const isOn = index < level
       const fill = isOn ? COLORS.active : COLORS.off
 
-      if (name === 'pattern3') {
+      if (
+        name === 'pattern3' ||
+        name === 'plus' ||
+        name === 'search' ||
+        name === 'arrow'
+      ) {
         return (
           <circle
             key={index}

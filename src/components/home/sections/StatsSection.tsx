@@ -5,10 +5,10 @@ import { useInView } from 'framer-motion'
 import { StatCard } from '@/components/common/Card'
 
 const STATS_CARDS = [
-  { title: '몇 기수?', value: '17', unit: '기' },
-  { title: '환경을 위한 프로젝트', value: '545', unit: '개' },
-  { title: '관심 지원자', value: '340', unit: '명' },
-  { title: '몇 기수?', value: '17', unit: '기' },
+  { title: '몇 기수?', value: '18', unit: '기' },
+  { title: '누적 세미나 참여', value: '450', unit: '명+' },
+  { title: '누적 학회원 수', value: '170', unit: '명+' },
+  { title: '환경을 위한 프로젝트', value: '7', unit: '개+' },
 ]
 
 // 초반 우다다다 → 마지막 한두 개 천천히 (강한 감속)

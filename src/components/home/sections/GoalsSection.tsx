@@ -5,9 +5,9 @@ import { useInView } from 'framer-motion'
 import { Icon } from '@/components/common/Icon'
 
 const GOALS = [
-  { pattern: 'pattern1', label: '쓰레기를 줄이고' }, // ↓
-  { pattern: 'pattern2', label: '발전' }, // ↗
-  { pattern: 'pattern3', label: '삶을 더하고' }, // ✛
+  { pattern: 'plus', label: '작은 실천을 모으고' }, // +
+  { pattern: 'search', label: '해답을 찾고' }, // 🔍
+  { pattern: 'arrow', label: '미래를 잇고' }, // →
 ] as const
 
 const DOTS_PER_ICON = 9
@@ -28,7 +28,7 @@ const GoalsSection = () => {
 
     const timers: ReturnType<typeof setTimeout>[] = []
     const DOT_GAP = 90 // 점 하나씩 켜지는 간격(ms)
-    const ICON_GAP = 250 // 화살표 사이 추가 간격(ms)
+    const ICON_GAP = 250 // 아이콘 사이 추가 간격(ms)
     let delay = 300 // 진입 후 시작 지연
 
     GOALS.forEach((_, iconIdx) => {

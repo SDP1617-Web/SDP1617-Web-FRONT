@@ -14,7 +14,7 @@ const Home = () => {
       <IntroSection />
       <GoalsSection />
       <StatsSection />
-      <ProjectsSection />
+      {/* <ProjectsSection /> */}
       <ActivitiesSection />
       <FaqSection />
       <PartnersSection />

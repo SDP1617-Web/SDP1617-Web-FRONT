@@ -167,51 +167,65 @@ export const ProjectCard = ({
   )
 }
 // 4. StatCard (수치/기수)
-export const StatCard = ({ title, value, unit, className }: CardProps) => (
-  <div
-    className={cn(
-      'bg-sdp-grey-900 relative flex w-full max-w-[588px] items-end justify-between rounded-lg p-[36px_48px]',
-      className
-    )}
-  >
+export const StatCard = ({ title, value, unit = '', className }: CardProps) => {
+  const hasPlus = unit.endsWith('+')
+  const baseUnit = hasPlus ? unit.slice(0, -1) : unit
+
+  return (
     <div
-      className="pointer-events-none absolute right-[0.002px] bottom-0 rounded-lg mix-blend-color-dodge"
-      style={{
-        width: '342.17px',
-        height: '123.568px',
-        backgroundImage: 'url("/images/card5-bg.png")',
-        backgroundPosition: '0.253px -133.821px',
-        backgroundSize: '147.628% 543.758%',
-        backgroundRepeat: 'no-repeat',
-      }}
-    />
+      className={cn(
+        'bg-sdp-grey-900 relative flex w-full max-w-[588px] items-end justify-between rounded-lg p-[36px_48px]',
+        className
+      )}
+    >
+      <div
+        className="pointer-events-none absolute right-[0.002px] bottom-0 rounded-lg mix-blend-color-dodge"
+        style={{
+          width: '342.17px',
+          height: '123.568px',
+          backgroundImage: 'url("/images/card5-bg.png")',
+          backgroundPosition: '0.253px -133.821px',
+          backgroundSize: '147.628% 543.758%',
+          backgroundRepeat: 'no-repeat',
+        }}
+      />
 
-    {title && (
-      <h3
-        className="z-10 w-[252px] shrink-0 text-left text-[26px] leading-[36px] text-white"
-        style={{ fontWeight: 700 }}
-      >
-        {title}
-      </h3>
-    )}
+      {title && (
+        <h3
+          className="z-10 w-[252px] shrink-0 text-left text-[26px] leading-[36px] text-white"
+          style={{ fontWeight: 700 }}
+        >
+          {title}
+        </h3>
+      )}
 
-    <div className="text-sdp-main-primary z-10 flex h-[69px] w-[209px] items-baseline justify-end gap-[7px]">
-      <span
-        className="text-right text-[72px] leading-[80px]"
-        style={{ fontWeight: 700 }}
-      >
-        {value}
-      </span>
+      <div className="text-sdp-main-primary z-10 flex h-[69px] w-[209px] items-baseline justify-end gap-[7px]">
+        <span
+          className="text-right text-[72px] leading-[80px]"
+          style={{ fontWeight: 700 }}
+        >
+          {value}
+        </span>
 
-      <span
-        className="w-[28px] text-center text-[32px] leading-[42px]"
-        style={{ fontWeight: 700 }}
-      >
-        {unit}
-      </span>
+        {/* unit 글자 자체를 기준점(relative)으로 삼아서 + 를 바로 옆에 붙임 */}
+        <span
+          className="relative w-[28px] text-center text-[32px] leading-[42px]"
+          style={{ fontWeight: 700 }}
+        >
+          {baseUnit}
+          {hasPlus && (
+            <span
+              className="absolute top-1/2 -right-5 -translate-y-1/2 text-[24px] leading-none"
+              style={{ fontWeight: 700 }}
+            >
+              +
+            </span>
+          )}
+        </span>
+      </div>
     </div>
-  </div>
-)
+  )
+}
 // 5. ExternalCard (대외협력)
 export const ExternalCard = ({
   title,
