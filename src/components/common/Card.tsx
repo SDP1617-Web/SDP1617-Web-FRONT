@@ -7,6 +7,7 @@ interface CardProps {
   category?: string
   subTitle?: string
   description?: string
+  bullets?: string[]
   date?: string
   footerText?: string
   className?: string
@@ -227,9 +228,11 @@ export const StatCard = ({ title, value, unit = '', className }: CardProps) => {
   )
 }
 // 5. ExternalCard (대외협력)
+// 5. ExternalCard (대외협력)
 export const ExternalCard = ({
   title,
   subTitle,
+  description,
   isActive = false,
   onClick,
   className,
@@ -270,11 +273,23 @@ export const ExternalCard = ({
           </span>
         )}
       </div>
+
+      {description && (
+        <p className="text-sdp-grey-400 mt-[24px] text-[18px] leading-[27px] font-normal">
+          {description}
+        </p>
+      )}
     </button>
   )
 }
+
 // 6. 팀 엠블럼 카드
-export const EmblemCard = ({ title, description, className }: CardProps) => (
+export const EmblemCard = ({
+  title,
+  subTitle,
+  description,
+  className,
+}: CardProps) => (
   <div
     className={cn(
       'group flex w-[383px] flex-col items-start gap-[27px] transition-all duration-300 ease-out',
@@ -283,11 +298,9 @@ export const EmblemCard = ({ title, description, className }: CardProps) => (
   >
     <div
       className={cn(
-        'bg-sdp-grey-600 flex h-[325px] w-full items-center justify-center self-stretch rounded-[20px] px-[31px]',
+        'bg-sdp-grey-600 flex h-[325px] w-full flex-col items-center justify-center gap-[12px] self-stretch rounded-[20px] px-[31px]',
         'transition-all duration-300 ease-out',
-
         'group-hover:-translate-y-3 group-hover:shadow-[0_20px_40px_-10px_rgba(204,251,85,0.3)]',
-
         'active:scale-[0.98]'
       )}
     >
@@ -296,10 +309,16 @@ export const EmblemCard = ({ title, description, className }: CardProps) => (
           {title}
         </h2>
       )}
+
+      {subTitle && (
+        <p className="text-sdp-grey-300 text-center text-[20px] leading-[26px] font-semibold tracking-[-0.36px]">
+          {subTitle}
+        </p>
+      )}
     </div>
 
     {description && (
-      <p className="text-sdp-grey-200 self-stretch text-[22px] leading-[160%] font-normal tracking-[-0.55px] transition-transform duration-300 group-hover:-translate-y-1">
+      <p className="text-sdp-grey-200 self-stretch text-[22px] leading-[160%] font-normal tracking-[-0.55px] whitespace-pre-line transition-transform duration-300 group-hover:-translate-y-1">
         {description}
       </p>
     )}

@@ -14,13 +14,16 @@ const AboutIntro = () => {
         className="h3-sb text-center"
         style={{ color: 'var(--color-sdp-grey-900)', marginTop: '28.62px' }}
       >
-        sdp 관련 소개글 어쩌고 저쩌고
+        SDP는 Sustainable Development Program의 약자로,
         <br />
-        현재 연세대학교 고등교육혁신원 및 유엔 지속가능발전해법 네트워크에
-        소속해 있어요.
+        학부생 주도로 설립된 한국 최초의 지속가능성 관련 글로벌 리더쉽
+        프로그램이에요.
         <br />
-        2017년 부터 지속가능발전 관련 문제를 주제로 정의하고 이에 대한 해결책을
-        제시하고 있어요.
+        현재 유엔 지속가능발전해법 네트워크(SDSN Korea)에 소속해 있어요.
+        <br />
+        2017년도부터 지속가능발전 관련 문제를 정의하고
+        <br />
+        이에 대한 해결책을 SDP만의 방법으로 제시하고 있어요.
       </p>
     </section>
   )
