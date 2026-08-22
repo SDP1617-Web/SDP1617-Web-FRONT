@@ -4,7 +4,10 @@ import { Button } from '@/components/common/Button'
 
 const HeroSection1 = () => {
   return (
-    <section className="relative w-full" style={{ height: '100vh' }}>
+    <section
+      className="relative w-full"
+      style={{ height: 'calc(100vh / var(--sw-scale, 1))' }}
+    >
       {/* 배경 SVG */}
       <Image
         src="/hero-bg.svg"
@@ -14,9 +17,12 @@ const HeroSection1 = () => {
         style={{ objectFit: 'cover' }}
       />
 
-      {/* 버튼 */}
+      {/* 버튼 (지원 기간 아님 - 임시로 숨김) */}
       {/*
-      <div className="absolute top-[80vh] left-1/2 -translate-x-1/2">
+      <div
+        className="absolute left-1/2 -translate-x-1/2"
+        style={{ top: 'calc(80vh / var(--sw-scale, 1))' }}
+      >
         <Link href="/apply">
           <Button variant="v5">학회 지원하기</Button>
         </Link>

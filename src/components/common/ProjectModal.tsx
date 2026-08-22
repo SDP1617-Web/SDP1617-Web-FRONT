@@ -18,7 +18,7 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
       role="presentation"
     >
       <div
-        className="relative max-h-[90vh] w-full max-w-[800px] overflow-y-auto rounded-[32px] bg-white p-8 md:p-12"
+        className="relative max-h-[calc(90vh/var(--sw-scale,1))] w-full max-w-[800px] overflow-y-auto rounded-[32px] bg-white p-8 md:p-12"
         onClick={(e) => e.stopPropagation()}
         role="dialog"
         aria-modal="true"

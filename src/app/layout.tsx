@@ -3,6 +3,7 @@ import './globals.css'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import CursorTrail from '@/components/common/CursorTrail'
+import ScaleWrapper from '@/components/common/ScaleWrapper'
 
 export const metadata: Metadata = {
   title: 'SDP | Sustainable Development Program',
@@ -21,10 +22,12 @@ export default function RootLayout({
   return (
     <html lang="ko" className="h-full antialiased">
       <body className="flex min-h-full cursor-none flex-col">
-        <Header />
         <CursorTrail />
-        {children}
-        <Footer />
+        <ScaleWrapper>
+          <Header />
+          {children}
+          <Footer />
+        </ScaleWrapper>
       </body>
     </html>
   )
