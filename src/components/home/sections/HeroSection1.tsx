@@ -15,11 +15,13 @@ const HeroSection1 = () => {
       />
 
       {/* 버튼 */}
+      {/*
       <div className="absolute top-[80vh] left-1/2 -translate-x-1/2">
         <Link href="/apply">
           <Button variant="v5">학회 지원하기</Button>
         </Link>
       </div>
+      */}
     </section>
   )
 }
