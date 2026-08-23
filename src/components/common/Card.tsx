@@ -385,8 +385,8 @@ export const QuarterCard = ({
   className,
   notice,
   weekLabel = '1주차',
-  sessionsLabel = '세션 구성',
-  goalsLabel = '이번 주 목표',
+  sessionsLabel = '주요 활동',
+  goalsLabel = '핵심 산출물',
 }: CardProps) => (
   <div
     className={cn(
@@ -410,9 +410,14 @@ export const QuarterCard = ({
         <p className="text-sdp-grey-900 text-[18px] font-bold whitespace-nowrap">
           {sessionsLabel}
         </p>
-        <div className="text-sdp-grey-600 body2 flex flex-col gap-1">
+        <div className="text-sdp-grey-600 body2 flex flex-col gap-1.5">
           {sessions.map((item, index) => (
-            <div key={index}>{item}</div>
+            <div key={index} className="flex items-start gap-1">
+              <span className="shrink-0">·</span>
+              <span className="min-w-0 flex-1 whitespace-pre-line">
+                {item.replace(/^·\s*/, '')}
+              </span>
+            </div>
           ))}
         </div>
       </div>
@@ -421,9 +426,14 @@ export const QuarterCard = ({
         <p className="text-sdp-grey-900 text-[18px] font-bold whitespace-nowrap">
           {goalsLabel}
         </p>
-        <div className="text-sdp-grey-600 body2 flex flex-col gap-1">
+        <div className="text-sdp-grey-600 body2 flex flex-col gap-1.5">
           {goals.map((item, index) => (
-            <div key={index}>{item}</div>
+            <div key={index} className="flex items-start gap-1">
+              <span className="shrink-0">·</span>
+              <span className="min-w-0 flex-1 whitespace-pre-line">
+                {item.replace(/^·\s*/, '')}
+              </span>
+            </div>
           ))}
         </div>
       </div>

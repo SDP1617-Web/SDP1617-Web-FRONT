@@ -2,27 +2,39 @@
 
 import type { CSSProperties } from 'react'
 import Image from 'next/image'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button } from '@/components/common/Button'
 
 const TABS = [
   {
     id: 'alumnaimentoring',
     label: '알럼나이 멘토링',
-    image: '/activity-orientation.png',
+    images: [
+      '/activities/alumnai-mentoring.png',
+      '/activities/alumnai-mentoring2.png',
+      '/activities/alumnai-mentoring3.png',
+    ],
   },
   {
     id: 'networkingday',
     label: '네트워킹 데이',
-    image: '/activity-environment.png',
+    images: ['/activities/networking-day.png'],
   },
   {
     id: 'mentoring',
     label: '기후환경 동아리 멘토링',
-    image: '/activity-volunteer.png',
+    images: ['/activities/mentoring.png'],
   },
-  { id: 'minisemina', label: '미니 세미나', image: '/activity-mt.png' },
-  { id: 'opensemina', label: '오픈 세미나', image: '/activity-homecoming.png' },
+  {
+    id: 'mini-semina',
+    label: '미니 세미나',
+    images: ['/activities/mini-semina.png', '/activities/mini-semina2.png'],
+  },
+  {
+    id: 'open-semina',
+    label: '오픈 세미나',
+    images: ['/activities/open-semina.png'],
+  },
 ]
 
 const imageFrameStyle: CSSProperties = {
@@ -37,8 +49,25 @@ const imageFrameStyle: CSSProperties = {
 
 const ActivitiesSection = () => {
   const [activeTab, setActiveTab] = useState(TABS[0].id)
-  const activeImage =
-    TABS.find((t) => t.id === activeTab)?.image ?? TABS[0].image
+  const [imageIndex, setImageIndex] = useState(0)
+
+  const activeTabData = TABS.find((t) => t.id === activeTab) ?? TABS[0]
+  const images = activeTabData.images
+  const hasMultipleImages = images.length > 1
+  const currentImage = images[imageIndex] ?? images[0]
+
+  // 탭이 바뀌면 이미지 인덱스를 처음으로 리셋
+  useEffect(() => {
+    setImageIndex(0)
+  }, [activeTab])
+
+  const goToPrev = () => {
+    setImageIndex((prev) => (prev - 1 + images.length) % images.length)
+  }
+
+  const goToNext = () => {
+    setImageIndex((prev) => (prev + 1) % images.length)
+  }
 
   return (
     <section style={{ marginTop: '195px' }} className="flex justify-center">
@@ -70,13 +99,73 @@ const ActivitiesSection = () => {
           </div>
 
           {/* 우측 이미지 */}
-          <div style={imageFrameStyle}>
-            <Image
-              src={activeImage}
-              alt={activeTab}
-              fill
-              style={{ objectFit: 'contain' }}
-            />
+          <div className="flex flex-col items-center gap-3">
+            <div style={imageFrameStyle}>
+              <Image
+                key={currentImage} // 이미지 전환 시 트랜지션이 깔끔하게 재시작되도록
+                src={currentImage}
+                alt={`${activeTabData.label} ${imageIndex + 1}`}
+                fill
+                style={{ objectFit: 'contain' }}
+              />
+
+              {hasMultipleImages && (
+                <>
+                  <button
+                    type="button"
+                    onClick={goToPrev}
+                    aria-label="이전 사진"
+                    className="absolute top-1/2 left-3 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-black/40 text-white transition hover:bg-black/60"
+                  >
+                    <svg width="8" height="14" viewBox="0 0 8 14" fill="none">
+                      <path
+                        d="M7 1L1 7L7 13"
+                        stroke="currentColor"
+                        strokeWidth="1.75"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={goToNext}
+                    aria-label="다음 사진"
+                    className="absolute top-1/2 right-3 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-black/40 text-white transition hover:bg-black/60"
+                  >
+                    <svg width="8" height="14" viewBox="0 0 8 14" fill="none">
+                      <path
+                        d="M1 1L7 7L1 13"
+                        stroke="currentColor"
+                        strokeWidth="1.75"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </button>
+                </>
+              )}
+            </div>
+
+            {/* 점 인디케이터 - 사진이 2장 이상일 때만 표시 */}
+            {hasMultipleImages && (
+              <div className="flex items-center gap-2">
+                {images.map((img, i) => (
+                  <button
+                    key={img}
+                    type="button"
+                    onClick={() => setImageIndex(i)}
+                    aria-label={`${i + 1}번째 사진 보기`}
+                    className={
+                      i === imageIndex
+                        ? 'bg-sdp-main-primary h-2 w-2 rounded-full transition-all'
+                        : 'bg-sdp-grey-200 hover:bg-sdp-grey-300 h-2 w-2 rounded-full transition-all'
+                    }
+                  />
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>

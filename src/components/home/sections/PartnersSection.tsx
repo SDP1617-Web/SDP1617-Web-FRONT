@@ -17,7 +17,8 @@ const PartnersSection = () => {
       <div style={{ width: '1202px' }} className="flex flex-col">
         {/* 타이틀 */}
         <p className="h2" style={{ color: 'var(--color-sdp-grey-900)' }}>
-          SDP는 유엔 지속가능발전해법 네트워크(SDSN Korea)와 함께합니다.
+          SDP는 한국지속가능발전해법네트워크 청년위원회(SDSN Korea)와
+          함께합니다.
         </p>
 
         {/* 로고 */}
