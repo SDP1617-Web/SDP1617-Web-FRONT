@@ -9,6 +9,7 @@ const sectionStyle: CSSProperties = {
   backgroundColor: 'var(--color-sdp-grey-900)',
   display: 'flex',
   justifyContent: 'center',
+  marginTop: '-2px',
 }
 
 const canvasStyle: CSSProperties = {
