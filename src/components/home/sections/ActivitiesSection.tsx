@@ -148,10 +148,10 @@ const ActivitiesSection = () => {
               )}
             </div>
 
-            {/* 점 인디케이터 - 사진이 2장 이상일 때만 표시 */}
-            {hasMultipleImages && (
-              <div className="flex items-center gap-2">
-                {images.map((img, i) => (
+            {/* 점 인디케이터 자리 - 항상 렌더링해서 높이를 고정, 점 자체만 조건부 */}
+            <div className="flex h-2 items-center gap-2">
+              {hasMultipleImages &&
+                images.map((img, i) => (
                   <button
                     key={img}
                     type="button"
@@ -164,8 +164,7 @@ const ActivitiesSection = () => {
                     }
                   />
                 ))}
-              </div>
-            )}
+            </div>
           </div>
         </div>
       </div>
