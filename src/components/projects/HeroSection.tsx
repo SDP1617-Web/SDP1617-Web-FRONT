@@ -4,10 +4,17 @@ const HERO_H1 = 'PROCESS'
 
 const HeroSection = () => {
   return (
-    <section className="relative mx-auto h-[280px] w-full max-w-[1920px] overflow-hidden bg-[linear-gradient(359deg,#000_-28.14%,var(--color-sdp-main-primary)_105.87%)] md:h-[347px]">
-      <div className="relative z-10 flex h-full items-center px-6 md:px-16 xl:pl-[410px]">
-        <h1 className="h1 text-sdp-grey-50">{HERO_H1}</h1>
-      </div>
+    <section className="relative mx-auto h-[347px] w-full max-w-[1920px] overflow-hidden bg-[linear-gradient(359deg,#000_-28.14%,var(--color-sdp-main-primary)_105.87%)]">
+      <h1
+        className="h1 text-sdp-grey-50 absolute z-10"
+        style={{
+          top: '153.65px',
+          left: '410px',
+          textShadow: '0 0 4.7px rgba(0, 0, 0, 0.75)',
+        }}
+      >
+        {HERO_H1}
+      </h1>
 
       <div
         className="absolute"
